@@ -1,0 +1,12 @@
+{
+    "main": 
+    {
+        "title": "ubimp",
+        "items":
+        {
+            "item1": "Home",
+            "item2": "Zones"
+        }
+        
+    }
+}
