@@ -1,7 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MessengerService } from 'utils';
+import { MessengerService, GeolocationService } from 'utils';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FormGroup, FormControl } from '@angular/forms';
+import { HomeService } from './home.service';
+import { Vehicle } from '../models/vehicle';
 
 @Component({
   selector: 'app-home',
@@ -15,55 +18,71 @@ export class HomeComponent implements OnInit
   //Propiedades
   
    //Mapa
-   mapCenter = [-122.4194, 37.7749];
-   basemapType = 'satellite';
-   mapZoomLevel = 12;
+   mapCenter = [-117.98118, 34.00679];
+   basemapType = 'gray';
+   mapZoomLevel = 10;
    loading = true;
+   isMapReady: boolean;
 
    settingsOpened: boolean;
    settingsOpenedObs: Observable<boolean>;
 
     private messengerSubscription: Subscription;
 
+    public homeInputs: { realTimeEnabled: boolean, autoZoomEnabled: boolean };
+    
+    public vehicles: Array<Vehicle>;
 
+    public currentPositionObs: Observable<Position>;
+    private currentPosition: Position;
 
-  //Funciones
+    //Funciones
+    homeInputsRealTimeEnabledChange(event)
+    {
+        console.log(event);
+    }
 
+    homeInputsAutoZoomEnabledChange(value)
+    {
+      console.log(value);
+    }
 
   //Eventos
-   constructor(private messengerService: MessengerService)
+   constructor(private homeService: HomeService, private messengerService: MessengerService, private geolocationService: GeolocationService)
    {
-
+      this.isMapReady = false;
+      this.homeInputs = { autoZoomEnabled: true, realTimeEnabled: true };
    }
 
 
   
   ngOnInit() 
   {
-  
-      this.settingsOpened = false;
+    
+      this.homeService.getVehicles().subscribe(vehicles => { this.vehicles = vehicles; })
+
+      //this.realTimeEnabled  = true; //El valor se obtendra de la configuracion de cada usuario
+      
+      
+      //this.settingsOpened = false;
 
       this.settingsOpenedObs =  this.messengerService.getStringsMessenger().pipe(map( eventName => 
         { 
              this.settingsOpened = !this.settingsOpened;
              return this.settingsOpened;
         }));
-      
-      // this.messengerSubscription = this.messengerService.getStringsMessenger().subscribe({ 
-      //   next(message) 
-      //   { 
-          
-      //       console.log('got value ' + message);
-            
-      //       this.settingsOpened = !this.settingsOpened;
 
-      //       console.log(this.settingsOpened);
-      //   },
-      //   error(err){  },
-      //   complete(){ }
-      // });
+      //Si el servicio no esta observando los cambios en posicion entonces se activan
+      if (!this.geolocationService.isWatchingLocation()) {
+          this.geolocationService.startWatching(true, 30000, 2700);
+        }
 
-      
+      this.currentPositionObs = this.geolocationService.getGeolocationObserver();
+      this.currentPositionObs.subscribe((newPosition) => {
+            this.currentPosition  = newPosition;
+             console.log(this.currentPosition);
+          } );
+
   }
 
 
@@ -76,7 +95,8 @@ export class HomeComponent implements OnInit
    mapLoadedEvent(status: boolean) 
    {
       this.loading = false;
-      console.log('The map loaded: ' + status);
+      this.isMapReady = status;
+      
       
    }
 

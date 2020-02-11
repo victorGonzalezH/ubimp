@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, OnInit, Component, OnDestroy, HostListener} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {TranslateService} from '@ngx-translate/core';
-import {MessengerService} from 'utils';
+import {MessengerService, StorageService} from 'utils';
 
 @Component({
   selector: 'app-main',
@@ -46,11 +46,11 @@ export class MainComponent implements OnInit, OnDestroy
       } 
       else if(windowWidth > 600 && windowWidth <= 900) 
       {
-         return 'side';
+         return 'push';
       } 
       else
       {
-        return 'push';
+        return 'side';
       }
    }
 
@@ -71,6 +71,8 @@ export class MainComponent implements OnInit, OnDestroy
   onResize(event) 
   {
     this.sideNavMode = this.calculateSideNavMode(window.innerWidth);
+    
+    
   }
 
 

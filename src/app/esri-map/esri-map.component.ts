@@ -1,6 +1,8 @@
 import {  Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter,OnDestroy } from '@angular/core';
 import { loadModules } from 'esri-loader';
 import esri = __esri; // Esri TypeScript Types
+import * as StreamLayer from 'esri/layers/StreamLayer';
+
 
 @Component({
   selector: 'app-esri-map',
@@ -20,10 +22,13 @@ export class EsriMapComponent implements OnInit, OnDestroy {
    * _loaded provides map loaded status
    */
   private _zoom = 10;
-  private _center: Array<number> = [0.1278, 51.5074];
-  private _basemap = 'streets';
+  private _center: Array<number> = [-117.98118, 34.00679];
+  private _basemap = 'gray'; //streets
   private _loaded = false;
   private _view: esri.MapView = null;
+
+  private streamLayer: StreamLayer;
+  private streamLayerView: any;
 
   get mapLoaded(): boolean {
     return this._loaded;
@@ -63,7 +68,11 @@ export class EsriMapComponent implements OnInit, OnDestroy {
     try 
     {
       // Load the modules for the ArcGIS API for JavaScript
-      const [EsriMap, EsriMapView] = await loadModules(['esri/Map', 'esri/views/MapView']);
+      //Carga los modulos del API de Arcgis para JS
+      const [EsriMap, MapView, StreamLayer, GraphicsLayer, Polygon, Graphic] = await loadModules(['esri/Map',
+      'esri/views/MapView', 'esri/layers/StreamLayer', 'esri/layers/GraphicsLayer',
+      'esri/geometry/Polygon',
+      'esri/Graphic']);
 
       // Configure the Map
       const mapProperties: esri.MapProperties = { basemap: this._basemap };
@@ -78,20 +87,66 @@ export class EsriMapComponent implements OnInit, OnDestroy {
         map: map
       };
 
-      this._view = new EsriMapView(mapViewProperties);
+      this._view = new MapView(mapViewProperties);
+
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+
+       // Construct Stream Layer
+      this.streamLayer = new StreamLayer({
+        url: 'https://localhost:3000',
+        purgeOptions: {
+          displayCount: 10000
+        }
+      });
+
+      map.add(this.streamLayer);
+      
+      this._view.whenLayerView(this.streamLayer).then((layerView) => {
+        
+        this.streamLayerView = layerView;
+
+        // processConnect();
+        console.log(1);
+        layerView.watch('connectionStatus', (value) => {
+          console.log(2);
+          console.log(value);
+          if (value === 'connected') {
+            //processConnect();
+          } else {
+            //processDisconnect();
+          }
+        });
+
+        layerView.watch('updating', (value) => {
+          console.log(3);
+          console.log(value);
+        });
+
+        
+        layerView. on('data-received', (value) => {
+          console.log(4);
+          console.log(value);
+        });
+
+        // GeometryDefinitionChange event
+        this.streamLayer.watch('geometryDefinition', (data) => {console.log(data)
+        });
+      });
+      
+
       await this._view.when();
       return this._view;
-    } catch (error) 
+    } 
+    catch (error) 
     {
       throw error;
-      
     }
   }
 
   ngOnInit() 
   {
 
-    console.log('Hey');
     // Initialize MapView and return an instance of MapView
     this.initializeMap()
     .then( mapView => 
