@@ -76,14 +76,18 @@
 
 <mat-sidenav-content role="region" >
     <app-esri-map
-    [center]="mapCenter"
-    [basemap]="basemapType"
+    [center]="currentPositionObs | async"
+    [basemap]="basemap"
     [zoom]="mapZoomLevel"
-    (mapLoadedEvent)="mapLoadedEvent($event)">
+    [referenceSystem]="referenceSystem"
+    (mapLoadedEvent)="mapLoadedEvent($event)"
+    (modulesLoadedEvent)="modulesLoadedEvent($event)"
+    (viewMapUpdatedEvent)="viewMapUpdatedEvent($event)"
+    >
   </app-esri-map> 
 
   <!--Progress spinner -->
-  <div *ngIf="loading" style="display: grid; height:100%;">
+  <div *ngIf="loading === true" style="display: grid; height:100%;">
           <mat-progress-spinner 
           style="margin: auto;"
           color="warn" 
