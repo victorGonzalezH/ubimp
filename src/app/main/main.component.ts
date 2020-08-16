@@ -11,8 +11,8 @@ import {MessengerService, StorageService} from 'utils';
 export class MainComponent implements OnInit, OnDestroy 
 {
 
-  //mobileQuery almacena informacion de un mediaquery aplicado a un documento.
-  private mobileQuery: MediaQueryList;
+  // mobileQuery almacena informacion de un mediaquery aplicado a un documento.
+  public mobileQuery: MediaQueryList;
 
   private mobileQueryListener: () => void;
 

@@ -7,7 +7,7 @@ import {PortalModule} from '@angular/cdk/portal';
 import {UtilsModule, StorageService, MessengerService, GeolocationService, RealtimeService} from 'utils';
 import { FormsModule } from '@angular/forms';
 
-//Material modules
+// Material modules
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
@@ -17,18 +17,18 @@ import {MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
-//Modulo de mapas de google
-import { AgmCoreModule } from '@agm/core';
+// Modulo de mapas de google
+// import { AgmCoreModule } from '@agm/core';
 
-//Modulos para la internacionalizacion
+// Modulos para la internacionalizacion
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 
-//Modulo de configuracion de las rutas
+// Modulo de configuracion de las rutas
 import { AppRoutingModule } from './app-routing.module';
 
-//Importacion de los componentes
+// Importacion de los componentes
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -55,9 +55,9 @@ import { EsriMapComponent } from './esri-map/esri-map.component';
     UtilsModule,
     FormsModule,
 
-    AgmCoreModule.forRoot({
-      apiKey: ''
-    }),
+    // AgmCoreModule.forRoot({
+    //   apiKey: ''
+    // }),
 
     CommonModule,
     MatButtonModule,
@@ -84,7 +84,7 @@ import { EsriMapComponent } from './esri-map/esri-map.component';
 })
 export class AppModule { }
 
-//Requerido para la compilacion (AOT) antes de tiempo
+// Requerido para la compilacion (AOT) antes de tiempo
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
