@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { MainComponent } from './main/main.component';
-//import { HomeComponent } from './internal/default/home/home.component';
+// import { HomeComponent } from './internal/default/home/home.component';
 
 
 
@@ -13,9 +13,9 @@ const routes: Routes =
     component: MainComponent,
     children:
     [
-        {  path: '', component: HomeComponent }
+        {  path: '', component: HomeComponent },
 
-    ] 
+    ]
   }
   
   //,{

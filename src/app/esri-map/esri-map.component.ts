@@ -177,6 +177,15 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy, IMap {
     return this.isDraggingP;
   }
 
+  private isZoomingP: boolean;
+
+  /**
+   * Indicates if zooming its being performed / Indica si se esta realizando zoom en el mapa
+   */
+  get isZooming(): boolean {
+    return this.isZoomingP;
+  }
+
   get mapLoaded(): boolean {
     return this.maploadedSucces;
   }
@@ -463,6 +472,32 @@ private applyEditsToLayer(layerId: number, edits: esri.FeatureLayerApplyEditsEdi
   }
 
 
+  /**
+   * 
+   * @param mapView
+   * @param properties
+   */
+  private setMapViewPropertiesWatch(mapView: MapView, properties: Array<string>, ) {
+
+    properties.forEach(property => {
+      mapView.watch(property, val => {
+        switch (property) {
+            case 'zoom':
+            this.isZoomingP = true;
+            break;
+
+            case 'updating':
+            if (val === false) {
+              this.isZoomingP = false;
+            }
+            break;
+        }
+
+      });
+    });
+
+  }
+
 
   /**
    * @param basemap tipo de mapa base
@@ -481,6 +516,7 @@ private globalInitializaMapAndSetMapView(basemap: string, zoomLevel: number, cen
         this.map              = this.mapView.map;
 
         this.setMapViewEvents(this.mapView);
+        this.setMapViewPropertiesWatch(this.mapView, ['zoom', 'updating']);
         this.mapLoadedEvent.emit(this.mapView.ready);
       }, (reason: any) => {
 
@@ -813,7 +849,6 @@ addFeatureLayer(title: string, fields: IField[], popupTemplate: IPopupTemplate, 
         }
       }
     });
-
 
     // Se agrega el layerView al arreglo de layersView con el indice de la capa que le corresponde
     this.layersIdsAndLayersViews.push({key: layerId, value: featureLayerView });

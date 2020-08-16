@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PortalModule} from '@angular/cdk/portal';
-import {UtilsModule, StorageService, MessengerService, GeolocationService} from 'utils';
+import {UtilsModule, StorageService, MessengerService, GeolocationService, RealtimeService} from 'utils';
 import { FormsModule } from '@angular/forms';
 
 //Material modules
@@ -79,7 +79,7 @@ import { EsriMapComponent } from './esri-map/esri-map.component';
     })
 
   ],
-  providers: [StorageService, MessengerService, GeolocationService],
+  providers: [StorageService, MessengerService, GeolocationService, RealtimeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

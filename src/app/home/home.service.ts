@@ -56,9 +56,26 @@ export class HomeService {
 
   /**
    * Obtiene la configuracion del modulo home
+   * streets
+   * satellite
+   * hybrid
+   * terrain
+   * topo
+   * gray
+   * dark-gray
+   * oceans
+   * national-geographic
+   * osm
+   * dark-gray-vector
+   * gray-vector
+   * streets-vector
+   * topo-vector
+   * streets-night-vector
+   * streets-relief-vector
+   * streets-navigation-vector
    */
   public getHomeSettings(): Observable<IHomeSettings> {
-    const settings: IHomeSettings = { mapZoomLevel: 5, mapCenter: [49, -126], baseMap: 'streets', referenceSystem: ReferenceSystems.GPS };
+    const settings: IHomeSettings = { mapZoomLevel: 5, mapCenter: [49, -126], baseMap: 'hybrid', referenceSystem: ReferenceSystems.GPS };
     return of(settings);
   }
 

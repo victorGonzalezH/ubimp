@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
-import { MessengerService, GeolocationService, UtilsService } from 'utils';
+import { MessengerService, GeolocationService, UtilsService, RealtimeService } from 'utils';
 import { Subscription, Observable, Subject, forkJoin, of } from 'rxjs';
 import { map, concatMap } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 //#region Eventos
 
    // tslint:disable-next-line: max-line-length
-   constructor(private homeService: HomeService, private messengerService: MessengerService, private geolocationService: GeolocationService) {
+   constructor(private homeService: HomeService, private messengerService: MessengerService, private geolocationService: GeolocationService, private realtimeService: RealtimeService) {
       this.isMapReady = false;
       this.homeInputs = { autoZoomEnabled: true, realTimeEnabled: true };
    }
@@ -380,8 +380,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
    }
 
    public viewMapUpdatedEvent(mapEvent: MapEvents) {
-     if (mapEvent === MapEvents.GraphicAdded && !(this.esriMapComp as EsriMapComponent).isDragging) {
-        //this.esriMapComp.zoomAndCenter();
+     if (mapEvent === MapEvents.GraphicAdded
+      && !(this.esriMapComp as EsriMapComponent).isDragging
+      && !(this.esriMapComp as EsriMapComponent).isZooming) {
+        this.esriMapComp.zoomAndCenter();
      }
    }
 
