@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   };
 
   // Propiedades
-  @ViewChild(EsriMapComponent, {static: false}) esriMapComp: EsriMapComponent;
+  @ViewChild(EsriMapComponent) esriMapComp: EsriMapComponent;
 
    // Propiedades para el mapa
    private mapCenter: Array<number>;
@@ -261,7 +261,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     return forkJoin(this.homeService.getVehicleTrackingFields(),
         this.homeService.getPopupTemplate()).pipe( concatMap(layerConfig => {
 
-          const featureLayersObs = [];
+          const featureLayersObs : Observable<number>[] = [];
           const vehiclesTypesIds = [];
           const vehiclesTypesIdsAndlayersIds: Map<number, number> = new Map<number, number>();
           for (const vehicleTypeId of vehiclesGroup.keys()) {
