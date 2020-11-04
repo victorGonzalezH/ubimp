@@ -1,0 +1,186 @@
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white;
+  }
+  
+  :-ms-input-placeholder { /* Microsoft Edge */
+    color: white;
+  }
+
+  .loginFormField .mat-form-field-underline {
+
+    background-color: white !important;
+  } 
+
+  .loginFormField .mat-form-field-ripple {
+    /*change color of underline when focused*/
+    background-color: white !important;;
+   }
+
+.mat-select-value {
+    color: white;
+  }
+
+.mat-select-arrow {
+    color: white;
+}
+
+
+.mat-form-field .mat-focused .mat-select-arrow
+{
+    color: white;
+}
+
+.overlay{
+    height:100vh;
+    width:100%;
+    background-color:rgba(0, 0, 0, 0.286);
+    z-index:    10;
+    top:        0; 
+    left:       0; 
+    position:   fixed;
+  }
+
+  .progress-spinner-margin .mat-progress-spinner circle, .mat-spinner circle {   
+    stroke: #00FF00;
+}
+
+.progress-spinner-margin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  
+.loginLabel
+{
+    color: white;
+}
+
+.loginContainerParent
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-image: url("../../assets/images/jpg/loginBackground.jpg");
+    background-size: cover;
+    background-position: center center;
+}
+
+.loginFormField
+{
+    width: 100%;
+    
+}
+
+.hidePasswordIcon
+{
+    color: white;
+}
+
+
+
+.loginFormField .mat-input-element {
+    color: white;
+    text-align: center;
+
+  }
+
+
+.loginFormField .mat-input-element:focus {
+    caret-color: white;
+
+    
+  }
+
+  .loginFormField .mat-input-element::placeholder {
+    color: white;
+    text-align: center;
+  }
+
+.loginFormInput
+{
+    text-align: center;
+    color: white;
+}
+
+.loginUbimpLogo
+{
+    width: 100%;
+    height: auto;
+}
+
+.loginButton:enabled
+{
+    background-color: #0082fb;
+}
+
+@media only screen and (max-width: 480px) 
+{
+    .loginForm
+    {
+        width: 85%;
+
+    }
+}
+
+
+@media only screen and (min-width: 481px)
+{
+    .loginForm
+    {
+        width: 75%;
+
+    }
+}
+
+
+
+@media only screen and (min-width: 600px) 
+{
+    .loginForm
+    {
+        width: 65%;
+
+    }
+}
+
+
+@media only screen and (min-width: 768px) 
+{
+    .loginForm
+    {
+        width: 55%;
+
+    }
+}
+
+
+@media only screen and (min-width: 992px) 
+{
+    .loginForm
+    {
+        width: 45%;
+
+    }
+}
+
+
+
+@media only screen and (min-width: 1200px) 
+{
+    .loginForm
+    {
+        width: 40%;
+
+    }
+}

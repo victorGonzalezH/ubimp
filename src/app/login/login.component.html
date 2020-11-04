@@ -1,42 +1,69 @@
-<!-- <form>
-  
-    <table class="example-full-width" cellspacing="0">
-        <tr>
-            <td>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="First name">
-                </mat-form-field>
-            </td>
+<div class="loginContainerParent" >
+    <form [formGroup]="loginFormControl" class="loginForm" (ngSubmit)="onSubmit()">
+      <img src="../../assets/images/svg/ubimpLogo.svg" alt="ubimp" class="loginUbimpLogo">
+      <br>
+      <br>
+      <mat-form-field class="loginFormField">
+        <mat-label class="loginLabel">{{ 'login.email' | translate }}</mat-label>
+        <input matInput formControlName="emailControl" placeholder="{{ 'login.emailPlaceholder' | translate }}" class="loginFormInput">
+        <mat-error *ngIf="this.loginFormControl.controls['emailControl'].hasError('email') && !this.loginFormControl.controls['emailControl'].hasError('required')">
+          {{ 'login.emailInvalid' | translate }}
+        </mat-error>
+        <mat-error *ngIf="this.loginFormControl.controls['emailControl'].hasError('required')">
+          <strong>{{ 'login.emailRequired' | translate }}</strong>
+        </mat-error>
+      </mat-form-field>
+      <br>
+      <br>
+      <mat-form-field class="loginFormField">
+        <mat-label class="loginLabel">{{ 'login.password' | translate }}</mat-label>
+        <input matInput formControlName="passwordControl" [type]="hidePassword ? 'password' : 'text'" class="loginFormInput" >
+        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+        <mat-icon class="hidePasswordIcon">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="this.loginFormControl.controls['passwordControl'].hasError('required')">
+          <strong>{{ 'login.passwordRequired' | translate }}</strong>
+        </mat-error>
+      </mat-form-field>
 
-            <td>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Long Last Name That Will Be Truncated">
-                </mat-form-field>
-            </td>
-        </tr>
-    </table>
-  
-    <p>
-      <mat-form-field class="example-full-width">
-        <textarea matInput placeholder="Address">1600 Amphitheatre Pkwy</textarea>
+      <!-- usuario y/o contrasena incorrectos -->
+      <div *ngIf="this.loginFormControl.errors?.invalidCredentials" style="display: block; font-size: 85%; text-align: left; font-weight: 400;line-height: 1.125; font-family: Roboto, Helvetica Neue, sans-serif; letter-spacing: normal;">
+        <mat-error>
+        <strong>{{ 'login.checkCredentials' | translate }}</strong>
+        </mat-error>
+      </div>
+      <!-- Error desconocido -->
+      <div *ngIf="this.loginFormControl.errors?.unknowError" style="display: block; font-size: 85%; text-align: left; font-weight: 400;line-height: 1.125; font-family: Roboto, Helvetica Neue, sans-serif; letter-spacing: normal;">
+        <mat-error>
+        <strong>{{ 'login.unknowError' | translate }}</strong>
+        </mat-error>
+      </div>
+
+      <br>
+      <br>
+      
+      
+      <mat-form-field class="loginFormField">
+        <mat-label class="loginLabel">{{ 'login.language' | translate }}</mat-label>
+        <mat-select class="loginFormInput">
+          <mat-option *ngFor="let lang of languages" [value]="lang.value">
+            {{lang.viewValue}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <textarea matInput placeholder="Address 2"></textarea>
-      </mat-form-field>
-    </p>
+      <br>
+      <br>
   
-    <table class="example-full-width" cellspacing="0"><tr>
-      <td><mat-form-field class="example-full-width">
-        <input matInput placeholder="City">
-      </mat-form-field></td>
-      <td><mat-form-field class="example-full-width">
-        <input matInput placeholder="State">
-      </mat-form-field></td>
-      <td><mat-form-field class="example-full-width">
-        <input matInput #postalCode maxlength="5" placeholder="Postal Code" value="94043">
-        <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
-      </mat-form-field></td>
-    </tr>
-</table>
-  </form>
-   -->
+      <button mat-raised-button type="submit" [disabled]="!loginFormControl.valid" class="loginButton"
+      style="width: 100%; color: white;" >
+        <strong>{{ 'login.access' | translate }}</strong>
+      </button>
+    </form>
+</div>
+<div class="overlay" *ngIf="loading === true" >
+<div class="progress-spinner-margin">
+  <mat-progress-spinner 
+    mode="indeterminate">
+  </mat-progress-spinner>
+</div>
+</div>
