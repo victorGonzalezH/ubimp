@@ -1,0 +1,27 @@
+{
+    "main": 
+    {
+        "title": "ubimp",
+        "items":
+        {
+            "item1": "Home",
+            "item2": "Zones"
+        }
+        
+    },
+
+    "login": 
+    {
+        "email": "Correo",
+        "emailPlaceholder": "Por ejemplo: usuario@ejemplo.com",
+        "password": "Contraseña",
+        "language": "Idioma",
+        "access": "Acceder",
+        "emailRequired": "El correo es requerido",
+        "emailInvalid": "Escriba un correo válido",
+        "passwordRequired": "La contraseña es requerida",
+        "checkCredentials": "Por favor verifique su correo y/o contraseña",
+        "unknowError": "Sistema no disponible, favor de contactar al servicio de soporte"
+        
+    }
+}

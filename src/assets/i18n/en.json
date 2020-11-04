@@ -8,5 +8,12 @@
             "item2": "Zones"
         }
         
+    },
+
+    "login": 
+    {
+        "email": "Email",
+        "password": "Password",
+        "access": "Access"
     }
 }
