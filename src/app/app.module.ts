@@ -15,7 +15,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTabsModule } from '@angular/material/tabs';
+import {MatTabsModule } from '@angular/material/tabs';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -34,18 +34,10 @@ import { AppRoutingModule } from './app-routing.module';
 // Importacion de los componentes
 import { AppComponent } from './app.component';
 
-import { HomeComponent } from './home/home.component';
-import { MainComponent } from './main/main.component';
-import { EsriMapComponent } from './esri-map/esri-map.component';
-
-
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    MainComponent,
-    EsriMapComponent
 
   ],
   imports:

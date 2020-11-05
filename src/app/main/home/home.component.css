@@ -1,3 +1,11 @@
+@import '../../../../node_modules/material-design-icons/iconfont/material-icons.css';
+
+agm-map 
+{
+    height: 100%;
+}
+
+
 
 /* 
 Atributo position en CSS
@@ -12,8 +20,6 @@ con respecto al lugar que le hubiera correspondido.
 
 
 */
-
-@import '../../../../../node_modules/material-design-icons/iconfont/material-icons.css';
 
 .ubimp-container 
 {
@@ -41,6 +47,7 @@ con respecto al lugar que le hubiera correspondido.
        causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
     flex: 1;
 
+    
   }
   
   
@@ -87,7 +94,7 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 75%;
+      width: 85%;
     }
   }
 
@@ -124,7 +131,7 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 45%;
+      width: 65%;
     }
   }
 
@@ -133,7 +140,7 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 40%;
+      width: 60%;
     }
   }
 
@@ -143,7 +150,7 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 25%;
+      width: 45%;
     }
   }
 
@@ -152,7 +159,7 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 25%;
+      width: 38%;
     }
   
   }
@@ -162,7 +169,7 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 20%;
+      width: 32%;
     }
   
   }
@@ -172,7 +179,12 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 18%;
+      width: 25%;
     }
   
+  }
+
+
+  .example-tab-icon {
+    margin-right: 8px;
   }

@@ -16,13 +16,13 @@ export class MainComponent implements OnInit, OnDestroy
 
   private mobileQueryListener: () => void;
 
-  //Mode de operacion del sidenav
+  // Mode de operacion del sidenav
   sideNavMode: string;
 
-  //media: MediaMatcher. Clase de Aagular material.
+  // media: MediaMatcher. Clase de Aagular material.
    constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, translateService: TranslateService, private messengerService: MessengerService) 
    {
-     //Se establece ingles como idioma por default.
+     // Se establece ingles como idioma por default.
       translateService.setDefaultLang('en');
       
 

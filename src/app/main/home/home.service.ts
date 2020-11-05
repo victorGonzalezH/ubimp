@@ -1,3 +1,4 @@
+
 /*
   Author: victor.gonzalez@metricsfab.com
   Created date: 17/01/2020
@@ -8,17 +9,17 @@
 */
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { Vehicle, VehicleDto } from '../models/vehicle';
-import { IHomeSettings } from './models/IHomeSettings.model';
-import { ReferenceSystems } from '../esri-map/models/referenceSystem.enum';
-import { VehicleTracking, VehicleTrackingDto } from '../models/vehicleTracking.model';
-import { IField } from '../esri-map/render/IField.model';
-import { FieldTypes } from '../esri-map/render/fieldType.enum';
-import { IPopupTemplate } from '../esri-map/render/iPopupTemplate.model';
-import { IUniqueValueInfo } from '../esri-map/render/IUniqueValueInfo.model';
-import { ISimpleMarkerSymbol } from '../esri-map/symbols/ISimpleMarkerSymbol.model';
-import { SymbolsTypes } from '../esri-map/symbols/symbolsTypes.enum';
-import { VehicleTypes } from './enums/vehicleTypes.enum';
+import { ReferenceSystems } from '../../esri-map/models/referenceSystem.enum';
+import { IField } from '../../esri-map/render/IField.model';
+import { FieldTypes } from '../../esri-map/render/fieldType.enum';
+import { IPopupTemplate } from '../../esri-map/render/iPopupTemplate.model';
+import { IUniqueValueInfo } from '../../esri-map/render/IUniqueValueInfo.model';
+import { ISimpleMarkerSymbol } from '../../esri-map/symbols/ISimpleMarkerSymbol.model';
+import { SymbolsTypes } from '../../esri-map/symbols/symbolsTypes.enum';
+
+import { Vehicle, VehicleDto } from './models/vehicle.model';
+import { HomeSettings } from './models/home-settings.model';
+import { VehicleTrackingDto } from './models/vehicle-tracking.model';
 
 
 @Injectable({
@@ -74,8 +75,8 @@ export class HomeService {
    * streets-relief-vector
    * streets-navigation-vector
    */
-  public getHomeSettings(): Observable<IHomeSettings> {
-    const settings: IHomeSettings = { mapZoomLevel: 5, mapCenter: [49, -126], baseMap: 'hybrid', referenceSystem: ReferenceSystems.GPS };
+  public getHomeSettings(): Observable<HomeSettings> {
+    const settings: HomeSettings = { mapZoomLevel: 5, mapCenter: [49, -126], baseMap: 'hybrid', referenceSystem: ReferenceSystems.GPS };
     return of(settings);
   }
 

@@ -4,14 +4,13 @@ import { Subscription, Observable, Subject, forkJoin, of } from 'rxjs';
 import { map, concatMap } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 import { HomeService } from './home.service';
-import { Vehicle, VehicleDto, VehiclesFactory } from '../models/vehicle';
-import { EsriMapComponent, IMap } from '../esri-map/esri-map.component';
-import { IField } from '../esri-map/render/IField.model';
-import { CalciteWebCoreIcons } from '../esri-map/render/calciteWebCoreIcons.enum';
-import { ISimpleMarkerSymbol } from '../esri-map/symbols/ISimpleMarkerSymbol.model';
-import { SymbolsTypes } from '../esri-map/symbols/symbolsTypes.enum';
-import { IUniqueValueInfo } from '../esri-map/render/IUniqueValueInfo.model';
-import { MapEvents } from '../esri-map/enums/mapEvents.enum';
+import { Vehicle, VehicleDto, VehiclesFactory } from './models/vehicle.model';
+import { EsriMapComponent, IMap } from '../../esri-map/esri-map.component';
+import { CalciteWebCoreIcons } from '../../esri-map/render/calciteWebCoreIcons.enum';
+import { ISimpleMarkerSymbol } from '../../esri-map/symbols/ISimpleMarkerSymbol.model';
+import { SymbolsTypes } from '../../esri-map/symbols/symbolsTypes.enum';
+import { IUniqueValueInfo } from '../../esri-map/render/IUniqueValueInfo.model';
+import { MapEvents } from '../../esri-map/enums/mapEvents.enum';
 
 @Component({
   selector: 'app-home',
