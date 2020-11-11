@@ -5,16 +5,10 @@ import { MainComponent } from './main.component';
 
 const routes: Routes = [
 
-  // { path: '',
-  //   component: MainComponent,
-  //   loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
-  // },
-
   { path: '',
     component: MainComponent,
-    loadChildren: () => import('./home-google-map/home-google-map.module').then(m => m.HomeGoogleMapModule)
+    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   }
-
 ];
 
 @NgModule({
