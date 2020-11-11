@@ -34,9 +34,6 @@ import { AppRoutingModule } from './app-routing.module';
 // Importacion de los componentes
 import { AppComponent } from './app.component';
 
-// Modulo de google maps
-import { AgmCoreModule } from '@agm/core';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,9 +49,9 @@ import { AgmCoreModule } from '@agm/core';
     FormsModule,
     ReactiveFormsModule,
 
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDFFG8M2ALiG2NURZqmuMxSFG9FFQ6fqbE'
-    }),
+    // AgmCoreModule.forRoot({
+    //   apiKey: 'AIzaSyDFFG8M2ALiG2NURZqmuMxSFG9FFQ6fqbE'
+    // }),
 
     CommonModule,
     MatButtonModule,

@@ -16,7 +16,6 @@ import {MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import {TranslateModule} from '@ngx-translate/core';
 
-import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [HomeComponent, EsriMapComponent],

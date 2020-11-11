@@ -76,7 +76,7 @@ export class HomeService {
    * streets-navigation-vector
    */
   public getHomeSettings(): Observable<HomeSettings> {
-    const settings: HomeSettings = { mapZoomLevel: 5, mapCenter: [49, -126], baseMap: 'hybrid', referenceSystem: ReferenceSystems.GPS };
+    const settings: HomeSettings = { mapZoomLevel: 5, mapCenter: [49, -126], baseMap: 'streets-night-vector', referenceSystem: ReferenceSystems.GPS };
     return of(settings);
   }
 
