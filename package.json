@@ -11,11 +11,12 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.1.0",
     "@angular/animations": "^10.0.9",
     "@angular/cdk": "^10.1.3",
     "@angular/common": "~10.0.9",
     "@angular/compiler": "~10.0.9",
-    "@angular/core": "~10.0.9",
+    "@angular/core": "^10.2.3",
     "@angular/flex-layout": "^9.0.0-beta.30",
     "@angular/forms": "~10.0.9",
     "@angular/material": "^10.1.3",
@@ -25,6 +26,7 @@
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "@types/arcgis-js-api": "^4.14.0",
+    "@types/googlemaps": "^3.39.12",
     "esri-loader": "^2.13.0",
     "material-design-icons": "^3.0.1",
     "rxjs": "^6.6.3",
@@ -33,7 +35,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1000.6",
+    "@angular-devkit/build-angular": "^0.1002.0",
     "@angular/cli": "^10.0.6",
     "@angular/compiler-cli": "~10.0.9",
     "@angular/language-service": "~10.0.9",

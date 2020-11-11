@@ -17,9 +17,9 @@ import { IUniqueValueInfo } from '../../esri-map/render/IUniqueValueInfo.model';
 import { ISimpleMarkerSymbol } from '../../esri-map/symbols/ISimpleMarkerSymbol.model';
 import { SymbolsTypes } from '../../esri-map/symbols/symbolsTypes.enum';
 
-import { Vehicle, VehicleDto } from './models/vehicle.model';
-import { HomeSettings } from './models/home-settings.model';
-import { VehicleTrackingDto } from './models/vehicle-tracking.model';
+import { Vehicle, VehicleDto } from '../shared/models/vehicle.model';
+import { HomeSettings } from '../shared/models/home-settings.model';
+import { VehicleTrackingDto } from '../shared/models/vehicle-tracking.model';
 
 
 @Injectable({

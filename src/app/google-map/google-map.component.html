@@ -1,0 +1,14 @@
+<agm-map 
+(mapReady)="onMapReady($event)"
+[latitude]="latitude"
+[longitude]="longitude">
+  <agm-marker 
+  *ngFor="let marker of markersField; let i = index"
+  [latitude]="marker.lat"
+  [longitude]="marker.lng"
+  [markerDraggable]="marker.draggable",
+  [iconUrl]="marker.iconUrl"
+>
+  
+</agm-marker>
+  </agm-map>

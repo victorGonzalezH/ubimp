@@ -1,0 +1,95 @@
+<div class="ubimp-container">
+    <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #navHome
+              position="end" 
+              mode="over"
+              [opened]="settingsOpenedObs | async"
+              role="region">
+          
+            <mat-tab-group>
+              <mat-tab style="border-style: dotted;border-color: chartreuse;border-width: 2px;">
+                <ng-template mat-tab-label>
+                  <mat-icon class="example-tab-icon">directions_car</mat-icon>
+                  {{ 'home.vehicles' | translate }}
+                </ng-template>
+                <mat-list>
+                <mat-list-item *ngFor="let vehicle of vehicles">
+                  <mat-icon style="font-size: 40px;" mat-list-icon>directions_car</mat-icon>
+                  
+                    <h4 mat-line class="mat-subheading-2">{{vehicle.name}}</h4> 
+                  
+                  
+                    <p mat-line class="mat-subheading-2"> {{vehicle.description}} </p> 
+                  
+                  <mat-divider></mat-divider>
+                </mat-list-item>
+              </mat-list>
+              </mat-tab>
+  
+              <mat-tab >
+                <ng-template mat-tab-label>
+                  <mat-icon class="example-tab-icon">settings</mat-icon>
+                  {{ 'home.settings' | translate }}
+                </ng-template>
+  
+                <div style="height: 400px;">
+                  <table style="width: 95%;">
+                    <tr>
+                      <td style="vertical-align: top;">{{ 'home.realTime' | translate }}</td>
+                      <td style="vertical-align: top; text-align: right;">
+                        <div style="display: inline-block;"> 
+                            <mat-slide-toggle
+                  [ngModel]="homeInputs.realTimeEnabled"
+                  (ngModelChange)="homeInputsRealTimeEnabledChange($event)"></mat-slide-toggle>
+                        </div>
+                        
+                      </td>
+                    </tr>
+  
+                    <tr>
+                      <td style="vertical-align: top;">{{ 'home.autoZoom' | translate }}</td>
+                      <td style="vertical-align: top; text-align: right;">
+                        <div style="display: inline-block;"> 
+                            <mat-slide-toggle
+                  [ngModel]="homeInputs.autoZoomEnabled"
+                  (ngModelChange)="homeInputsAutoZoomEnabledChange($event)"></mat-slide-toggle>
+                        </div>
+                        
+                      </td>
+                      
+                    </tr>
+                  </table>
+                  
+                </div>
+  
+              </mat-tab>
+            
+            </mat-tab-group>
+          
+          
+  
+    <!-- <mat-nav-list>
+      <a mat-list-item routerLink="home">  Home </a>
+      <a mat-list-item routerLink="zones"> Zone </a>
+    </mat-nav-list> -->
+  </mat-sidenav>
+  
+  <mat-sidenav-content role="region" >
+    
+    <app-google-map
+    (mapReadyEvent)="onMapReady($event)"
+    [markers]="markers"
+    ></app-google-map>
+  
+    <!--Progress spinner -->
+    <!-- <div *ngIf="loading === true" style="display: grid; height:100%;">
+            <mat-progress-spinner 
+            style="margin: auto;"
+            color="warn" 
+            mode="indeterminate">
+            </mat-progress-spinner>
+        </div> -->
+  
+  </mat-sidenav-content>
+  </mat-sidenav-container>
+  </div>

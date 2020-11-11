@@ -4,7 +4,7 @@ import { Subscription, Observable, Subject, forkJoin, of } from 'rxjs';
 import { map, concatMap } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 import { HomeService } from './home.service';
-import { Vehicle, VehicleDto, VehiclesFactory } from './models/vehicle.model';
+import { Vehicle, VehicleDto, VehiclesFactory } from '../shared/models/vehicle.model';
 import { EsriMapComponent, IMap } from '../../esri-map/esri-map.component';
 import { CalciteWebCoreIcons } from '../../esri-map/render/calciteWebCoreIcons.enum';
 import { ISimpleMarkerSymbol } from '../../esri-map/symbols/ISimpleMarkerSymbol.model';

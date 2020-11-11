@@ -2,11 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home.component';
-
-import { EsriMapComponent } from '../../esri-map/esri-map.component';
-
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatTabsModule } from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
@@ -18,11 +13,19 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import { AgmCoreModule } from '@agm/core';
 
+
+import { HomeGoogleMapRoutingModule } from './home-google-map-routing.module';
+import { HomeGoogleMapComponent } from './home-google-map.component';
+
+import { GoogleMapComponent } from 'src/app/google-map/google-map.component';
+
+import { HomeService } from './home.service';
+
 @NgModule({
-  declarations: [HomeComponent, EsriMapComponent],
+  declarations: [HomeGoogleMapComponent, GoogleMapComponent],
   imports: [
     CommonModule,
-    HomeRoutingModule,
+    HomeGoogleMapRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     MatSidenavModule,
@@ -32,6 +35,7 @@ import { AgmCoreModule } from '@agm/core';
     MatSlideToggleModule,
     TranslateModule,
     MatProgressSpinnerModule,
-  ]
+    AgmCoreModule
+  ], providers : [ HomeService ]
 })
-export class HomeModule { }
+export class HomeGoogleMapModule { }
