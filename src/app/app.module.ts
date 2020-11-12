@@ -33,10 +33,11 @@ import { AppRoutingModule } from './app-routing.module';
 
 // Importacion de los componentes
 import { AppComponent } from './app.component';
+import { GoogleMapComponent } from './google-map/google-map.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
 
   ],
   imports:
