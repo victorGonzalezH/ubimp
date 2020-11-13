@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Marker } from './models/marker.model';
 
 @Component({
   selector: 'app-google-map',
@@ -6,14 +7,14 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outp
   styleUrls: ['./google-map.component.css']
 })
 
-export class GoogleMapComponent implements OnInit, AfterViewInit {
+export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewChecked, AfterContentInit {
 
   readonly DEFAULT_LATITUDE   = 40.730610;
   readonly DEFAULT_LONGITUDE  = -73.935242;
   readonly DEFAULT_ZOOM       = 8;
 
-  @ViewChild('mapContainer', {static: true}) gmap: ElementRef;
-  
+  @ViewChild('mapContainer', {static: false}) gmap: ElementRef;
+
 
   /**
    * mapa actual
@@ -61,10 +62,41 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
    */
   @Output() ready: EventEmitter<boolean>;
 
+  private mapReady: boolean;
+
+  private markersLocal: google.maps.Marker[];
+  @Input()
+  set markers(markers: Marker[]){
+    // console.log(markers);
+    if (this.mapReady === true) {
+      if (markers != null && markers != undefined && markers.length > 0) {
+
+        this.markersLocal = markers.map(marker => {
+          const newMarker = new google.maps.Marker();
+          newMarker.setPosition(new google.maps.LatLng(marker.latitude, marker.longitude));
+          newMarker.setIcon(marker.iconUrl);
+          newMarker.setMap(this.map);
+          return newMarker;
+        });
+
+      }
+    }
+
+  }
 
   constructor() {
-
+    this.markers = [];
+    this.mapReady = false;
     this.ready = new EventEmitter<boolean>();
+
+  }
+
+
+  ngAfterContentInit(): void {
+
+  }
+  ngAfterViewChecked(): void {
+
   }
 
   ngAfterViewInit(): void {
@@ -73,11 +105,32 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
     this.longitudeLocal = this.DEFAULT_LONGITUDE;
     this.mapOptions = { zoom: this.zoomLocal, center: new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal) };
     this.map = new google.maps.Map(this.gmap.nativeElement, this.mapOptions);
-    this.ready.emit(true);
+
+    // Se agrega un manejador unico (addListenerOnce que se remueve asi mismo que se remueve asi mismo
+    // despues de manejar la primera ocurrencia del evento. Se escucha el evento idle del mapa
+    // para emitir que el mapa esta listo
+    google.maps.event.addListenerOnce(this.map, 'idle', () => {
+      if (this.mapReady === false) {
+        this.ready.emit(true);
+        this.mapReady = true;
+      }
+    });
+
   }
 
   ngOnInit(): void {
+
   }
+
+
+  /**
+   * Crea un marcador para el mapa
+   */
+  createMarker(label: string, latitude: number, longitude: number, iconUrl?: string, iconWidth?: number, iconHeight?: number): google.maps.Marker {
+
+    return new google.maps.Marker({ label, position : new google.maps.LatLng(latitude, longitude) });
+  }
+
 
 
 }

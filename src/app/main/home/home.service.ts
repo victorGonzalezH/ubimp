@@ -38,7 +38,8 @@ export class HomeService {
     { latitude: 18.0176752, longitude: -92.9435385, velocity: 0, statusId: 1, imei: '1234567890' },
     { latitude: 18.0176752, longitude: -92.9435385, velocity: 0, statusId: 1, imei: '1234567890' },
     { latitude: 18.0048347, longitude: -92.953114,  velocity: 0, statusId: 1, imei: '1234567890' },
-    { latitude: 17.9987227, longitude: -92.9578561, velocity: 0, statusId: 1, imei: '0987654321' }];
+    { latitude: 17.9987227, longitude: -92.9578561, velocity: 0, statusId: 1, imei: '0987654321' }
+  ];
 
     private counter: number;
 // Funciones
@@ -53,6 +54,7 @@ export class HomeService {
         this.counter = 0;
       } 
     }, 10000);
+  
   }
 
   /**
@@ -84,8 +86,8 @@ export class HomeService {
   /** Obtiene los vehiculos desde el servidor */
   getVehicles(): Observable<Array<VehicleDto>> {
       return of([
-        { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1 },
-        { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2 }
+        { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, tracking: null },
+        { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, tracking: null }
       ]);
   }
 

@@ -1,5 +1,5 @@
 import { VehicleTypes } from '../enums/vehicles-types.enum';
-
+import { VehicleTracking } from './vehicle-tracking.model';
 
 export class VehiclesFactory {
 
@@ -45,4 +45,6 @@ export interface VehicleDto {
     vehicleTypeId: number;
 
     oid: number;
+
+    tracking: VehicleTracking[];
 }
