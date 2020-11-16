@@ -23,5 +23,10 @@
         "checkCredentials": "Por favor verifique su correo y/o contraseña",
         "unknowError": "Sistema no disponible, favor de contactar al servicio de soporte"
         
+    },
+
+    "home": {
+        "vehicles": "Vehiculos",
+        "showOnMap": "Mostrar en mapa"
     }
 }

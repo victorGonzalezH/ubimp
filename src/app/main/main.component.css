@@ -14,6 +14,11 @@ con respecto al lugar que le hubiera correspondido.
 
 /* @import '../../../node_modules/material-design-icons/iconfont/material-icons.css'; */
 
+.mat-toolbar.mat-primary {
+  background: #27272f;
+  color: #fff;
+}
+
 .ubimp-container 
 {
     /*Tipo de "display" del contenedor, se usa flex que permite usar un contenedor flex*/
@@ -58,6 +63,7 @@ con respecto al lugar que le hubiera correspondido.
     position: relative;
         
   }
+
 
   
   .is-mobile .ubimp-toolbar 

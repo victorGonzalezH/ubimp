@@ -88,14 +88,22 @@
     </app-esri-map> 
   
     <!--Progress spinner -->
-    <div *ngIf="loading === true" style="display: grid; height:100%;">
+    <!-- <div *ngIf="loading === true" style="display: grid; height:100%;">
             <mat-progress-spinner 
             style="margin: auto;"
             color="warn" 
             mode="indeterminate">
             </mat-progress-spinner>
-        </div>
+        </div> -->
   
   </mat-sidenav-content>
   </mat-sidenav-container>
+</div>
+
+<div class="overlay" *ngIf="loading === true" >
+  <div class="progress-spinner-margin">
+    <mat-progress-spinner 
+      mode="indeterminate">
+    </mat-progress-spinner>
+  </div>
   </div>

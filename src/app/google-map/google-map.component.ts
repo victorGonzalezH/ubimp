@@ -67,14 +67,18 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
   private markersLocal: google.maps.Marker[];
   @Input()
   set markers(markers: Marker[]){
-    // console.log(markers);
     if (this.mapReady === true) {
-      if (markers != null && markers != undefined && markers.length > 0) {
+      this.clearMarkers();
+      this.markersLocal = [];
+      if (markers != null && markers != undefined) {
 
         this.markersLocal = markers.map(marker => {
           const newMarker = new google.maps.Marker();
           newMarker.setPosition(new google.maps.LatLng(marker.latitude, marker.longitude));
-          newMarker.setIcon(marker.iconUrl);
+          newMarker.setIcon(
+            {  url: marker.iconUrl,
+               scaledSize: new google.maps.Size(marker.iconWidth, marker.iconHeight)
+            });
           newMarker.setMap(this.map);
           return newMarker;
         });
@@ -90,6 +94,24 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
     this.ready = new EventEmitter<boolean>();
 
   }
+
+  /**
+   * /////////////////////////////////////Funciones///////////////////////////////////////////////////
+   */
+
+// Sets the map on all markers in the array.
+private setMapOnAll(map: google.maps.Map | null) {
+  if (this.markersLocal) {
+    this.markersLocal.forEach( marker => {
+      marker.setMap(map);
+    });
+  }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+private clearMarkers() {
+  this.setMapOnAll(null);
+}
 
 
   ngAfterContentInit(): void {

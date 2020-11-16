@@ -1,18 +1,23 @@
-export interface VehicleTracking {
+export class VehicleTracking {
 
-    oid: number;
+    constructor({ imei, latitude, longitude, velocity, oid  }){
+        this.imei = imei;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.velocity = velocity;
+        this.oid = oid;
 
-    latitude: number;
+    }
 
-    longitude: number;
+    public oid: number;
 
-    name: string;
+    public latitude: number;
 
-    description: string;
+    public longitude: number;
 
-    statusId: number;
+    public velocity: number;
 
-    imei: string;
+    public imei: string;
 
 }
 

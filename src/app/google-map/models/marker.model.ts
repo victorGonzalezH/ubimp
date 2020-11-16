@@ -1,9 +1,11 @@
 export interface Marker {
     latitude: number;
     longitude: number;
-    label?: string;
+    label: string;
     draggable: boolean;
     iconUrl?: string;
+    iconWidth?: number;
+    iconHeight?: number;
 }
 
 

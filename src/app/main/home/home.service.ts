@@ -20,6 +20,7 @@ import { SymbolsTypes } from '../../esri-map/symbols/symbolsTypes.enum';
 import { Vehicle, VehicleDto } from '../shared/models/vehicle.model';
 import { HomeSettings } from '../shared/models/home-settings.model';
 import { VehicleTrackingDto } from '../shared/models/vehicle-tracking.model';
+import { VehiclesStatus } from '../shared/enums/vehicles-status.enum';
 
 
 @Injectable({
@@ -52,7 +53,7 @@ export class HomeService {
       this.counter++;
       if (this.counter === this.vehiclesTrackingA.length) {
         this.counter = 0;
-      } 
+      }
     }, 10000);
   
   }
@@ -86,8 +87,8 @@ export class HomeService {
   /** Obtiene los vehiculos desde el servidor */
   getVehicles(): Observable<Array<VehicleDto>> {
       return of([
-        { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, tracking: null },
-        { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, tracking: null }
+        { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, tracking: null, status: VehiclesStatus.Normal },
+        { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, tracking: null, status: VehiclesStatus.Normal }
       ]);
   }
 
