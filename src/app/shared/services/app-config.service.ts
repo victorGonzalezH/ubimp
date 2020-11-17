@@ -11,7 +11,6 @@ export class AppConfigService {
 
   private ploginUrl: string;
 
-  private currentUserKeyLocal: string;
 
   /**
    * Url del modulo login
@@ -21,14 +20,23 @@ export class AppConfigService {
       return this.ploginUrl;
   }
 
+  private currentUserKeyLocal: string;
+
   get currentUserKey(): string
   {
     return this.currentUserKeyLocal;
   }
 
+  private defaultLanguageKeyLocal: string;
+
+  get defaultLanguage(): string {
+    return this.defaultLanguageKeyLocal;
+  }
+
   constructor() {
     this.ploginUrl = 'localhost:3000';
     this.currentUserKeyLocal = 'currentUser';
+    this.defaultLanguageKeyLocal = 'defaultLanguage';
   }
 
   /**
