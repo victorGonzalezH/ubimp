@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { RealtimeService } from 'utils';
+import { GeolocationService, RealtimeService } from 'utils';
 import { VehiclesStatus } from '../shared/enums/vehicles-status.enum';
 
 import { HomeSettings, ReferenceSystems } from '../shared/models/home-settings.model';
@@ -11,6 +11,10 @@ import { VehicleDto } from '../shared/models/vehicle.model';
   providedIn: 'root'
 })
 export class HomeService {
+
+  readonly USER_LOCATION_HIGH_ACCURACY = true;
+  readonly USER_LOCATION_MAX_AGE = 5000;
+  readonly USER_LOCATION_TIME_OUT = 5000;
 
   public vehiclesTracking: Observable<VehicleTrackingDto>;
   private vehiclesTrackingA: Array<VehicleTrackingDto> = [
@@ -26,7 +30,7 @@ export class HomeService {
 
   private vehicleTrackingSource: Subject<VehicleTrackingDto>;
   private counter: number;
-  constructor(realtimeService: RealtimeService) {
+  constructor(private realtimeService: RealtimeService, private userGeoLocationService: GeolocationService) {
     this.counter = 0;
     this.vehicleTrackingSource = new Subject<VehicleTrackingDto>();
     this.vehiclesTracking = this.vehicleTrackingSource.asObservable();
@@ -37,6 +41,13 @@ export class HomeService {
         this.counter = 0;
       }
     }, 10000);
+
+
+    // Si el servicio no esta observando los cambios de posicion entonces se activan
+    if (this.userGeoLocationService.isWatchingLocation() === false) {
+      this.userGeoLocationService.startWatching(this.USER_LOCATION_HIGH_ACCURACY, this.USER_LOCATION_MAX_AGE, this.USER_LOCATION_TIME_OUT);
+    }
+
   }
 
 
@@ -49,22 +60,30 @@ export class HomeService {
   /** Obtiene los vehiculos desde el servidor */
   getVehicles(): Observable<Array<VehicleDto>> {
     return of([
-      { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, tracking: null, status: VehiclesStatus.Normal },
-      { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, tracking: null, status: VehiclesStatus.Normal }
+      { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, tracking: null, online: true,  status: VehiclesStatus.Normal },
+      { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, tracking: null, online: true, status: VehiclesStatus.Normal }
     ]);
 }
 
 getVehiclesWithLasTracking(): Observable<Array<VehicleDto>> {
   return of([
-    { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, status: VehiclesStatus.Normal, tracking: [
+    { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, online: true, status: VehiclesStatus.Normal, tracking: [
       { oid: 1, latitude: 40.73061, longitude: 73.935242, name: 'A3', description: '', statusId: 0, imei: '1234567890', velocity: 123 }
     ] },
-    { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, status: VehiclesStatus.Normal, tracking: [
+    { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, online: true, status: VehiclesStatus.Normal, tracking: [
       { oid: 2, latitude: 32.06485, longitude: 34.763226, name: 'Ford', description: '', statusId: 0, imei: '0987654321', velocity: 345 }
 
     ] }
   ]);
 }
 
+/**
+ * Observable para las ubicaciones de la posicion del usuario
+ */
+get userLocation(): Observable<Position> {
+
+  return this.userGeoLocationService.geolocationObs;
+
+}
 
 }

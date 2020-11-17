@@ -12,23 +12,38 @@
             <mat-tab-group style="background-color: #373740; color: white;">
               <mat-tab >
                 <ng-template mat-tab-label>
-                    <div><mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon></div>
+                    <div>
+                        <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
+                        <mat-icon class="home-sidenav-tab-icon-svg" svgIcon="car"></mat-icon>
+                    </div>
                     <div class="home-sidenav-tab-label" ><h4>{{ 'home.vehicles' | translate }}</h4></div>
                 </ng-template>
                 <!-- style="border-color: yellowgreen; border-style: dotted; border-width: 2px;" -->
                 <mat-list >
                 <mat-list-item *ngFor="let vehicle of vehicles" [ngSwitch]="vehicle.status">
                     
-                        <mat-icon *ngSwitchCase="0" mat-list-icon [inline]="true" class="home-sidenav-vehicle-item-icon-normal">directions_car</mat-icon>
+                        <!-- <mat-icon *ngSwitchCase="0" mat-list-icon [inline]="true"
+                        class="home-sidenav-vehicle-item-icon-normal">directions_car</mat-icon> -->
+
+                        <mat-icon *ngSwitchCase="0" mat-list-icon [inline]="true"
+                        class="home-sidenav-vehicle-item-icon-normal-svg" svgIcon="car"></mat-icon>
                         
+                        <mat-icon *ngSwitchCase="1" mat-list-icon [inline]="true"
+                        class="home-sidenav-vehicle-item-icon-warning-svg" svgIcon="car"></mat-icon>
+                        
+                        <mat-icon *ngSwitchCase="2" mat-list-icon [inline]="true"
+                        class="home-sidenav-vehicle-item-icon-danger-svg" svgIcon="car"></mat-icon>
+
                         <h5 mat-line class="home-sidenav-vehicle-item-name"> {{vehicle.name}} </h5> 
                     
                         <h5 mat-line class="home-sidenav-vehicle-item-description"> {{vehicle.description}}  </h5> 
 
-                    
-                        <div *ngSwitchCase="0" mat-line class="home-sidenav-vehicle-item-status-normal">  Normal </div> 
+                        <div *ngIf="vehicle.online === true" mat-line class="home-sidenav-vehicle-item-online"> <strong>Online</strong>  </div> 
+                        <div *ngIf="vehicle.online === false" mat-line class="home-sidenav-vehicle-item-offline"> <strong>Offline</strong> </div> 
+
+                        <!-- <div *ngSwitchCase="0" mat-line class="home-sidenav-vehicle-item-status-normal">  Normal </div> 
                         <h5 *ngSwitchCase="1" mat-line class="home-sidenav-vehicle-item-status">  Warning </h5> 
-                        <h5 *ngSwitchCase="2" mat-line class="home-sidenav-vehicle-item-status">  Danger </h5> 
+                        <h5 *ngSwitchCase="2" mat-line class="home-sidenav-vehicle-item-status">  Danger </h5>  -->
                         
                         
                         <div>
@@ -66,14 +81,21 @@
                       <td style="vertical-align: top;">{{ 'home.autoZoom' | translate }}</td>
                       <td style="vertical-align: top; text-align: right;">
                         <div style="display: inline-block;"> 
-                            <mat-slide-toggle
-                  [ngModel]="homeInputs.autoZoomEnabled"
-                  (ngModelChange)="homeInputsAutoZoomEnabledChange($event)"></mat-slide-toggle>
+                            <mat-slide-toggle [ngModel]="homeInputs.autoZoomEnabled" (ngModelChange)="homeInputsAutoZoomEnabledChange($event)"></mat-slide-toggle>
                         </div>
-                        
                       </td>
-                      
                     </tr>
+
+                    <tr>
+                        <td style="vertical-align: top;">{{ 'home.showUserLocation' | translate }}</td>
+                        <td style="vertical-align: top; text-align: right;">
+                          <div style="display: inline-block;"> 
+                            {{longitude | async}}
+                              <mat-slide-toggle id="toogleShowUserLocation"  [ngModel]="homeInputs.showUserLocation" (ngModelChange)="homeInputsAutoZoomEnabledChange($event)"></mat-slide-toggle>
+                          </div>
+                        </td>
+                      </tr>
+
                   </table>
                   
                 </div>
@@ -93,7 +115,10 @@
   <mat-sidenav-content role="region" >
     <app-google-map 
     (ready)="onMapReady($event)"
-    [markers]="markersObs | async">
+    [markers]="markersObs | async"
+    [latitude]="latitude | async"
+    [longitude]="longitude | async"
+    >
     </app-google-map>
   
   </mat-sidenav-content>

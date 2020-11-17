@@ -195,7 +195,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
    convertToVehicles(vehiclesDto: Array<VehicleDto>): Array<Vehicle> {
 
     // tslint:disable-next-line: max-line-length
-    return vehiclesDto.map(vehicleDto =>  VehiclesFactory.createVehicle(vehicleDto.name, vehicleDto.description, vehicleDto.imei, vehicleDto.vehicleTypeId, vehicleDto.oid));
+    return vehiclesDto.map(vehicleDto =>  VehiclesFactory.createVehicle(vehicleDto.name, vehicleDto.description, vehicleDto.imei, vehicleDto.vehicleTypeId, 0, vehicleDto.oid, true));
    }
 
 

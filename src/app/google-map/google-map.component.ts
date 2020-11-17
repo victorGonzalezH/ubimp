@@ -26,19 +26,24 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
    */
   public latitudeLocal: number;
   @Input()
-  set latitude(latitude: number) {
-    this.latitudeLocal = latitude;
-    this.map.setCenter(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
+  set latitude(latitudeParameter: number) {
+    this.latitudeLocal = latitudeParameter;
+    if (this.map != undefined) {
+      this.map.setCenter(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
+    }
   }
 
   /**
    * longitud del centro del mapa
    */
-  public longitudeLocal: number;
+  private longitudeLocal: number;
   @Input()
-  set longitude(longitude: number) {
-    this.longitudeLocal = longitude;
-    this.map.setCenter(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
+  set longitude(longitudeParameter: number) {
+    this.longitudeLocal = longitudeParameter;
+
+    if (this.map != undefined) {
+      this.map.setCenter(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
+    }
   }
 
   /**
@@ -62,7 +67,23 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
    */
   @Output() ready: EventEmitter<boolean>;
 
+  /**
+   * Indica si el mapa se encuentra listo para operar
+   */
   private mapReady: boolean;
+
+  /**
+   * Indica si se mustra el marcador del centro del mapa
+   */
+  private get showCenterMarker(): boolean {
+    // Si cualquiera de las dos coordenadas es nulo entonces no se muestra el marcador
+    if (this.latitudeLocal == null || this.longitudeLocal == null) {
+      return false;
+    }
+
+    return true;
+  }
+
 
   private markersLocal: google.maps.Marker[];
   @Input()

@@ -1,13 +1,17 @@
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { position } from 'esri/widgets/CoordinateConversion/support/Conversion';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { flatMap, map, switchMap } from 'rxjs/operators';
 import { Marker } from 'src/app/google-map/models/marker.model';
-import { MessengerService } from 'utils';
+import { AppConfigService } from 'src/app/shared/services/app-config.service';
+import { MessengerService, StorageService, StorageType } from 'utils';
 import { VehicleTracking, VehicleTrackingDto } from '../shared/models/vehicle-tracking.model';
 import { Vehicle, VehicleDto, VehiclesFactory } from '../shared/models/vehicle.model';
 import { HomeService } from './home.service';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-home-google-maps',
@@ -47,20 +51,58 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
   public settingsOpenedObs: Observable<boolean>;
   public settingsOpened: boolean;
 
-  public homeInputs: { realTimeEnabled: boolean, autoZoomEnabled: boolean };
+  public homeInputs: { realTimeEnabled: boolean, autoZoomEnabled: boolean, showUserLocation: boolean };
 
   public loading: boolean;
+
+  public latitude: Observable<number>;
+
+  public longitude: Observable<number>;
+
+
+  public longitudeSub: BehaviorSubject<number>;
 
    /*
    * /////////////////////////////////////Funciones///////////////////////////////////
    */
 
 
-  constructor(private homeService: HomeService, private messengerService: MessengerService, translateService: TranslateService) {
+  constructor(private homeService: HomeService, private messengerService: MessengerService,
+              private translateService: TranslateService, private storageService: StorageService,
+              private appConfigService: AppConfigService, private matIconRegistry: MatIconRegistry,
+              private domSanitizer: DomSanitizer) {
     this.vehicles = [];
     this.mapReady = false;
-    this.homeInputs = { autoZoomEnabled: true, realTimeEnabled: true };
+    this.homeInputs = { autoZoomEnabled: true, realTimeEnabled: true, showUserLocation: true };
     this.loading = false;
+
+    this.latitude = this.homeService.userLocation.pipe(map( userLocation => {
+      if (this.homeInputs.showUserLocation === true) {
+        return userLocation.coords.latitude;
+      }
+      return null;
+    }));
+    this.longitude = this.homeService.userLocation.pipe(map( userLocation => {
+      if (this.homeInputs.showUserLocation === true) {
+        return userLocation.coords.longitude;
+      }
+
+      return null;
+
+    }));
+
+    if (this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session) == undefined) {
+
+      // Se establece ingles como idioma por default.
+      this.translateService.setDefaultLang('es');
+
+    } else {
+
+      const defaultLanguage = this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session);
+      this.translateService.setDefaultLang(defaultLanguage);
+    }
+
+    this.matIconRegistry.addSvgIcon('car', this.domSanitizer.bypassSecurityTrustResourceUrl('assets/images/svg/car.svg'));
 
   }
 
@@ -70,7 +112,7 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
     if (foundVehicle != null && foundVehicle != undefined && foundVehicle.length > 0) {
 
       const oldVehicle: Vehicle = foundVehicle[0];
-      const newVehicle: Vehicle =  VehiclesFactory.createVehicle( oldVehicle.name, oldVehicle.description, oldVehicle.imei, oldVehicle.vehicleType, oldVehicle.status, 0, tracking.latitude, tracking.longitude, tracking.velocity);
+      const newVehicle: Vehicle =  VehiclesFactory.createVehicle( oldVehicle.name, oldVehicle.description, oldVehicle.imei, oldVehicle.vehicleType, oldVehicle.status, 0, oldVehicle.online, tracking.latitude, tracking.longitude, tracking.velocity);
       const index = vehicles.indexOf(oldVehicle);
       vehicles[index] = newVehicle;
       const myClonedArray = [];
@@ -168,6 +210,7 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
 
   }
 
+  public counter: number;
 
   ngOnInit(): void {
     this.loading = true;
@@ -175,6 +218,8 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
 
     this.markersSub = new BehaviorSubject<Marker[]>(null);
     this.markersObs = this.markersSub.asObservable();
+    // this.longitudeSub = new BehaviorSubject<number>(0);
+    // this.longitude = this.longitudeSub.asObservable();
 
     this.getVehiclesWithLastTracking();
 
@@ -186,6 +231,7 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
       this.markers = this.convertVehiclesTrackingToMarkers(this.vehicles, this.ICONS_ON_MAP_DRAGABLES, this.ICONS_ON_MAP_WIDTH, this.ICONS_ON_MAP_WIDTH);
       this.markersSub.next(this.markers);
     });
+
   }
 
  /**
@@ -195,11 +241,18 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
   onMapReady(ready: boolean){
     this.mapReady = ready;
     // Si el mapa esta listo
+    this.counter = 0.0;
     if (this.mapReady === true) {
 
       this.markers = this.convertVehiclesTrackingToMarkers(this.vehicles, this.ICONS_ON_MAP_DRAGABLES, this.ICONS_ON_MAP_WIDTH, this.ICONS_ON_MAP_WIDTH);
       this.markersSub.next(this.markers);
-    }
+
+      // this.homeService.userLocation.subscribe(currentPosition => {
+
+      //   this.longitudeSub.next(currentPosition.coords.longitude);
+      //   // this.longitudeSub.next(currentPosition.coords.longitude);
+      // });
+  }
   }
 
 }

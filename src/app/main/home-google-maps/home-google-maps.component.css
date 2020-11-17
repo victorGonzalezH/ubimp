@@ -178,6 +178,11 @@ con respecto al lugar que le hubiera correspondido.
   
   }
 
+  .home-sidenav-tab-icon-svg {
+    transform: scale(1.5);
+    margin-right: 15px;
+    color: #ffffff;
+  }
 
   .home-sidenav-tab-label {
     color: #ffffff;
@@ -186,7 +191,7 @@ con respecto al lugar que le hubiera correspondido.
   }
 
   .home-sidenav-tab-icon {
-    font-size: 35px;
+    font-size: 35px !important;
     margin-right: 15px;
     color: #ffffff;
   }
@@ -206,8 +211,23 @@ con respecto al lugar que le hubiera correspondido.
   }
 
   .home-sidenav-vehicle-item-icon-normal {
-    color: #00FF00;
+    color: #13ee0e;
     font-size: 40px!important;
+  }
+
+  .home-sidenav-vehicle-item-icon-normal-svg {
+    color: #13ee0e;
+    transform: scale(1.8);
+  }
+
+  .home-sidenav-vehicle-item-icon-warning-svg {
+    color:yellow;
+    transform: scale(1.8);
+  }
+
+  .home-sidenav-vehicle-item-icon-danger-svg {
+    color:red;
+    transform: scale(1.8);
   }
 
   .home-sidenav-vehicle-item-status-normal {
@@ -277,6 +297,13 @@ mat-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-slide-toggle-bar {
   border-top-color: rgb(153, 153, 153);
 }
 
+.home-sidenav-vehicle-item-online {
+  color: #13ee0e;
+}
+
+.home-sidenav-vehicle-item-offline {
+  color: rgb(153, 153, 153);
+}
 
 /* .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
     transform: translate3d(18px,0,0) !important;
