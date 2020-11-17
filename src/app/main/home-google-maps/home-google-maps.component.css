@@ -299,6 +299,13 @@ mat-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-slide-toggle-bar {
 
 .home-sidenav-vehicle-item-online {
   color: #13ee0e;
+  animation: blinker 1.6s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
 
 .home-sidenav-vehicle-item-offline {

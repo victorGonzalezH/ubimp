@@ -124,12 +124,9 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
     }
   }
 
-  homeInputsRealTimeEnabledChange(event) {
-    console.log(event);
-  }
 
-  homeInputsAutoZoomEnabledChange(value) {
-    console.log(value);
+  homeInputsHandler(event: any, input: number) {
+
   }
 
    /*
@@ -210,7 +207,6 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
 
   }
 
-  public counter: number;
 
   ngOnInit(): void {
     this.loading = true;
@@ -241,17 +237,10 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
   onMapReady(ready: boolean){
     this.mapReady = ready;
     // Si el mapa esta listo
-    this.counter = 0.0;
     if (this.mapReady === true) {
 
       this.markers = this.convertVehiclesTrackingToMarkers(this.vehicles, this.ICONS_ON_MAP_DRAGABLES, this.ICONS_ON_MAP_WIDTH, this.ICONS_ON_MAP_WIDTH);
       this.markersSub.next(this.markers);
-
-      // this.homeService.userLocation.subscribe(currentPosition => {
-
-      //   this.longitudeSub.next(currentPosition.coords.longitude);
-      //   // this.longitudeSub.next(currentPosition.coords.longitude);
-      // });
   }
   }
 

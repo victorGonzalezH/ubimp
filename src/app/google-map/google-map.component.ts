@@ -29,7 +29,15 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
   set latitude(latitudeParameter: number) {
     this.latitudeLocal = latitudeParameter;
     if (this.map != undefined) {
-      this.map.setCenter(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
+      // this.map.setCenter(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
+
+      if (this.showCenterMarker === true) {
+        if (this.centerLocationMarker != null && this.centerLocationMarker != undefined) {
+          this.centerLocationMarker.setMap(null);
+        }
+        this.centerLocationMarker = this.createMarker('', this.latitudeLocal, this.longitudeLocal);
+        this.centerLocationMarker.setMap(this.map);
+      }
     }
   }
 
@@ -42,7 +50,16 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
     this.longitudeLocal = longitudeParameter;
 
     if (this.map != undefined) {
-      this.map.setCenter(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
+      // this.map.setCenter(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
+
+      if (this.showCenterMarker === true) {
+        if (this.centerLocationMarker != null && this.centerLocationMarker != undefined) {
+          this.centerLocationMarker.setMap(null);
+        }
+        this.centerLocationMarker = this.createMarker('', this.latitudeLocal, this.longitudeLocal);
+        this.centerLocationMarker.setMap(this.map);
+      }
+
     }
   }
 
@@ -56,6 +73,17 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
     this.map.setZoom(this.zoomLocal);
   }
 
+  private autoZoomLocal: boolean;
+  @Input()
+  set autoZoom(autoZoomParameter: boolean) {
+
+    this.autoZoomLocal = autoZoomParameter;
+    if (this.autoZoomLocal) {
+      this.autoZoomOnMap(this. map, this.markersLocal);
+    }
+  }
+
+  private centerLocationMarker: google.maps.Marker;
 
   /**
    * Opciones del mapa
@@ -88,9 +116,13 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
   private markersLocal: google.maps.Marker[];
   @Input()
   set markers(markers: Marker[]){
+    // Se verifica que el mapa esta listo para usarse
     if (this.mapReady === true) {
+      // Se limpian los marcadores
       this.clearMarkers();
+      // Se vuelven a inicializar
       this.markersLocal = [];
+      // Si lo marcadores no son nulo o indefinidos
       if (markers != null && markers != undefined) {
 
         this.markersLocal = markers.map(marker => {
@@ -105,6 +137,11 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
         });
 
       }
+
+      if (this.autoZoomLocal === true) {
+        this.autoZoomOnMap(this.map, this.markersLocal);
+      }
+
     }
 
   }
@@ -113,6 +150,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
     this.markers = [];
     this.mapReady = false;
     this.ready = new EventEmitter<boolean>();
+    this.autoZoom = false;
 
   }
 
@@ -134,6 +172,31 @@ private clearMarkers() {
   this.setMapOnAll(null);
 }
 
+/**
+ * Ajusta el centro y zoom de un mapa de acuerdo a los marcadores
+ * @param map Mapa
+ * @param markers Macardores
+ */
+private autoZoomOnMap(map: google.maps.Map, markers: google.maps.Marker[], considerMapCenter: boolean = true) {
+
+  if ( map != undefined && markers != undefined ) {
+    const latlngbounds = new google.maps.LatLngBounds();
+    markers.forEach(marker =>  latlngbounds.extend(marker.getPosition()));
+  // Si se considera el centro del mapa
+    if (considerMapCenter === true) {
+    latlngbounds.extend(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
+  }
+
+    map.setCenter(latlngbounds.getCenter());
+    map.fitBounds(latlngbounds);
+  }
+
+}
+
+
+/**
+ * ///////////////////////////////////////Eventos/////////////////////////////////////////
+ */
 
   ngAfterContentInit(): void {
 

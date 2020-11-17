@@ -8,7 +8,9 @@
               role="region"
               style="background-color: #373740"
               >
-          
+            <button mat-icon-button color="primary" aria-label="pin">
+             <mat-icon>pin</mat-icon>
+            </button>
             <mat-tab-group style="background-color: #373740; color: white;">
               <mat-tab >
                 <ng-template mat-tab-label>
@@ -71,7 +73,7 @@
                       <td style="vertical-align: top;">{{ 'home.realTime' | translate }}</td>
                       <td style="vertical-align: top; text-align: right;">
                         <div style="display: inline-block;"> 
-                            <mat-slide-toggle [ngModel]="homeInputs.realTimeEnabled" (ngModelChange)="homeInputsRealTimeEnabledChange($event)"></mat-slide-toggle>
+                            <mat-slide-toggle [ngModel]="homeInputs.realTimeEnabled" (ngModelChange)="homeInputsHandler($event, 0)"></mat-slide-toggle>
                         </div>
                         
                       </td>
@@ -81,7 +83,7 @@
                       <td style="vertical-align: top;">{{ 'home.autoZoom' | translate }}</td>
                       <td style="vertical-align: top; text-align: right;">
                         <div style="display: inline-block;"> 
-                            <mat-slide-toggle [ngModel]="homeInputs.autoZoomEnabled" (ngModelChange)="homeInputsAutoZoomEnabledChange($event)"></mat-slide-toggle>
+                            <mat-slide-toggle [(ngModel)]="homeInputs.autoZoomEnabled" (ngModelChange)="homeInputsHandler($event, 1)"></mat-slide-toggle>
                         </div>
                       </td>
                     </tr>
@@ -90,8 +92,7 @@
                         <td style="vertical-align: top;">{{ 'home.showUserLocation' | translate }}</td>
                         <td style="vertical-align: top; text-align: right;">
                           <div style="display: inline-block;"> 
-                            {{longitude | async}}
-                              <mat-slide-toggle id="toogleShowUserLocation"  [ngModel]="homeInputs.showUserLocation" (ngModelChange)="homeInputsAutoZoomEnabledChange($event)"></mat-slide-toggle>
+                              <mat-slide-toggle id="toogleShowUserLocation"  [ngModel]="homeInputs.showUserLocation" (ngModelChange)="homeInputsHandler($event, 2)"></mat-slide-toggle>
                           </div>
                         </td>
                       </tr>
@@ -118,6 +119,7 @@
     [markers]="markersObs | async"
     [latitude]="latitude | async"
     [longitude]="longitude | async"
+    [autoZoom]="homeInputs.autoZoomEnabled"
     >
     </app-google-map>
   
