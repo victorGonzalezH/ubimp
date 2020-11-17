@@ -45,7 +45,7 @@
       
       <mat-form-field class="loginFormField">
         <mat-label class="loginLabel">{{ 'login.language' | translate }}</mat-label>
-        <mat-select class="loginFormInput">
+        <mat-select class="loginFormInput" [(value)]="defaultLanguage" (selectionChange)="onLanguageChange($event)" >
           <mat-option *ngFor="let lang of languages" [value]="lang.value">
             {{lang.viewValue}}
           </mat-option>

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import { ViewEncapsulation } from '@angular/core';
 import { LoginService } from './login.service';
-import { StorageService } from 'utils';
+import { StorageService, StorageType } from 'utils';
 import { AppConfigService } from '../shared/services/app-config.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -40,13 +40,24 @@ export class LoginComponent implements OnInit {
 
   public loading: boolean;
 
+  public defaultLanguage: string;
+
   constructor(private translateService: TranslateService,
               private loginService: LoginService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private appConfigService: AppConfigService,
+              private storageService: StorageService) {
 
-    // Se establece ingles como idioma por default.
-    translateService.setDefaultLang('es');
+    if (this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session) == undefined) {
+
+      // Se establece ingles como idioma por default.
+      this.translateService.setDefaultLang('es');
+      this.defaultLanguage = 'es';
+    } else {
+      this.defaultLanguage = this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session);
+    }
+
     this.loading = false;
    }
 
@@ -54,9 +65,11 @@ export class LoginComponent implements OnInit {
 
   public languages: Language[];
 
-// tslint:disable-next-line: no-trailing-whitespace
+
 ngOnInit(): void
 {
+
+
     this.hidePassword = true;
 
     // Inicializacion del formulario para la autenticacion
@@ -81,11 +94,13 @@ ngOnInit(): void
     this.loading = true;
     const username = this.loginFormControl.get('emailControl').value;
     const password = this.loginFormControl.get('passwordControl').value;
-    this.loginService.login(username, password, 'es')
+    this.loginService.login(username, password, this.defaultLanguage)
     .subscribe( {
       next: value => {
 
         this.loading = false;
+        // Se guarda el lenguaje elegido por el usuario
+        this.storageService.store(this.appConfigService.defaultLanguage, this.defaultLanguage, StorageType.Session);
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         this.router.navigate([returnUrl]);
       },
@@ -110,4 +125,9 @@ ngOnInit(): void
 
     } );
   }
+
+  onLanguageChange(language: any){
+    this.translateService.setDefaultLang(this.defaultLanguage);
+  }
+
 }
