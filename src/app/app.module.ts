@@ -49,11 +49,6 @@ import { GoogleMapComponent } from './google-map/google-map.component';
     UtilsModule,
     FormsModule,
     ReactiveFormsModule,
-
-    // AgmCoreModule.forRoot({
-    //   apiKey: 'AIzaSyDFFG8M2ALiG2NURZqmuMxSFG9FFQ6fqbE'
-    // }),
-
     CommonModule,
     MatButtonModule,
     MatSidenavModule,
