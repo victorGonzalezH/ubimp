@@ -26,7 +26,11 @@
     },
 
     "home": {
-        "vehicles": "Vehiculos",
-        "showOnMap": "Mostrar en mapa"
+        "vehicles": "Vehículos",
+        "showOnMap": "Mostrar en mapa",
+        "settings": "Configuración",
+        "realTime": "Tiempo real",
+        "autoZoom": "Ajustar mapa automáticamente",
+        "showUserLocation": "Mostrar mi ubicación"
     }
 }

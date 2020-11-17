@@ -13,7 +13,14 @@
     "login": 
     {
         "email": "Email",
+        "emailPlaceholder": "user@example.com",
         "password": "Password",
-        "access": "Access"
+        "language": "Language",
+        "access": "Access",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Write a valid email",
+        "passwordRequired": "Password is required",
+        "checkCredentials": "Please verify email and/or password",
+        "unknowError": "System not available, please contact technical support"
     }
 }
