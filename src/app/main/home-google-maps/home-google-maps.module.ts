@@ -13,6 +13,7 @@ import {MatListModule} from '@angular/material/list';
 
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
@@ -30,7 +31,8 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
     MatProgressSpinnerModule,
     TranslateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatButtonModule
   ]
 })
 export class HomeGoogleMapsModule { }

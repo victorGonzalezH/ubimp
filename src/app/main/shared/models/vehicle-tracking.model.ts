@@ -30,7 +30,7 @@ export interface VehicleTrackingDto {
 
     longitude: number;
 
-    velocity: number;
+    speed: number;
 
     imei: string;
 

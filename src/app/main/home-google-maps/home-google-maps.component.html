@@ -3,20 +3,23 @@
     <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #navHome
               position="end" 
-              mode="over"
+              [mode]="sidebarMode"
               [opened]="settingsOpenedObs | async"
               role="region"
               style="background-color: #373740"
               >
-            <button mat-icon-button color="primary" aria-label="pin">
-             <mat-icon>pin</mat-icon>
+            <button mat-icon-button aria-label="pin" (click)="sidebarToogle()">
+              <mat-icon
+              [ngClass]="{'home-sidenav-tool-bar-icon-svg-over': sidebarMode === 'over', 'home-sidenav-tool-bar-icon-svg-side':sidebarMode === 'side' }"
+              class="" svgIcon="pin" ></mat-icon>
             </button>
+            
             <mat-tab-group style="background-color: #373740; color: white;">
               <mat-tab >
                 <ng-template mat-tab-label>
                     <div>
                         <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
-                        <mat-icon class="home-sidenav-tab-icon-svg" svgIcon="car"></mat-icon>
+                        <mat-icon class="home-sidenav-tab-icon-svg" svgIcon="car" ></mat-icon>
                     </div>
                     <div class="home-sidenav-tab-label" ><h4>{{ 'home.vehicles' | translate }}</h4></div>
                 </ng-template>
@@ -50,7 +53,7 @@
                         
                         <div>
                             <label class="home-sidenav-vehicle-item-show-on-map" >{{ 'home.showOnMap' | translate }}</label>
-                            <mat-slide-toggle></mat-slide-toggle>
+                            <mat-slide-toggle [(ngModel)]="vehicle.showOnMap" (ngModelChange)="showOnMap($event,vehicle.id)" ></mat-slide-toggle>
                         </div>
 
                         

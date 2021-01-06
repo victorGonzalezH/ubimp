@@ -1,4 +1,4 @@
-@import '../../../../node_modules/material-design-icons/iconfont/material-icons.css';
+/* @import '../../../../node_modules/material-design-icons/iconfont/material-icons.css';
 
 
 /* 
@@ -239,6 +239,15 @@ con respecto al lugar que le hubiera correspondido.
     
   }
 
+  .home-sidenav-tool-bar-icon-svg-over {
+    color: white;
+    transform: rotate(45deg) scale(0.6);
+  }
+
+  .home-sidenav-tool-bar-icon-svg-side {
+    color: white;
+    transform: scale(0.6);
+  }
 
 .overlay{
     height:100vh;

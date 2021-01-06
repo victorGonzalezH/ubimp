@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DataService } from 'utils';
 
 @Injectable({
   providedIn: 'root'
@@ -33,18 +34,34 @@ export class AppConfigService {
     return this.defaultLanguageKeyLocal;
   }
 
-  constructor() {
+  private hostUrl: string;
+
+
+  private locationsRealTimeUrlLocal;
+
+  /**
+   * 
+   */
+  get locationsRealTimeUrl() {
+    return this.locationsRealTimeUrlLocal;
+  }
+
+
+  constructor(private dataService: DataService) {
+    this.hostUrl = window.location.host;
     this.ploginUrl = 'localhost:3000';
     this.currentUserKeyLocal = 'currentUser';
     this.defaultLanguageKeyLocal = 'defaultLanguage';
+    this.locationsRealTimeUrlLocal = 'https://localhost:3000';
   }
 
   /**
    * Obtiene las urls de las apis. Estas urls son usadas por diferentes modulos de la aplicacion.
    * 
    */
-  public getUrls()  {
-
+  public getAppConfig(url: string)  {
+    
+    // this.dataService()
   }
 
 }

@@ -24,6 +24,7 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
   readonly ICONS_ON_MAP_DRAGABLES = false;
   readonly ICONS_ON_MAP_WIDTH     = 30;
   readonly ICONS_ON_MAP_HEIGHT    = 30;
+  readonly CAR_PATH = 'M499.99 176h-59.87l-16.64-41.6C406.38 91.63 365.57 64 319.5 64h-127c-46.06 0-86.88 27.63-103.99 70.4L71.87 176H12.01C4.2 176-1.53 183.34.37 190.91l6 24C7.7 220.25 12.5 224 18.01 224h20.07C24.65 235.73 16 252.78 16 272v48c0 16.12 6.16 30.67 16 41.93V416c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32v-32h256v32c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32v-54.07c9.84-11.25 16-25.8 16-41.93v-48c0-19.22-8.65-36.27-22.07-48H494c5.51 0 10.31-3.75 11.64-9.09l6-24c1.89-7.57-3.84-14.91-11.65-14.91zm-352.06-17.83c7.29-18.22 24.94-30.17 44.57-30.17h127c19.63 0 37.28 11.95 44.57 30.17L384 208H128l19.93-49.83zM96 319.8c-19.2 0-32-12.76-32-31.9S76.8 256 96 256s48 28.71 48 47.85-28.8 15.95-48 15.95zm320 0c-19.2 0-48 3.19-48-15.95S396.8 256 416 256s32 12.76 32 31.9-12.8 31.9-32 31.9z';
 
   /**
    * Listado de los vehiculos
@@ -62,6 +63,11 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
 
   public longitudeSub: BehaviorSubject<number>;
 
+  /**
+   * Indica el modo en el que funciona el sidebar de este componente
+   */
+  public sidebarMode: string;
+
    /*
    * /////////////////////////////////////Funciones///////////////////////////////////
    */
@@ -75,15 +81,16 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
     this.mapReady = false;
     this.homeInputs = { autoZoomEnabled: true, realTimeEnabled: true, showUserLocation: true };
     this.loading = false;
+    this.sidebarMode = 'over';
 
     this.latitude = this.homeService.userLocation.pipe(map( userLocation => {
-      if (this.homeInputs.showUserLocation === true) {
+      if (this.homeInputs.showUserLocation === true && userLocation != null && userLocation != undefined) {
         return userLocation.coords.latitude;
       }
       return null;
     }));
     this.longitude = this.homeService.userLocation.pipe(map( userLocation => {
-      if (this.homeInputs.showUserLocation === true) {
+      if (this.homeInputs.showUserLocation === true && userLocation != null && userLocation != undefined) {
         return userLocation.coords.longitude;
       }
 
@@ -103,6 +110,7 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
     }
 
     this.matIconRegistry.addSvgIcon('car', this.domSanitizer.bypassSecurityTrustResourceUrl('assets/images/svg/car.svg'));
+    this.matIconRegistry.addSvgIcon('pin', this.domSanitizer.bypassSecurityTrustResourceUrl('assets/images/svg/pin.svg'));
 
   }
 
@@ -112,7 +120,7 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
     if (foundVehicle != null && foundVehicle != undefined && foundVehicle.length > 0) {
 
       const oldVehicle: Vehicle = foundVehicle[0];
-      const newVehicle: Vehicle =  VehiclesFactory.createVehicle( oldVehicle.name, oldVehicle.description, oldVehicle.imei, oldVehicle.vehicleType, oldVehicle.status, 0, oldVehicle.online, tracking.latitude, tracking.longitude, tracking.velocity);
+      const newVehicle: Vehicle =  VehiclesFactory.createVehicle( oldVehicle.name, oldVehicle.description, oldVehicle.imei, oldVehicle.vehicleType, oldVehicle.status, 0, oldVehicle.online, oldVehicle.showOnMap, tracking.latitude, tracking.longitude, tracking.velocity);
       const index = vehicles.indexOf(oldVehicle);
       vehicles[index] = newVehicle;
       const myClonedArray = [];
@@ -124,6 +132,37 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
     }
   }
 
+
+  private updateVehiclesGlobal(tracking: VehicleTracking) {
+
+    const foundVehicle = this.vehicles.filter(vehicleToSearch => vehicleToSearch.imei === tracking.imei);
+    
+    if (foundVehicle != null && foundVehicle != undefined && foundVehicle.length > 0) {
+
+      const oldVehicle: Vehicle = foundVehicle[0];
+      // Puede darse el caso que no exista una ubicacion anterior, esto quiere decir que la ubicacion que se reciben (tracking)
+      // es la primera ubicacion del vehiculo
+      if(oldVehicle.tracking != undefined && oldVehicle.tracking != null && oldVehicle.tracking.length > 0) {
+        oldVehicle.tracking[0].latitude = tracking.latitude;
+        oldVehicle.tracking[0].longitude = tracking.longitude;
+        oldVehicle.tracking[0].velocity = tracking.velocity;
+      }  
+      else {
+
+          oldVehicle.tracking.push(tracking);
+      }
+      
+      // const newVehicle: Vehicle =  VehiclesFactory.createVehicle( oldVehicle.name, oldVehicle.description, oldVehicle.imei, oldVehicle.vehicleType, oldVehicle.status, 0, oldVehicle.online, oldVehicle.showOnMap, tracking.latitude, tracking.longitude, tracking.velocity);
+      // const index = this.vehicles.indexOf(oldVehicle);
+      // this.vehicles[index] = newVehicle;
+      // const myClonedArray = [];
+      // vehicles.forEach(val => myClonedArray.push(Object.assign({}, val)));
+      // return myClonedArray;
+    } else {
+      // Dado que no es posible que se obtenga un tracking de un vehiculo que que no esta en 
+      // la lista de vehiculos no se contempla esta opcion
+    }
+  }
 
   homeInputsHandler(event: any, input: number) {
 
@@ -156,7 +195,12 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
   private convertVehiclesTrackingToMarkers(vehicles: Vehicle[], draggables: boolean, iconWidth: number, iconHeight: number): Marker[] {
 
     const vehiclesWithLastTracking = vehicles.filter(vehicle => vehicle.tracking != null && vehicle.tracking != undefined && vehicle.tracking.length > 0);
+    const vehiclesToShowOnMap: Vehicle[] = [];
 
+    vehiclesWithLastTracking.forEach(vehicle => {
+
+
+    });
     return vehiclesWithLastTracking.map( vehicle => {
       return this.createMarkerFromVehicle(vehicle, draggables, iconWidth, iconHeight);
     });
@@ -223,7 +267,8 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
     // las ubicaciones de los dispositivos
     this.homeService.vehiclesTracking
     .subscribe(tracking => {
-      this.vehicles = this.updateVehicles(this.vehicles, new VehicleTracking({ imei: tracking.imei, latitude: tracking.latitude, longitude: tracking.longitude, velocity: tracking.velocity, oid: 0 }));
+
+      this.updateVehiclesGlobal(new VehicleTracking({ imei: tracking.imei, latitude: tracking.latitude, longitude: tracking.longitude, velocity: tracking.speed, oid: 0 }));
       this.markers = this.convertVehiclesTrackingToMarkers(this.vehicles, this.ICONS_ON_MAP_DRAGABLES, this.ICONS_ON_MAP_WIDTH, this.ICONS_ON_MAP_WIDTH);
       this.markersSub.next(this.markers);
     });
@@ -242,6 +287,21 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
       this.markers = this.convertVehiclesTrackingToMarkers(this.vehicles, this.ICONS_ON_MAP_DRAGABLES, this.ICONS_ON_MAP_WIDTH, this.ICONS_ON_MAP_WIDTH);
       this.markersSub.next(this.markers);
   }
+  }
+
+  sidebarToogle() {
+    if (this.sidebarMode === 'over') {
+      this.sidebarMode = 'side';
+    } else {
+      this.sidebarMode = 'over';
+    }
+
+  }
+
+
+
+  showOnMap(show: boolean, name: string) {
+
   }
 
 }

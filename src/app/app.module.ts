@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PortalModule} from '@angular/cdk/portal';
@@ -70,7 +70,7 @@ import { GoogleMapComponent } from './google-map/google-map.component';
     })
 
   ],
-  providers: [StorageService, MessengerService, GeolocationService, RealtimeService, AppConfigService, DataService],
+  providers: [StorageService, MessengerService, GeolocationService, RealtimeService, AppConfigService, DataService, Location],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
