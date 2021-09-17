@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{ 'settings.addVehicle.title' | translate }}</h2>
+<mat-dialog-content>
+    <form [formGroup]="addVehicleFormControl" class="addVehicleForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="AddVehicleFormField">
+            <mat-label class="vehicleNameLabel">{{ 'settings.addVehicle.vehicleName' | translate }}</mat-label>
+            <input matInput formControlName="vehicleNameControl" placeholder="{{ 'settings.addVehicle.vehicleNamePlaceHolder' | translate }}" 
+            class="vehicleNameFormInput">
+            <mat-error *ngIf="this.addVehicleFormControl.controls['vehicleNameControl'].hasError('required')">
+              {{ 'settings.addVehicle.vehicleNameRequired' | translate }}
+            </mat-error>
+          </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">  
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>{{ 'save' | translate }}</button>
+</mat-dialog-actions>
+

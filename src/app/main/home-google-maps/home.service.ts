@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { GeolocationService, RealtimeService } from 'utils';
+import { GeolocationService, RealtimeService, StorageService, StorageType } from 'utils';
 import { AppConfigService } from '../../shared/services/app-config.service';
 import { VehiclesStatus } from '../shared/enums/vehicles-status.enum';
 
@@ -18,22 +18,6 @@ export class HomeService {
   readonly USER_LOCATION_MAX_AGE = 5000;
   readonly USER_LOCATION_TIME_OUT = 5000;
 
-  
-  // public vehiclesTracking: Observable<VehicleTrackingDto>;
-
-  private vehiclesTrackingA: Array<VehicleTrackingDto> = [
-    { latitude: 18.0615108, longitude: -92.9275847, speed: 0, statusId: 1, imei: '1234567890' },
-    { latitude: 18.0531057, longitude: -92.9268551, speed: 0, statusId: 1, imei: '1234567890' },
-    { latitude: 18.0396811, longitude: -92.9286576, speed: 0, statusId: 2, imei: '0987654321' },
-    { latitude: 18.0194913, longitude: -92.9359639, speed: 0, statusId: 1, imei: '1234567890' },
-    { latitude: 18.0176752, longitude: -92.9435385, speed: 0, statusId: 1, imei: '1234567890' },
-    { latitude: 18.0176752, longitude: -92.9435385, speed: 0, statusId: 1, imei: '1234567890' },
-    { latitude: 18.0048347, longitude: -92.953114,  speed: 0, statusId: 1, imei: '1234567890' },
-    { latitude: 17.9987227, longitude: -92.9578561, speed: 0, statusId: 1, imei: '0987654321' }
-  ];
-
-  // private vehicleTrackingSource: Subject<VehicleTrackingDto>;
-  
   
   /**
    * Observable para las nuevas ubicaciones
@@ -60,10 +44,15 @@ export class HomeService {
 
   constructor(private locationsService: RealtimeService,
               private userGeoLocationService: GeolocationService,
-              private appConfigService: AppConfigService) {
+              private appConfigService: AppConfigService,
+              private storageService: StorageService) {
   
+    const userString = this.storageService.retrieve(this.appConfigService.currentUserKey, StorageType.Session);
+    
+    const user = JSON.parse(userString);
+
     // Se conecta el servicio de ubicaciones al servicio de tiempo real
-    this.locationsService.connect(this.appConfigService.locationsRealTimeUrl);
+    this.locationsService.connect(this.appConfigService.locationsRealTimeUrl, user.token);
     
     
     // this.vehicleTrackingSource = new Subject<VehicleTrackingDto>();
@@ -85,24 +74,23 @@ export class HomeService {
 
 
   /** Obtiene los vehiculos desde el servidor */
-  getVehicles(): Observable<Array<VehicleDto>> {
-    return of([
-      { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, tracking: null, online: true,  status: VehiclesStatus.Normal, id: 1  },
-      { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, tracking: null, online: true, status: VehiclesStatus.Normal, id: 2 }
-    ]);
-}
+//   getVehicles(): Observable<Array<VehicleDto>> {
+//     return of([
+//       { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, tracking: null, online: true,  status: VehiclesStatus.Normal, id: 1  },
+//       { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, tracking: null, online: true, status: VehiclesStatus.Normal, id: 2 }
+//     ]);
+// }
 
 getVehiclesWithLasTracking(): Observable<Array<VehicleDto>> {
   return of([
-    { name: 'A3', description: 'Audi WTW-2898', imei: '1234567890', vehicleTypeId: 0, oid: 1, online: true, status: VehiclesStatus.Normal, id: 1,
-    // tracking: []
-      // { oid: 1, latitude: 40.73061, longitude: 73.935242, name: 'A3', description: '', statusId: 0, imei: '1234567890', speed: 123 }
-     },
-    { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, online: true, status: VehiclesStatus.Normal, id: 2,
-    // tracking: []
-      // { oid: 2, latitude: 32.06485, longitude: 34.763226, name: 'Ford', description: '', statusId: 0, imei: '0987654321', speed: 345 }
-
-     }
+    // { name: 'A3', description: 'Audi WTW-2898', imei: '866044051234947', vehicleTypeId: 0, oid: 1, online: true, status: VehiclesStatus.Normal, id: 1,
+    // // tracking: []
+    //   // { oid: 1, latitude: 40.73061, longitude: 73.935242, name: 'A3', description: '', statusId: 0, imei: '1234567890', speed: 123 }
+    //  },
+    // { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, online: true, status: VehiclesStatus.Normal, id: 2,
+    // // tracking: []
+    //   // { oid: 2, latitude: 32.06485, longitude: 34.763226, name: 'Ford', description: '', statusId: 0, imei: '0987654321', speed: 345 }
+    //  }
   ]);
 }
 

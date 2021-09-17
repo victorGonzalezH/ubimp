@@ -2,6 +2,7 @@ import {ChangeDetectorRef, OnInit, Component, OnDestroy, HostListener} from '@an
 import {MediaMatcher} from '@angular/cdk/layout';
 import {TranslateService} from '@ngx-translate/core';
 import {MessengerService, StorageService} from 'utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -18,14 +19,14 @@ export class MainComponent implements OnInit, OnDestroy
 
   // Mode de operacion del sidenav
   sideNavMode: string;
+  public currentRoute: string;
 
   // media: MediaMatcher. Clase de Aagular material.
-   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, translateService: TranslateService, private messengerService: MessengerService) 
-   {
+   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private translateService: TranslateService, private messengerService: MessengerService, private router: Router)  {
+     
      // Se establece ingles como idioma por default.
-      translateService.setDefaultLang('en');
+      this.translateService.setDefaultLang('en');
       
-
       this.mobileQuery = media.matchMedia('(max-width: 600px)');
       this.mobileQueryListener = () => {
           changeDetectorRef.detectChanges();
@@ -38,8 +39,7 @@ export class MainComponent implements OnInit, OnDestroy
    }
 
 
-   calculateSideNavMode(windowWidth: number): string
-   {
+   calculateSideNavMode(windowWidth: number): string {
       if(windowWidth <= 600 ) 
       {
         return 'over';
@@ -55,13 +55,14 @@ export class MainComponent implements OnInit, OnDestroy
    }
 
 
-  ngOnInit() 
-  {
+  ngOnInit() {
     this.sideNavMode = this.calculateSideNavMode(window.innerWidth);
+
+    this.translateService.get(this.getRouteTranslateKey(this.router.url)).subscribe(value => this.currentRoute = value);
   }
 
-  ngOnDestroy(): void 
-  {
+
+  ngOnDestroy(): void {
     this.mobileQuery.removeListener(this.mobileQueryListener);
     
   }
@@ -76,9 +77,59 @@ export class MainComponent implements OnInit, OnDestroy
   }
 
 
-  settingsTogle()
-  {
+  settingsTogle() {
       this.messengerService.sendStringMessage('settings_button_click');
+  }
+
+  /**
+   * 
+   * @param routeName 
+   */
+  getRouteTranslateKey(routeName: string): string {
+
+    switch(routeName) {
+ 
+      case '/home': 
+        return 'main.items.item1';
+      case '/geozones': 
+        return 'main.items.item2';
+      case '/settings': 
+        return 'main.items.item3';
+    }
+
+  }
+
+  onActivateComponent(event) {
+    console.log(this.router.url);
+    this.translateService
+    .get(this.getRouteTranslateKey(this.router.url))
+    .subscribe(value => 
+      {
+
+        this.currentRoute = value;
+        console.log(this.currentRoute);
+
+      }
+        
+      );
+    // switch(this.router.url) {
+
+      
+    //   case '/home': 
+    //     this.currentRoute = this.translateService.instant('main.items.item1');
+    //     console.log(this.currentRoute);
+    //   break;
+    //   case '/geozones': 
+    //     this.currentRoute = this.translateService.instant('main.items.item2');
+    //     console.log(this.currentRoute);
+    //   break;
+    //   case '/settings': 
+    //     this.currentRoute = this.translateService.instant('main.items.item3');
+    //     console.log(this.currentRoute);
+    //   break;
+    // }
+    
+    
   }
 
 }

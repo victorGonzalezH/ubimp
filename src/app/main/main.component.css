@@ -13,6 +13,38 @@ con respecto al lugar que le hubiera correspondido.
 */
 
 /* @import '../../../node_modules/material-design-icons/iconfont/material-icons.css'; */
+.ubimp-side-nav  {
+  background-color: #373740;
+  
+}
+
+.ubim-side-nav-item {
+  color: rgb(245, 245, 245);
+  font-weight: bold;
+}
+
+.is-active {
+  /* background-color: #13ee0e; */
+  border-bottom-color: #13ee0e;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+
+  border-top-color: #13ee0e;
+  border-top-style: solid;
+  border-top-width: 2px;
+
+}
+
+.active-list-item {
+
+  border-bottom-color: #13ee0e !important;
+  border-bottom-style: solid !important;
+  border-bottom-width: 2px !important;
+
+  border-top-color: #13ee0e;
+  border-top-style: solid;
+  border-top-width: 2px;
+}
 
 .mat-toolbar.mat-primary {
   background: #27272f;
@@ -87,13 +119,31 @@ con respecto al lugar que le hubiera correspondido.
     margin-left: 8px;
   }
 
+
+  .ubimp-logo
+  {
+    background-image: url("/assets/images/svg/ubimpLogo.svg");
+    width:  105px;
+    height: 40px;
+    background-size: 105px 40px;
+  }
   
+
   @media (max-width: 320px)
   {
     mat-sidenav
     {
       width: 75%;
     }
+
+    .ubimp-logo
+    {
+      background-image: url("/assets/images/png/ubimp_small_logo.png");
+      width:  40px;
+      height: 30px;
+      background-size: 40px 30px;
+    }
+
   }
 
 
@@ -103,6 +153,15 @@ con respecto al lugar que le hubiera correspondido.
     {
       width: 75%;
     }
+
+    .ubimp-logo
+    {
+      background-image: url("/assets/images/png/ubimp_small_logo.png");
+      width:  40px;
+      height: 30px;
+      background-size: 40px 30px;
+    }
+
   }
 
 
@@ -113,6 +172,15 @@ con respecto al lugar que le hubiera correspondido.
     {
       width: 75%;
     }
+
+    .ubimp-logo
+    {
+      background-image: url("/assets/images/png/ubimp_small_logo.png");
+      width:  40px;
+      height: 30px;
+      background-size: 40px 30px;
+    }
+
   }
 
 
@@ -122,6 +190,15 @@ con respecto al lugar que le hubiera correspondido.
     {
       width: 65%;
     }
+
+    .ubimp-logo
+    {
+      background-image: url("/assets/images/png/ubimp_small_logo.png");
+      width:  40px;
+      height: 30px;
+      background-size: 40px 30px;
+    }
+
   }
 
 
@@ -129,7 +206,7 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 45%;
+      width: 65%;
     }
   }
 
@@ -138,7 +215,7 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 40%;
+      width: 60%;
     }
   }
 
@@ -148,7 +225,7 @@ con respecto al lugar que le hubiera correspondido.
   {
     mat-sidenav
     {
-      width: 25%;
+      width: 45%;
     }
   }
 
@@ -173,11 +250,11 @@ con respecto al lugar que le hubiera correspondido.
   }
 
 
-  @media (min-width: 1201px) and (max-width: 1366px)
+  @media (min-width: 1201px) and (max-width: 1600px)
   {
     mat-sidenav
     {
-      width: 18%;
+      width: 17%;
     }
   
   }

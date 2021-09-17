@@ -9,11 +9,49 @@ const routes: Routes = [
   //   component: MainComponent,
   //   loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   // },
+
   { path: '',
-  component: MainComponent,
-  loadChildren: () => import('./home-google-maps/home-google-maps.module').then(m => m.HomeGoogleMapsModule)
+    redirectTo: 'home', pathMatch: 'full',
   },
-  { path: 'customers', loadChildren: () => import('./home-google-maps/home-google-maps.module').then(m => m.HomeGoogleMapsModule) }
+  { path: 'home',
+    component: MainComponent,
+    loadChildren: () => import('./home-google-maps/home-google-maps.module').then(m => m.HomeGoogleMapsModule)
+  },
+
+  { path: 'home/home',
+    component: MainComponent,
+    loadChildren: () => import('./home-google-maps/home-google-maps.module').then(m => m.HomeGoogleMapsModule)
+  },
+
+  { path: 'settings/home',
+    redirectTo: 'home', pathMatch: 'full',
+  },
+
+  { path: 'settings/settings',
+    redirectTo: 'settings', pathMatch: 'full',
+  },
+
+  { path: 'settings/geozones',
+    redirectTo: 'geozones', pathMatch: 'full',
+  },
+
+  { 
+    path: 'settings',
+    component: MainComponent,
+    loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule) 
+  },
+
+  { 
+    path: 'geozones',
+    component: MainComponent,
+    loadChildren: () => import('./geozones/geozones.module').then(m => m.GeozonesModule) 
+  },
+
+  { 
+    path: 'geozones/geozones',
+    redirectTo: 'settings', pathMatch: 'full',
+  }
+
 ];
 
 @NgModule({

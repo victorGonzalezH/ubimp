@@ -27,6 +27,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
   public latitudeLocal: number;
   @Input()
   set latitude(latitudeParameter: number) {
+
     this.latitudeLocal = latitudeParameter;
     if (this.map != undefined) {
       // this.map.setCenter(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
@@ -35,8 +36,10 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
         if (this.centerLocationMarker != null && this.centerLocationMarker != undefined) {
           this.centerLocationMarker.setMap(null);
         }
+        
         this.centerLocationMarker = this.createMarker('', this.latitudeLocal, this.longitudeLocal);
         this.centerLocationMarker.setMap(this.map);
+
       }
     }
   }

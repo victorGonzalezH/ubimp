@@ -1,0 +1,40 @@
+<mat-tab-group mat-align-tabs="start" 
+    (selectedTabChange)="onSelectedTabChange()"
+    [(selectedIndex)]="selectedTab"
+    style="background-color: #373740; color: white;">
+    <mat-tab label="{{'settings.vehicles' | translate }}" > 
+        <ng-template mat-tab-label>
+            <div>
+                <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
+                <mat-icon class="home-sidenav-tab-icon-svg" svgIcon="car"></mat-icon>
+            </div>
+            <div class="home-sidenav-tab-label" ><h4>{{ 'settings.vehicles' | translate }}</h4></div>
+        </ng-template>
+        <div>
+            <mat-list>
+                <div *ngFor="let group of groups">
+                    <h3 matSubheader>{{group.name}}</h3>
+                    <mat-list-item *ngFor="let vehicle of group.vehicles">
+                        <mat-icon matListIcon>{{vehicle.icon}}</mat-icon>
+                        <h4 matLine>{{vehicle.name}}</h4>
+                        <p matLine class="demo-2"> {{vehicle.description}} </p>
+                     </mat-list-item>
+                     <mat-divider></mat-divider>
+                </div>
+             </mat-list>
+        </div>
+    </mat-tab>
+    <mat-tab label="Second">Content 2</mat-tab>
+    <mat-tab label="Third">Content 3</mat-tab>
+  </mat-tab-group>
+  <button mat-fab 
+            *ngIf="showAddVehicleButton"
+             style="right: 20px;
+             bottom: 20px;
+             left: auto;
+             position: absolute;"
+             (click)="addVehicle()"
+             aria-label="Add button"
+             >
+            <mat-icon>add</mat-icon>
+          </button>

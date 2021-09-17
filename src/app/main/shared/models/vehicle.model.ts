@@ -70,6 +70,14 @@ export class Vehicle {
 }
 
 
+export interface VehicleGroupDto {
+    
+    name: string;
+    order: number;
+    visible: boolean;
+    vehicles: VehicleDto[];
+ }
+
 export interface VehicleDto {
 
     name: string;

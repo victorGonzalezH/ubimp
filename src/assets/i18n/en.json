@@ -5,9 +5,9 @@
         "items":
         {
             "item1": "Home",
-            "item2": "Zones"
+            "item2": "Geozones",
+            "item3": "Settings"
         }
-        
     },
 
     "login": 
@@ -22,5 +22,23 @@
         "passwordRequired": "Password is required",
         "checkCredentials": "Please verify email and/or password",
         "unknowError": "System not available, please contact technical support"
+    },
+    
+    "home" :
+    {
+        "noVehicleFoundMessage": "No vehicles found, please go to <a href=\"settings\">Settings</a> to add them" 
+    },
+    "settings": {
+        "vehicles":"vehicles",
+        "addVehicle": {
+            "title": "Add vehicle",
+            "vehicleName": "Vehicle name",
+            "vehicleNamePlaceHolder": "Enter a name for your vehicle",
+            "brand": "Brand",
+            "model": "Model",
+            "licensePlate": "License plate",
+            "year": "Year",
+            "description": "Description"
+        }
     }
 }

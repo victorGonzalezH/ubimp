@@ -10,9 +10,14 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {TranslateModule} from '@ngx-translate/core';
+import { ModalMessageComponent } from './shared/modals/modal-message/modal-message.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
-  declarations: [MainComponent],
+  declarations: 
+  [MainComponent,
+    ModalMessageComponent],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -21,7 +26,13 @@ import {TranslateModule} from '@ngx-translate/core';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    TranslateModule
-  ]
+    TranslateModule,
+    MatDialogModule, //Modulo para los dialogos
+    MatTabsModule
+  ], 
+  entryComponents: [
+    ModalMessageComponent
+  ],
+  
 })
 export class MainModule { }

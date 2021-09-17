@@ -1,7 +1,7 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { position } from 'esri/widgets/CoordinateConversion/support/Conversion';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
 import { flatMap, map, switchMap } from 'rxjs/operators';
 import { Marker } from 'src/app/google-map/models/marker.model';
 import { AppConfigService } from 'src/app/shared/services/app-config.service';
@@ -11,6 +11,8 @@ import { Vehicle, VehicleDto, VehiclesFactory } from '../shared/models/vehicle.m
 import { HomeService } from './home.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalMessageComponent } from '../shared/modals/modal-message/modal-message.component';
 
 
 @Component({
@@ -19,7 +21,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./home-google-maps.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class HomeGoogleMapsComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
 
   readonly ICONS_ON_MAP_DRAGABLES = false;
   readonly ICONS_ON_MAP_WIDTH     = 30;
@@ -72,11 +74,15 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
    * /////////////////////////////////////Funciones///////////////////////////////////
    */
 
+  private getVehicleTrackingSubscription: Subscription;
+  private vehiclesTrackingSubscription: Subscription;
 
   constructor(private homeService: HomeService, private messengerService: MessengerService,
               private translateService: TranslateService, private storageService: StorageService,
               private appConfigService: AppConfigService, private matIconRegistry: MatIconRegistry,
-              private domSanitizer: DomSanitizer) {
+              private domSanitizer: DomSanitizer,
+              private dialog: MatDialog) {
+
     this.vehicles = [];
     this.mapReady = false;
     this.homeInputs = { autoZoomEnabled: true, realTimeEnabled: true, showUserLocation: true };
@@ -97,12 +103,12 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
       return null;
 
     }));
-
+    
     if (this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session) == undefined) {
 
-      // Se establece ingles como idioma por default.
+      // Se establece espanol como idioma por default.
       this.translateService.setDefaultLang('es');
-
+      
     } else {
 
       const defaultLanguage = this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session);
@@ -127,7 +133,7 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
       vehicles.forEach(val => myClonedArray.push(Object.assign({}, val)));
       return myClonedArray;
     } else {
-      // Dado que no es posible que se obtenga un tracking de un vehiculo que que no esta en 
+      // Dado que no es posible que se obtenga un tracking de un vehiculo que no esta en 
       // la lista de vehiculos no se contempla esta opcion
     }
   }
@@ -136,7 +142,6 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
   private updateVehiclesGlobal(tracking: VehicleTracking) {
 
     const foundVehicle = this.vehicles.filter(vehicleToSearch => vehicleToSearch.imei === tracking.imei);
-    
     if (foundVehicle != null && foundVehicle != undefined && foundVehicle.length > 0) {
 
       const oldVehicle: Vehicle = foundVehicle[0];
@@ -173,17 +178,14 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
    * la propiedad tracking del vehiculo viene como arreglo vacio
    * @param setMarkers Indica si se establecen o no los marcadores en el mapa
    */
-  private getVehiclesWithLastTracking(){
-    this.homeService.getVehiclesWithLasTracking()
-    .subscribe( {
-      error: (error) => {
-        this.loading = false;
-      },
-      next: (vehicles) => {
-        this.vehicles = vehicles.map(vehicleDto => VehiclesFactory.createVehicleFromDto(vehicleDto));
-        this.loading = false;
-      }
-    });
+  /**
+   * Obtiene los vehiculos con su ultima ubacion registrada. Si no tiene ubicacion registrada
+   * la propiedad tracking del vehiculo viene como arreglo vacio
+   * @param showAddVehiclesModal Indica si se muestra el modal de agregar vehiculos en caso de que no
+   * se encuentre ninguno
+   */
+  private getVehiclesWithLastTracking(showAddVehiclesModal: boolean): Observable<VehicleDto[]> {
+    return this.homeService.getVehiclesWithLasTracking()
   }
 
   /**
@@ -226,7 +228,7 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
     return this.createMarker(vehicle.name, vehicle.tracking[0].latitude, vehicle.tracking[0].longitude, draggable, this.calculateVehicleIcon(vehicle.vehicleType, vehicle.status), iconWidth, iconHeight);
   }
 
-  private createMarker(label: string, latitude: number, longitude: number, draggable: boolean, iconUrl: string, iconWidth: number, iconHeight: number): Marker {
+  private createMarker  (label: string, latitude: number, longitude: number, draggable: boolean, iconUrl: string, iconWidth: number, iconHeight: number): Marker {
     return { label, latitude, longitude, draggable, iconHeight, iconUrl,  iconWidth };
 
   }
@@ -252,22 +254,43 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
   }
 
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.loading = true;
+    await this.translateService.get('home.noVehicleFoundMessage').toPromise().then();
+    await this.translateService.get('main.title').toPromise().then();
     this.globalSetSideNav();
-
+    console.log(this.translateService.getDefaultLang());
+    const message = this.translateService.instant('home.noVehicleFoundMessage');
+    const title = this.translateService.instant('main.title');
+    console.log(message); 
     this.markersSub = new BehaviorSubject<Marker[]>(null);
     this.markersObs = this.markersSub.asObservable();
     // this.longitudeSub = new BehaviorSubject<number>(0);
     // this.longitude = this.longitudeSub.asObservable();
 
-    this.getVehiclesWithLastTracking();
+    // Obtiene los vehiculos con su ultima ubicacion
+    this.getVehicleTrackingSubscription = this.getVehiclesWithLastTracking(true).subscribe({
+      error: (error) => {
+        this.loading = false;
+      },
+      next: (vehicles) => {
+        this.vehicles = vehicles.map(vehicleDto => VehiclesFactory.createVehicleFromDto(vehicleDto));
+        this.loading = false;
+        // Si no existe algun vehiculo entonces se abre el cuado de dialogo que muestra el mensaje
+        // 
+          if(vehicles.length == 0)
+          {
+            const dialogRef = this.dialog.open(ModalMessageComponent, {
+              data: { title: title, message: message }
+            });
+          }
+      }
+    });
 
     // Esta sentencia literalmente vale oro. Pues es en este observable en donde llegan
     // las ubicaciones de los dispositivos
-    this.homeService.vehiclesTracking
+    this.vehiclesTrackingSubscription = this.homeService.vehiclesTracking
     .subscribe(tracking => {
-
       this.updateVehiclesGlobal(new VehicleTracking({ imei: tracking.imei, latitude: tracking.latitude, longitude: tracking.longitude, velocity: tracking.speed, oid: 0 }));
       this.markers = this.convertVehiclesTrackingToMarkers(this.vehicles, this.ICONS_ON_MAP_DRAGABLES, this.ICONS_ON_MAP_WIDTH, this.ICONS_ON_MAP_WIDTH);
       this.markersSub.next(this.markers);
@@ -279,14 +302,14 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
   * Evento que se ejecuta cuando el mapa esta listo.
   * @param ready Bandera que indica si el mapa esta listo o no
   */
-  onMapReady(ready: boolean){
+  onMapReady(ready: boolean) {
     this.mapReady = ready;
+
     // Si el mapa esta listo
     if (this.mapReady === true) {
-
       this.markers = this.convertVehiclesTrackingToMarkers(this.vehicles, this.ICONS_ON_MAP_DRAGABLES, this.ICONS_ON_MAP_WIDTH, this.ICONS_ON_MAP_WIDTH);
       this.markersSub.next(this.markers);
-  }
+    }
   }
 
   sidebarToogle() {
@@ -302,6 +325,12 @@ export class HomeGoogleMapsComponent implements OnInit, AfterViewInit, AfterView
 
   showOnMap(show: boolean, name: string) {
 
+  }
+
+
+  ngOnDestroy() {
+    this.getVehicleTrackingSubscription.unsubscribe()
+    this.vehiclesTrackingSubscription.unsubscribe();
   }
 
 }

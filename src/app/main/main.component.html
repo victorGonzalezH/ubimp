@@ -3,16 +3,29 @@
 <div class="ubimp-container">
 
     <!-- Barra de herramientas -->
-    <mat-toolbar color="primary" class="ubimp-toolbar" role="heading" 
-    [class.is-mobile]="mobileQuery.matches"
-    >
-        <button mat-icon-button (click)="snav.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <!-- <h1>{{ 'main.title' | translate }}</h1> -->
-        <img src="../../assets/images/svg/ubimpLogo.svg" alt="ubimp logo" style="width: 105px; height: 40px;">
+    <mat-toolbar
+    color="primary"
+    class="ubimp-toolbar"
+    role="heading" 
+    [class.is-mobile]="mobileQuery.matches">
+
+      <div>
+        <table>
+          <tr>
+            <td>
+              <button mat-icon-button (click)="snav.toggle()">
+              <mat-icon>menu</mat-icon>
+              </button>
+            </td>
+            <td>
+              <div class="ubimp-logo"></div>
+            </td>
+          </tr>
+        </table>
+        
+      </div>
         <div class="fill-remaining-space">
-          <h1 style="text-align: center">{{sideNavMode}}</h1>
+          <h1 style="text-align: center">{{currentRoute}}</h1>
         </div>
         <div>
           <button mat-icon-button (click)="settingsTogle()">
@@ -29,14 +42,53 @@
     >
       
       <mat-sidenav #snav 
-                  position="start" role="navigation"
+
+                  position="start"
+                  role="navigation"
                   [mode]="sideNavMode"
-                  
+                  class="ubimp-side-nav"
                   >
                   
                   <mat-nav-list>
-                  <a mat-list-item routerLink="home"> {{ 'main.items.item1' | translate }} </a>
-                  <a mat-list-item routerLink="zones"> {{ 'main.items.item2' | translate }} </a>
+                  <a mat-list-item routerLink="/home" 
+                  class="ubim-side-nav-item"
+                  routerLinkActive="active-list-item"
+                  >
+                  <table style="width: 100%;" >
+                    <tr>
+                      <th style="text-align: start;">{{ 'main.items.item1' | translate }}</th>
+                      <th style="text-align: end;"><mat-icon>my_location</mat-icon></th>
+                    </tr>
+                  </table>
+                </a>
+                  <a 
+                  mat-list-item routerLink="/geozones"
+                  class="ubim-side-nav-item"
+                  routerLinkActive="active-list-item"
+                  >
+                
+                  <table style="width: 100%;">
+                      <tr>
+                        <th style="text-align: start;">{{ 'main.items.item2' | translate }}</th>
+                        <th style="text-align: end;"><mat-icon>control_camera</mat-icon></th>
+                      </tr>
+                  </table>
+                </a>
+
+                <a 
+                  mat-list-item routerLink="/settings"
+                  class="ubim-side-nav-item"
+                  routerLinkActive="active-list-item"
+                  >
+                
+                  <table style="width: 100%;">
+                      <tr>
+                        <th style="text-align: start;">{{ 'main.items.item3' | translate }}</th>
+                        <th style="text-align: end;"><mat-icon>settings</mat-icon></th>
+                      </tr>
+                  </table>
+                </a>
+
                 </mat-nav-list>
       </mat-sidenav>
   
@@ -52,7 +104,10 @@
   
       <mat-sidenav-content role="main">
           <div style="height: 100%;">
-          <router-outlet style="height: 100%;"></router-outlet>
+          <router-outlet
+          style="height: 100%;"
+          (activate)='onActivateComponent($event)'
+          ></router-outlet>
         </div>
           
         <!-- <table style="width: 100%;height:100%;border-collapse: collapse;">
