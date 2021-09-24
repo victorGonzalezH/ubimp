@@ -46,8 +46,8 @@ testem.log
 Thumbs.db
 
 #Local package npm installers
-utils-0.0.1.tgz
+
+#docs
 ubimpBlueprintWebApp.odp
 ubimpTechnicalDocumentation.odt
 tasks.ods
-
