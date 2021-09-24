@@ -97,7 +97,6 @@ ngOnInit(): void
     this.loginService.login(username, password, this.defaultLanguage)
     .subscribe( {
       next: value => {
-
         this.loading = false;
         // Se guarda el lenguaje elegido por el usuario
         this.storageService.store(this.appConfigService.defaultLanguage, this.defaultLanguage, StorageType.Session);
