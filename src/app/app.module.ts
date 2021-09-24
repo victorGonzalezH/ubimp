@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PortalModule} from '@angular/cdk/portal';
-import {UtilsModule, StorageService, MessengerService, GeolocationService, RealtimeService, DataService} from 'utils';
+import {UtilsModule, StorageService, MessengerService, GeolocationService, RealtimeService, DataService, ErrorInterceptor, JwtInterceptor} from 'utils';
 import {AppConfigService} from './shared/services/app-config.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -70,7 +70,8 @@ import { GoogleMapComponent } from './google-map/google-map.component';
     })
 
   ],
-  providers: [StorageService, MessengerService, GeolocationService, RealtimeService, AppConfigService, DataService, Location],
+  providers: [StorageService, MessengerService, GeolocationService, RealtimeService, AppConfigService, DataService, Location, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
