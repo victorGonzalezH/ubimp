@@ -1,8 +1,12 @@
 import {ChangeDetectorRef, OnInit, Component, OnDestroy, HostListener} from '@angular/core';
-import {MediaMatcher} from '@angular/cdk/layout';
+import {BreakpointObserver, Breakpoints, MediaMatcher} from '@angular/cdk/layout';
 import {TranslateService} from '@ngx-translate/core';
 import {MessengerService, StorageService} from 'utils';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IWindowConfig } from '../shared/models/iwindow-config.model';
+import { AppConfigService } from '../shared/services/app-config.service';
 
 @Component({
   selector: 'app-main',
@@ -21,8 +25,20 @@ export class MainComponent implements OnInit, OnDestroy
   sideNavMode: string;
   public currentRoute: string;
 
+  // map que nos indicara el tamano de la ventana y el tamano del modal que se puede usar Create a map to display breakpoint names for demonstration purposes.
+  displayNameMap = new Map ([
+    [Breakpoints.XSmall, {windowSize: 'XSmall', modalSize: '95%'}],
+    [Breakpoints.Small, {windowSize: 'Small', modalSize: '90%' }],
+    [Breakpoints.Medium, { windowSize: 'Medium', modalSize: '70%'}],
+    [Breakpoints.Large, {windowSize: 'Large', modalSize: '50%'}],
+    [Breakpoints.XLarge,  {windowSize: 'XLarge', modalSize: '50%'} ],
+  ]);
+
+  destroyed = new Subject<void>();
+  currentWindowConfig: IWindowConfig;
+
   // media: MediaMatcher. Clase de Aagular material.
-   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private translateService: TranslateService, private messengerService: MessengerService, private router: Router)  {
+   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private translateService: TranslateService, private messengerService: MessengerService, private router: Router, breakpointObserver: BreakpointObserver, private appConfigService: AppConfigService)  {
      
      // Se establece ingles como idioma por default.
       this.translateService.setDefaultLang('en');
@@ -35,7 +51,19 @@ export class MainComponent implements OnInit, OnDestroy
 
       this.mobileQuery.addListener(this.mobileQueryListener);
       
-      
+      breakpointObserver.observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ]).pipe(takeUntil(this.destroyed)).subscribe(result => {
+          for (const query of Object.keys(result.breakpoints)) {
+            if (result.breakpoints[query]) {
+              this.appConfigService.currentWindowConfig = this.displayNameMap.get(query) ?? { windowSize: 'Medium', modalSize: '70%'};
+            }
+          }
+      });
    }
 
 
@@ -64,7 +92,8 @@ export class MainComponent implements OnInit, OnDestroy
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this.mobileQueryListener);
-    
+    this.destroyed.next();
+    this.destroyed.complete();
   }
 
 
@@ -100,14 +129,14 @@ export class MainComponent implements OnInit, OnDestroy
   }
 
   onActivateComponent(event) {
-    console.log(this.router.url);
+    (this.router.url);
     this.translateService
     .get(this.getRouteTranslateKey(this.router.url))
     .subscribe(value => 
       {
 
         this.currentRoute = value;
-        console.log(this.currentRoute);
+        (this.currentRoute);
 
       }
         
