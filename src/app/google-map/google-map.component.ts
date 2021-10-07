@@ -41,6 +41,12 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
         this.centerLocationMarker.setMap(this.map);
 
       }
+      
+      //if (this.markersLocal !== null && this.markersLocal !== undefined && this.markersLocal.length === 0)
+      if (this.autoZoomLocal === true)
+      {
+         this.autoZoomOnMap(this.map, this.markersLocal, true, 15);
+      }
     }
   }
 
@@ -62,7 +68,12 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
         this.centerLocationMarker = this.createMarker('', this.latitudeLocal, this.longitudeLocal);
         this.centerLocationMarker.setMap(this.map);
       }
-
+      
+      //if (this.markersLocal !== null && this.markersLocal !== undefined && this.markersLocal.length ===0)
+      if (this.autoZoomLocal === true)
+      {
+         this.autoZoomOnMap(this.map, this.markersLocal, true, 15);
+      }
     }
   }
 
@@ -72,6 +83,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
   public zoomLocal: number;
   @Input()
   set zoom(zoom: number) {
+    
     this.zoomLocal = zoom;
     this.map.setZoom(this.zoomLocal);
   }
@@ -81,8 +93,8 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
   set autoZoom(autoZoomParameter: boolean) {
 
     this.autoZoomLocal = autoZoomParameter;
-    if (this.autoZoomLocal) {
-      this.autoZoomOnMap(this. map, this.markersLocal);
+    if (this.autoZoomLocal == true) {
+      this.autoZoomOnMap(this. map, this.markersLocal, true, 15);
     }
   }
 
@@ -142,7 +154,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, AfterViewCheck
       }
 
       if (this.autoZoomLocal === true) {
-        this.autoZoomOnMap(this.map, this.markersLocal);
+        this.autoZoomOnMap(this.map, this.markersLocal, true, 15);
       }
 
     }
@@ -179,21 +191,32 @@ private clearMarkers() {
  * Ajusta el centro y zoom de un mapa de acuerdo a los marcadores
  * @param map Mapa
  * @param markers Macardores
+ * @param oneMakerZoomOffset Si solo existe un marcador (ya sea solo la ubicacion o un marcador) entonces para evitar que el zoom este muy cerca
+ * se usa un offset para el zoom
+ * 
  */
-private autoZoomOnMap(map: google.maps.Map, markers: google.maps.Marker[], considerMapCenter: boolean = true) {
-
+private autoZoomOnMap(map: google.maps.Map, markers: google.maps.Marker[], considerMapCenter: boolean = true, oneMakerZoomOffset: number) {
   if ( map != undefined && markers != undefined ) {
     const latlngbounds = new google.maps.LatLngBounds();
     markers.forEach(marker =>  latlngbounds.extend(marker.getPosition()));
   // Si se considera el centro del mapa
-    if (considerMapCenter === true) {
+    if (considerMapCenter === true && this.latitudeLocal !== undefined && this.longitudeLocal !== undefined) {
     latlngbounds.extend(new google.maps.LatLng(this.latitudeLocal, this.longitudeLocal));
   }
-
-    map.setCenter(latlngbounds.getCenter());
-    map.fitBounds(latlngbounds);
+    
+   if(!latlngbounds.isEmpty()) {
+    if( (markers.length === 0 && considerMapCenter === true) || (markers.length === 1 && considerMapCenter === false))
+    {
+      map.setZoom(oneMakerZoomOffset);
+      map.setCenter(latlngbounds.getCenter());
+    }
+    else
+    {
+      map.setCenter(latlngbounds.getCenter());
+      map.fitBounds(latlngbounds);
+    }
+   }
   }
-
 }
 
 
@@ -218,7 +241,7 @@ private autoZoomOnMap(map: google.maps.Map, markers: google.maps.Marker[], consi
     // Se agrega un manejador unico (addListenerOnce que se remueve asi mismo que se remueve asi mismo
     // despues de manejar la primera ocurrencia del evento. Se escucha el evento idle del mapa
     // para emitir que el mapa esta listo
-    google.maps.event.addListenerOnce(this.map, 'idle', () => {
+    const listener = google.maps.event.addListenerOnce(this.map, 'idle', () => {
       if (this.mapReady === false) {
         this.ready.emit(true);
         this.mapReady = true;
