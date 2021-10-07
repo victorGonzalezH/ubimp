@@ -75,10 +75,17 @@ export class AppConfigService {
     this.currentWindowConfigLocal = value;
   }
 
+  private authorizationKeyLocal: string;
+
+  get authorizationKey(): string {
+    return this.authorizationKeyLocal;
+  }
+
   constructor(private dataService: DataService) {
     this.hostUrl = window.location.host;
     this.loginUrlLocal = 'localhost:3000';
     this.currentUserKeyLocal = 'currentUser';
+    this.authorizationKeyLocal = 'authorization';
     this.defaultLanguageKeyLocal = 'defaultLanguage';
     this.realTimeUrlLocal = 'https://localhost:3000';
   }
