@@ -1,0 +1,11 @@
+.addVehicleContainer {
+    width: 100%;
+}
+.addVehicleFormField {
+    width: 100%;
+}
+
+.typeLabel {
+    color: #757575;
+    font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+}

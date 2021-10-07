@@ -1,17 +1,122 @@
 <h2 mat-dialog-title>{{ 'settings.addVehicle.title' | translate }}</h2>
 <mat-dialog-content>
-    <form [formGroup]="addVehicleFormControl" class="addVehicleForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="AddVehicleFormField">
-            <mat-label class="vehicleNameLabel">{{ 'settings.addVehicle.vehicleName' | translate }}</mat-label>
-            <input matInput formControlName="vehicleNameControl" placeholder="{{ 'settings.addVehicle.vehicleNamePlaceHolder' | translate }}" 
-            class="vehicleNameFormInput">
-            <mat-error *ngIf="this.addVehicleFormControl.controls['vehicleNameControl'].hasError('required')">
+    <form  [ngSwitch]="objectTypeAsNumber" #addVehicleForm="ngForm">
+        <div>
+          <label class="typeLabel">{{ 'settings.addVehicle.type' | translate }}: &nbsp;{{ selectedObjectTypeTag | translate }}  </label>
+          <br/>
+          <br/>
+          <div style=" text-align: center;">
+        <mat-button-toggle-group 
+        #group="matButtonToggleGroup"
+        [(ngModel)]="addVehicle.objectType"
+        name="objectType"
+        >
+          <mat-button-toggle value="1" aria-label="Text align left">
+            <mat-icon fontSet="fa" fontIcon="fa-car"></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="2" aria-label="Text align center">
+            <mat-icon fontSet="fa" fontIcon="fa-taxi"></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="3" aria-label="Text align right">
+            <mat-icon fontSet="fa" fontIcon="fa-truck-pickup"></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="4" aria-label="Text align justify">
+            <mat-icon fontSet="fa" fontIcon="fa-truck"></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="5" aria-label="Text align justify">
+            <mat-icon fontSet="fa" fontIcon="fa-motorcycle"></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="6" aria-label="Text align justify">
+            <mat-icon fontSet="fa" fontIcon="fa-bicycle"></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="7" aria-label="Text align justify">
+            <mat-icon fontSet="fa" fontIcon="fa-male"></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="8" aria-label="Text align justify">
+            <mat-icon fontSet="fa" fontIcon="fa-map-marker-alt"></mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      </div>
+      <br/>
+      <mat-form-field class="addVehicleFormField">
+        <mat-label>{{ 'settings.addVehicle.imei' | translate }}</mat-label>
+        <mat-select 
+        name="imei"
+        #imeiControl="ngModel"
+        [(ngModel)]="this.addVehicle.imei"
+         required>
+          <mat-option *ngFor="let device of devices" [value]="device.id">
+            {{device.imei}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="imeiControl.invalid && (imeiControl.dirty || imeiControl.touched)">
+          {{ 'settings.addVehicle.imeiRequired' | translate }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="addVehicleFormField" *ngSwitchCase="[6, 7, 8] | switchMulticase:objectTypeAsNumber">
+            <mat-label>{{ 'settings.addVehicle.vehicleName' | translate }}</mat-label>
+            <input matInput 
+            #vehicleNameControl="ngModel"
+            [(ngModel)]="this.addVehicle.name"
+            name="vehicleName"
+            placeholder="{{ 'settings.addVehicle.vehicleNamePlaceHolder' | translate }}" 
+            class="vehicleNameFormInput" required>
+            <mat-error *ngIf="vehicleNameControl.invalid && (vehicleNameControl.dirty || vehicleNameControl.touched)">
               {{ 'settings.addVehicle.vehicleNameRequired' | translate }}
             </mat-error>
-          </mat-form-field>
+        </mat-form-field>
+        <mat-form-field class="addVehicleFormField" class="addVehicleFormField" *ngSwitchCase="[1, 2, 3, 4, 5] | switchMulticase:objectTypeAsNumber">
+          <mat-label>{{ 'settings.addVehicle.brand' | translate }}</mat-label>
+          <mat-select
+          name="brand"
+          (selectionChange)="onBrandChange($event)"
+          required >
+            <mat-option *ngFor="let brand of brands" [value]="brand.id">
+              {{brand.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="addVehicleFormField" *ngSwitchCase="[1, 2, 3, 4, 5] | switchMulticase:objectTypeAsNumber">
+          <mat-label>{{ 'settings.addVehicle.model' | translate }}</mat-label>
+          <mat-select 
+          name="model"
+          #modelControl="ngModel"
+          [(ngModel)]="addVehicle.modelId" required >
+            <mat-option *ngFor="let model of models" [value]="model.id">
+              {{model.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="modelControl.invalid && (modelControl.dirty || modelControl.touched)">
+            {{ 'settings.addVehicle.modelRequired' | translate }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="addVehicleFormField" *ngSwitchCase="[1, 2, 3, 4, 5] | switchMulticase:objectTypeAsNumber">
+          <mat-label>{{ 'settings.addVehicle.year' | translate }}</mat-label>
+          <input matInput
+          #yearControl="ngModel"
+          [(ngModel)]="this.addVehicle.year"
+          name="year"
+          maxlength="4"
+          min=1900
+          required
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+          type="number" placeholder="{{ 'settings.addVehicle.yearHolder' | translate }}">
+          <mat-error *ngIf="yearControl.invalid && (yearControl.dirty || yearControl.touched)">
+            {{ 'settings.addVehicle.yearRequired' | translate }}
+          </mat-error>
+      </mat-form-field>
+        <mat-form-field class="addVehicleFormField" *ngSwitchCase="[1, 2, 3, 4, 5] | switchMulticase:objectTypeAsNumber">
+          <mat-label>{{ 'settings.addVehicle.licensePlate' | translate }}</mat-label>
+          <input matInput  name="licensePlate" #licensePlateControl="ngModel" [(ngModel)]="this.addVehicle.licensePlate" placeholder="{{ 'settings.addVehicle.licensePlateHolder' | translate }}" required >
+          <mat-error *ngIf="licensePlateControl.invalid && (licensePlateControl.dirty || licensePlateControl.touched)">
+            {{ 'settings.addVehicle.licensePlateRequired' | translate }}
+          </mat-error>
+      </mat-form-field>
     </form>
+    
 </mat-dialog-content>
-<mat-dialog-actions align="end">  
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>{{ 'save' | translate }}</button>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial>{{ 'cancel' | translate }}</button>
+  <button mat-button [mat-dialog-close]="addVehicle" [disabled]="!addVehicleForm.form.valid">{{ 'save' | translate }}</button>
 </mat-dialog-actions>
-
