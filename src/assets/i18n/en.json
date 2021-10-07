@@ -1,4 +1,6 @@
 {
+    "save": "Save",
+    "cancel": "Cancel",
     "main": 
     {
         "title": "ubimp",
@@ -31,14 +33,35 @@
     "settings": {
         "vehicles":"vehicles",
         "addVehicle": {
-            "title": "Add vehicle",
-            "vehicleName": "Vehicle name",
+            "title": "Add vehicle or object",
+            "vehicleName": "Name",
+            "vehicleNameRequired": "Name is required",
             "vehicleNamePlaceHolder": "Enter a name for your vehicle",
             "brand": "Brand",
             "model": "Model",
+            "modelRequired": "Model is required",
             "licensePlate": "License plate",
+            "licensePlateRequired": "Licence plate required",
             "year": "Year",
-            "description": "Description"
+            "yearRequired" : "Year is required",
+            "yearHolder": "for example 2015",
+            "description": "Description",
+            "imei": "IMEI",
+            "imeiRequired": "IMEI is required",
+            "type": "Type of vehicle or object",
+            "licensePlateHolder": "For example XYZ-1234",
+            "catalogs": {
+            "objectsTypes": {
+                "car": "Car",
+                "taxi": "Taxi",
+                "pickup": "Pickup",
+                "truck": "Truck",
+                "motorcycle": "Motorcycle",
+                "bicycle": "Bicycle",
+                "person": "Person",
+                "location": "Location"
+                }
+            }
         }
     }
 }
