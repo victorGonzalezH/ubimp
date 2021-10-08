@@ -1,10 +1,12 @@
-<button 
-        mat-raised-button
-        mat-raised-button type="submit"
-        style="position:fixed; right:0; top:0; margin-top: 10px; margin-right: 10px; background-color: rgba(201, 76, 76, 0.0); color: white;"
-        >
-        <strong>Register </strong>
-      </button>
+    <a
+      style="position:fixed; 
+      right:0; top:0; margin-top: 10px; margin-right: 10px; 
+      background-color: #00fd41; color: black; padding: 8px; border-radius: 5px;
+      text-decoration: none;
+      font-family: Roboto, Helvetica Neue, sans-serif; letter-spacing: normal;"
+      href="login/signin">
+      {{ 'login.signin' | translate }}
+    </a>
 <div class="loginContainerParent" >
     <form [formGroup]="loginFormControl" class="loginForm" (ngSubmit)="onSubmit()">
       <img src="../../assets/images/svg/ubimpLogo.svg" alt="ubimp" class="loginUbimpLogo">
