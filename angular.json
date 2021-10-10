@@ -25,7 +25,8 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/ubimp-app-theme.scss"
+              "src/ubimp-app-theme.scss",
+              "./node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
             "scripts": []
           },
