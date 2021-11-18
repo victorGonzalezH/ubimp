@@ -6,13 +6,8 @@ import { LoginService } from './login.service';
 import { StorageService, StorageType } from 'utils';
 import { AppConfigService } from '../shared/services/app-config.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Language } from '../shared/models/language.model';
 
-interface Language {
-
-  value: string;
-  viewValue: string;
-
-}
 
 @Component({
   selector: 'app-login',
@@ -50,10 +45,10 @@ export class LoginComponent implements OnInit {
               private storageService: StorageService) {
 
     if (this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session) == undefined) {
-
-      // Se establece ingles como idioma por default.
-      this.translateService.setDefaultLang('es');
-      this.defaultLanguage = 'es';
+      
+      // Se establece el lenguaje del navegador al no haber un lenguaje guardado en el storage
+      this.translateService.setDefaultLang(navigator.language);
+      this.defaultLanguage = navigator.language;
     } else {
       this.defaultLanguage = this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session);
     }
@@ -85,8 +80,8 @@ ngOnInit(): void
     this.currentUserKey = history.state.currentUserKey;
 
     this.languages = [
-      {value: 'es', viewValue: 'Español'},
-      {value: 'en', viewValue: 'English'},
+      {value: 'es-MX', viewValue: 'Español'},
+      {value: 'en-US', viewValue: 'English'},
     ];
 }
 
