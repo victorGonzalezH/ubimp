@@ -1,24 +1,74 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { AppConfigService } from 'src/app/shared/services/app-config.service';
+import { DataService, DataServiceProtocols, ResponseTypes } from 'utils';
 import { VehicleGroupDto } from '../shared/models/vehicle.model';
+import { ObjectType } from './models/object-types.model';
+import { ApiResultBase } from 'utils';
+import { AddVehicle } from './models/add-vehicle.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
 
-  constructor() { }
+  constructor(private dataService: DataService, private appConfigService: AppConfigService) { }
 
   getVehiclesGroup(): Observable<Array<VehicleGroupDto>> {
-    return of([
-      // { name: 'A3', description: 'Audi WTW-2898', imei: '866044051234947', vehicleTypeId: 0, oid: 1, online: true, status: VehiclesStatus.Normal, id: 1,
-      // // tracking: []
-      //   // { oid: 1, latitude: 40.73061, longitude: 73.935242, name: 'A3', description: '', statusId: 0, imei: '1234567890', speed: 123 }
-      //  },
-      // { name: 'Ford', description: 'F350 ETP-5272', imei: '0987654321', vehicleTypeId: 1, oid: 2, online: true, status: VehiclesStatus.Normal, id: 2,
-      // // tracking: []
-      //   // { oid: 2, latitude: 32.06485, longitude: 34.763226, name: 'Ford', description: '', statusId: 0, imei: '0987654321', speed: 345 }
-      //  }
-    ]);
+    return this.dataService.get(this.appConfigService.apiUrl + '/vehicles/groups?userId=123', null, null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null)
+    .pipe(catchError(error => throwError(error) ));
   }
+
+
+  /**
+   * Gets the assiged or no assigned devices
+   * @param assigned 
+   * @returns 
+   */
+  getDevicesByAssigned(assigned: boolean): Observable<ApiResultBase> {
+
+    return this.dataService.get(this.appConfigService.apiUrl + '/devices', [ { name: 'isAssigned', value: assigned } ], null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
+  }
+
+
+  /**
+   * Returns the objects types that can be added to the objects users. [At this moment, we choose the  client only
+   * approach to get the objects types, instead of be saved in the database and get them through their web api]
+   * @returns 
+   */
+  getObjectsTypes() {
+    const objectsTypes: ObjectType[] = [
+      { displayNameTag: 'settings.addVehicle.catalogs.objectsTypes.car', uiId: 1 },
+      { displayNameTag: 'settings.addVehicle.catalogs.objectsTypes.taxi', uiId: 2 },
+      { displayNameTag: 'settings.addVehicle.catalogs.objectsTypes.pickup', uiId: 3 },
+      { displayNameTag: 'settings.addVehicle.catalogs.objectsTypes.truck', uiId: 4 },
+      { displayNameTag: 'settings.addVehicle.catalogs.objectsTypes.motorcycle', uiId: 5 },
+      { displayNameTag: 'settings.addVehicle.catalogs.objectsTypes.bicycle', uiId: 6 },
+      { displayNameTag: 'settings.addVehicle.catalogs.objectsTypes.person', uiId: 7 },
+      { displayNameTag: 'settings.addVehicle.catalogs.objectsTypes.location', uiId: 8 }
+    ];
+
+      return of(objectsTypes);
+  }
+
+  /**
+   * 
+   * @returns Get the vehicle brands with models within it
+   */
+  getBrandsWithModels() {
+    
+    return this.dataService.get(this.appConfigService.apiUrl + '/brands/models', null, null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
+  
+  }
+
+  /**
+   * Save a vehicle
+   * @param addVehicle 
+   * @returns 
+   */
+  saveVehicle(addVehicle: AddVehicle) {
+    return this.dataService.post(this.appConfigService.apiUrl + '/vehicles', addVehicle, null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
+  }
+
 }

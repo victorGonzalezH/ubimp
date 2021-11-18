@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -12,10 +11,17 @@ import { AddVehicleComponent } from './modals/add-vehicle/add-vehicle.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { SwitchMulticasePipe } from '../../shared/pipes/switch-multicase.pipe';
+
+
+
 
 
 @NgModule({
-  declarations: [SettingsComponent, AddVehicleComponent],
+  declarations: [SettingsComponent,
+    AddVehicleComponent, SwitchMulticasePipe],
   imports: [
     CommonModule,
     SettingsRoutingModule,
@@ -27,7 +33,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule,
+    MatButtonToggleModule,
   ]
 })
 export class SettingsModule { }

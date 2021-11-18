@@ -1,3 +1,4 @@
+<div class="settings-container" >
 <mat-tab-group mat-align-tabs="start" 
     (selectedTabChange)="onSelectedTabChange()"
     [(selectedIndex)]="selectedTab"
@@ -6,9 +7,9 @@
         <ng-template mat-tab-label>
             <div>
                 <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
-                <mat-icon class="home-sidenav-tab-icon-svg" svgIcon="car"></mat-icon>
+                <mat-icon class="settings-sidenav-tab-icon-svg" svgIcon="car"></mat-icon>
             </div>
-            <div class="home-sidenav-tab-label" ><h4>{{ 'settings.vehicles' | translate }}</h4></div>
+            <div class="settings-sidenav-tab-label" ><h4>{{ 'settings.vehicles' | translate }}</h4></div>
         </ng-template>
         <div>
             <mat-list>
@@ -24,8 +25,29 @@
              </mat-list>
         </div>
     </mat-tab>
-    <mat-tab label="Second">Content 2</mat-tab>
-    <mat-tab label="Third">Content 3</mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <div>
+                <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
+                <!-- <mat-icon class="settings-sidenav-tab-icon-svg" svgIcon="car"></mat-icon> -->
+                <mat-icon fontSet="fa" class="settings-sidenav-tab-icon" fontIcon="fa-users"></mat-icon>
+            </div>
+            <div class="settings-sidenav-tab-label" ><h4>{{ 'settings.users' | translate }}</h4></div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <div>
+                <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
+                <!-- <mat-icon class="settings-sidenav-tab-icon-svg" svgIcon="car"></mat-icon> -->
+                <mat-icon fontSet="fa" class="settings-sidenav-tab-icon" fontIcon="fa-cogs"></mat-icon>
+            </div>
+            <div class="settings-sidenav-tab-label" ><h4>{{ 'settings.others' | translate }}</h4></div>
+        </ng-template>
+        <div>
+            Content 3
+        </div>
+    </mat-tab>
   </mat-tab-group>
   <button mat-fab 
             *ngIf="showAddVehicleButton"
@@ -36,5 +58,6 @@
              (click)="addVehicle()"
              aria-label="Add button"
              >
-            <mat-icon>add</mat-icon>
+            <mat-icon style="font-weight: bold; color: #373740;">add</mat-icon>
           </button>
+</div>
