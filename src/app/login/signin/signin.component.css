@@ -1,0 +1,175 @@
+.signin-container {
+  background-image: url("../../../assets/images/jpg/loginBackground.jpg");
+  background-color: #788d97;
+  background-size: cover;
+  background-position: center center;
+
+}
+
+/* .loginContainerParent
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-image: url("../../assets/images/jpg/loginBackground.jpg");
+    background-size: cover;
+    background-position: center center;
+} */
+
+.form-container {
+  background-color: transparent;
+}
+
+.item {
+  margin: 15px;
+}
+
+.signin-form-field {
+  width: 100%;
+  color: white !important;
+}
+
+.signin-form-field .mat-input-element {
+  color: white !important;
+  text-align: left;
+}
+
+.signin-form-field .mat-input-element::placeholder {
+  color: white;
+  text-align: center;
+}
+
+.signin-form-field .mat-input-element:focus {
+    caret-color: white;
+
+    
+  }
+
+.signin-label {
+  color: white;
+}
+
+.required {
+  color: white;
+}
+
+
+.mat-form-field .mat-focused .mat-select-arrow {
+  color: white;
+}
+
+.mat-select-arrow {
+  color: white;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-label {
+  color: white;
+}
+
+@media only screen and (max-width: 959px) {
+    .signIn-ubimp-logo {
+        width: 35%;
+        height: 30%;
+    }
+    
+  }
+
+
+@media only screen and (min-width: 960px) 
+{
+    .signin-container
+    {
+        height: 100%;
+
+    }
+
+    .form-container  {
+        width: 70%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+
+    }
+
+    .signIn-ubimp-logo {
+        width: 15%;
+        height: 11%;
+    }
+}
+
+
+.signin-title {
+    color: white;
+}
+
+.signin-form-field .mat-input-element {
+    color: white;
+    text-align: center;
+
+  }
+
+.signin-form-field .mat-form-field-underline {
+
+    background-color: white !important;
+  } 
+
+
+  .signin-form-field .mat-form-field-ripple {
+    /*change color of underline when focused*/
+    background-color: white !important;;
+   }
+
+.mat-select-value {
+    color: white;
+  }
+
+.mat-select-arrow {
+    color: white;
+}
+
+
+.mat-form-field .mat-focused .mat-select-arrow {
+    color: white;
+}
+
+.signin-button:enabled
+{
+    color: white;
+    background-color: #0082fb;
+}
+
+.back-button {
+    position:fixed; 
+    right:0; top:0; margin-top: 10px; margin-right: 10px; 
+    background-color: #00fd41; color: black; padding: 8px; border-radius: 5px;
+    text-decoration: none;
+    font-family: Roboto, Helvetica Neue, sans-serif; letter-spacing: normal;
+}
+
+.overlay{
+  height:100vh;
+  width:100%;
+  background-color:rgba(0, 0, 0, 0.286);
+  z-index:    10;
+  top:        0; 
+  left:       0; 
+  position:   fixed;
+}
+
+.progress-spinner-margin .mat-progress-spinner circle, .mat-spinner circle {   
+  stroke: #00FF00;
+}
+
+.progress-spinner-margin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}

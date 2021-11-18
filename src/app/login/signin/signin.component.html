@@ -1,0 +1,201 @@
+ <a class="back-button"
+    href="/">
+    {{ 'login.signin.back' | translate }}
+  </a>
+<div class="signin-container">
+    <img src="../../../assets/images/svg/ubimpLogo.svg" alt="ubimp" class="signIn-ubimp-logo">
+    <form (ngSubmit)="onSubmit()" #signInForm="ngForm" fxLayout="column" class="form-container">
+        <div fxFlex fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
+            <div fxFlex class="item">
+                <mat-form-field  class="signin-form-field" id="email">
+                    <mat-label class="signin-label">{{ 'login.signin.email' | translate }}</mat-label>
+                    <input matInput
+                    type="email" 
+                    #emailControl="ngModel"
+                    [(ngModel)]="this.signIn.username"
+                    name="emailControl"
+                    placeholder="{{ 'login.signin.email' | translate }}" 
+                    required >
+                    <mat-error *ngIf="emailControl.invalid && (emailControl.dirty || emailControl.touched)">
+                    {{ 'login.signin.emailRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex class="item">
+                <mat-form-field  class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.password' | translate }}</mat-label>
+                    <input matInput
+                    type="password" 
+                    #passwordControl="ngModel"
+                    [(ngModel)]="this.signIn.password"
+                    name="passwordControl"
+                    placeholder="{{ 'login.signin.passwordPlaceholder' | translate }}" 
+                    (keyup)="onKeyPassword($event)"
+                    required >
+                    <mat-error *ngIf="passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)">
+                    {{ 'login.signin.passwordRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex class="item">
+                <mat-form-field  class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.confirmPassword' | translate }}</mat-label>
+                    <input matInput
+                    type="password" 
+                    #confirmPasswordControl="ngModel"
+                    [(ngModel)]="this.confirmPassword"
+                    name="confirmPasswordControl"
+                    placeholder="{{ 'login.signin.confirmPassword' | translate }}" 
+                    (keyup)="onKeyPasswordConfirm($event)"
+                    required >
+                    <mat-error *ngIf="passwordCorrect() === false">
+                        {{ 'login.signin.passwordNotMatch' | translate }}
+                    </mat-error> 
+                    <mat-error *ngIf="confirmPasswordRequired === true">
+                    {{ 'login.signin.confirmPasswordRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
+            <div fxFlex class="item">
+                <mat-form-field  class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.name' | translate }}</mat-label>
+                    <input matInput 
+                    #nameControl="ngModel"
+                    [(ngModel)]="this.signIn.name"
+                    name="nameControl"
+                    placeholder="{{ 'login.signin.name' | translate }}" 
+                    required >
+                    <mat-error *ngIf="nameControl.invalid && (nameControl.dirty || nameControl.touched)">
+                    {{ 'login.signin.nameRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex class="item">
+                <mat-form-field class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.lastName' | translate }}</mat-label>
+                    <input matInput 
+                    #lastNameControl="ngModel"
+                    [(ngModel)]="this.signIn.lastName"
+                    name="lastNameControl"
+                    placeholder="{{ 'login.signin.lastNamePlaceholder' | translate }}"
+                    required >
+                    <mat-error *ngIf="lastNameControl.invalid && (lastNameControl.dirty || lastNameControl.touched)">
+                    {{ 'login.signin.lastNameRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex class="item">
+                <mat-form-field class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.secondLastName' | translate }}</mat-label>
+                    <input matInput 
+                    #secondLastNameControl="ngModel"
+                    [(ngModel)]="this.signIn.secondLastName"
+                    name="secondLastNameControl"
+                    placeholder="{{ 'login.signin.secondLastNamePlaceholder' | translate }}"
+                    >
+                    <mat-error *ngIf="secondLastNameControl.invalid && (secondLastNameControl.dirty || secondLastNameControl.touched)">
+                    {{ 'login.signin.secondLastNameRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
+            <div fxFlex="20" class="item">
+                <mat-form-field class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.country' | translate }}</mat-label>
+                    <mat-select 
+                    name="country"
+                    #countryControl="ngModel"
+                    [(ngModel)]="this.signIn.countryId"
+                    (selectionChange)="onCountryChange($event)"
+                    required >
+                    <mat-option *ngFor="let country of countries" [value]="country.id">
+                        {{country.name}}
+                    </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="countryControl.invalid && (countryControl.dirty || countryControl.touched)">
+                    {{ 'login.signin.countryRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="20" class="item">
+                <mat-form-field class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.state' | translate }}</mat-label>
+                    <mat-select 
+                    name="state"
+                    #stateControl="ngModel"
+                    [(ngModel)]="this.signIn.stateId"
+                    required>
+                    <mat-option *ngFor="let state of states" [value]="state.id">
+                        {{state.name}}
+                    </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="stateControl.invalid && (stateControl.dirty || stateControl.touched)">
+                    {{ 'login.signin.stateRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex class="item">
+                <mat-form-field class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.street' | translate }}</mat-label>
+                    <input matInput 
+                    #streetControl="ngModel"
+                    [(ngModel)]="this.signIn.street"
+                    name="streetControl"
+                    placeholder="{{ 'login.signin.streetPlaceholder' | translate }}"
+                    required >
+                    <mat-error *ngIf="streetControl.invalid && (streetControl.dirty || streetControl.touched)">
+                    {{ 'login.signin.streetRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="10" class="item">
+                <mat-form-field class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.number' | translate }}</mat-label>
+                    <input matInput 
+                    #numberControl="ngModel"
+                    [(ngModel)]="this.signIn.number"
+                    name="numberControl"
+                    placeholder="{{ 'login.signin.numberPlaceholder' | translate }}"
+                    required
+                    >
+                    <mat-error *ngIf="numberControl.invalid && (numberControl.dirty || numberControl.touched)">
+                    {{ 'login.signin.numberRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start">
+            <div fxFlex="25" class="item">
+                <mat-form-field class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.language' | translate }}</mat-label>
+                    <mat-select
+                    name="lang"
+                    #langControl="ngModel"
+                    [(ngModel)]="this.signIn.lang"
+                    (selectionChange)="onLanguageChange($event)"
+                    required
+                    >
+                    <mat-option *ngFor="let lang of languages" [value]="lang.value">
+                        {{lang.viewValue}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="end">
+            <button type="submit" fxFlex="25" mat-raised-button type="submit" [disabled]="!signInForm.form.valid" class="signin-button">
+                <strong>{{ 'login.signin.title' | translate }}</strong>
+            </button>
+        </div>
+    </form>
+</div>
+<div class="overlay" *ngIf="loading === true" >
+    <div class="progress-spinner-margin">
+      <mat-progress-spinner 
+        mode="indeterminate">
+      </mat-progress-spinner>
+    </div>
+  </div>
