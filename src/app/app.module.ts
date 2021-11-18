@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Material modules
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatIconModule} from '@angular/material/icon';
+import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -19,6 +19,7 @@ import {MatTabsModule } from '@angular/material/tabs';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Modulo de mapas de google
 // import { AgmCoreModule } from '@agm/core';
@@ -34,11 +35,16 @@ import { AppRoutingModule } from './app-routing.module';
 // Importacion de los componentes
 import { AppComponent } from './app.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
+import { SimpleMessageComponent } from './shared/modals/simple-message/simple-message.component';
+
+
+
 
 @NgModule({
+  exports: [],
   declarations: [
     AppComponent,
-
+    SimpleMessageComponent,
   ],
   imports:
   [
@@ -60,6 +66,7 @@ import { GoogleMapComponent } from './google-map/google-map.component';
     MatSlideToggleModule,
     MatInputModule,
     MatSelectModule,
+    MatDialogModule, //Modulo para los dialogos
     HttpClientModule,
     TranslateModule.forRoot({
         loader: {
@@ -74,7 +81,12 @@ import { GoogleMapComponent } from './google-map/google-map.component';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+  constructor(public matIconRegistry: MatIconRegistry) {
+    // matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
+  }
+
+ }
 
 // Requerido para la compilacion (AOT) antes de tiempo
 export function HttpLoaderFactory(http: HttpClient) {
