@@ -31,7 +31,10 @@
         "noVehicleFoundMessage": "No vehicles found, please go to <a href=\"settings\">Settings</a> to add them" 
     },
     "settings": {
-        "vehicles":"vehicles",
+        "vehicles":"Vehicles",
+        "groups": "Groups",
+        "users": "Users",
+        "others": "Others",
         "addVehicle": {
             "title": "Add vehicle or object",
             "vehicleName": "Name",

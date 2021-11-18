@@ -24,7 +24,41 @@
         "passwordRequired": "Password is required",
         "checkCredentials": "Please verify email and/or password",
         "unknowError": "System not available, please contact technical support",
-        "signin": "Sign in"
+        "signin": {
+            "email": "Email",
+            "emailRequired": "Email is required",
+            "password": "Password",
+            "passwordPlaceholder": "A very strong password",
+            "passwordRequired": "Password is required",
+            "confirmPassword": "Confirm password",
+            "confirmPasswordPlaceholder": "Confirm your password",
+            "confirmPasswordRequired": "Password confirmation is required",
+            "name": "Name",
+            "namePlaceholder": "Ex. Jhon",
+            "nameRequired": "Your name is required",
+            "lastName": "Last name",
+            "lastNamePlaceholder": "Ex. Doe",
+            "lastNameRequired": "Last name is required",
+            "secondLastName": "Second last name (if you have)",
+            "secondLastNamePlaceholder": "Ex. Johnson",
+            "country": "Country",
+            "countryPlaceholder": "Ex. Mexico",
+            "countryRequired": "Country is required",
+            "state": "State",
+            "statePlaceholder": "Ex. Cd de Mexico",
+            "stateRequired": "State is required",
+            "title": "Sign in",
+            "street": "Street",
+            "streetRequired": "Street is required",
+            "streetPlaceholder": "Ex. Av ever green",
+            "number": "Number",
+            "numberRequired": "Number required",
+            "numberPlaceholder": "Ex. 123",
+            "back": "Back",
+            "error": "There was an error singin your account, please contact technical support",
+            "passwordNotMatch": "Passwords dot not match"
+
+        }
     },
     
     "home" :

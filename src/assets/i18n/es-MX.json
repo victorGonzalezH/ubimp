@@ -1,0 +1,85 @@
+{
+    "main": 
+    {
+        "title": "ubimp",
+        "items":
+        {
+            "item1": "Ubicaciones",
+            "item2": "Geomallas",
+            "item3": "Configuración"
+        }
+        
+    },
+
+    "login": 
+    {
+        "email": "Correo",
+        "emailPlaceholder": "Por ejemplo: usuario@ejemplo.com",
+        "password": "Contraseña",
+        "language": "Idioma",
+        "access": "Acceder",
+        "emailRequired": "El correo es requerido",
+        "emailInvalid": "Escriba un correo válido",
+        "passwordRequired": "La contraseña es requerida",
+        "checkCredentials": "Por favor verifique su correo y/o contraseña",
+        "unknowError": "Sistema no disponible, favor de contactar al servicio de soporte",
+        "signin": {
+            "email": "Correo",
+            "emailRequired": "El correo es requerido",
+            "password": "Contraseña",
+            "passwordPlaceholder": "Escriba una contraseña segura",
+            "passwordRequired": "La contraseña es requerida",
+            "confirmPassword": "Confirme la contraseña",
+            "confirmPasswordPlaceholder": "Confirme la contraseña",
+            "confirmPasswordRequired": "Confirmar la contraseña es requerida",
+            "name": "Nombre",
+            "namePlaceholder": "Ej. Juan",
+            "nameRequired": "Su nombre es requerido",
+            "lastName": "Apellido",
+            "lastNamePlaceholder": "Ej. Pérez",
+            "lastNameRequired": "Su apellido es requerido",
+            "secondLastName": "Apellido materno",
+            "secondLastNamePlaceholder": "Ej. ",
+            "country": "País",
+            "countryPlaceholder": "Ej. México",
+            "countryRequired": "El país es requerido",
+            "state": "Estado",
+            "statePlaceholder": "Ej. Cd de Mexico",
+            "stateRequired": "El estado es requerido",
+            "title": "Registrarse",
+            "street": "Calle",
+            "streetRequired": "La calle es requerida",
+            "streetPlaceholder": "Ej. Av. Siempre verde",
+            "number": "Número",
+            "numberRequired": "El número es requerido",
+            "numberPlaceholder": "Ej. 123",
+            "back": "Atrás",
+            "error": "Hubo un error al registrar su cuenta, favor de contactar al servicio de soporte"
+
+        }
+    },
+
+    "home": {
+        "vehicles": "Vehículos",
+        "showOnMap": "Mostrar en mapa",
+        "settings": "Configuración",
+        "realTime": "Tiempo real",
+        "autoZoom": "Ajustar mapa automáticamente",
+        "showUserLocation": "Mostrar mi ubicación",
+        "noVehicleFoundMessage": "No se encontraron vehículos u objetos para rastrear, por favor vaya a <a href=\"settings\">Configuración</a> para agregarlos"
+    },
+
+    "settings": {
+        "vehicles":"Vehículos",
+        "addVehicle": {
+            "title": "Nuevo vehículo",
+            "vehicleName": "Nombre del vehículo, objeto o persona a rastrear",
+            "vehicleNamePlaceHolder": "Escriba un nombre para identificar el vehículo",
+            "brand": "Marca",
+            "model": "Modelo",
+            "licensePlate": "Número de placa",
+            "year": "Año",
+            "description": "Descripción"
+        }
+    }
+}
