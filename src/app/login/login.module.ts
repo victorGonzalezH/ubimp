@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
@@ -22,9 +23,12 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import { LoginService } from './login.service';
 import { DataService } from 'utils';
+import { SigninComponent } from './signin/signin.component';
+
+import { SigninService } from './signin/signin.service';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, SigninComponent],
   imports: [
     CommonModule,
     LoginRoutingModule,
@@ -40,8 +44,9 @@ import { DataService } from 'utils';
     MatSlideToggleModule,
     MatInputModule,
     MatSelectModule,
-    TranslateModule
+    TranslateModule,
+    FlexLayoutModule
   ],
-  providers: [LoginService, DataService, Location ]
+  providers: [LoginService, DataService, Location, SigninService ]
 })
 export class LoginModule { }
