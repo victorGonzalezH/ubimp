@@ -118,6 +118,7 @@
   
   <mat-sidenav-content role="region" >
     <app-google-map 
+    #mapComponent
     (ready)="onMapReady($event)"
     [markers]="markersObs | async"
     [latitude]="latitude | async"

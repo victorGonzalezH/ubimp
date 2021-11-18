@@ -15,7 +15,7 @@ import { VehicleDto } from '../shared/models/vehicle.model';
 export class HomeService {
 
   readonly USER_LOCATION_HIGH_ACCURACY = true;
-  readonly USER_LOCATION_MAX_AGE = 5000;
+  readonly USER_LOCATION_MAX_AGE = 0;
   readonly USER_LOCATION_TIME_OUT = 5000;
 
   
@@ -27,9 +27,9 @@ export class HomeService {
       // Cuando el componente que haga uso del servicio homeService al momento de acceder
       // a esta propiedad el servicio se suscribe al observable del servicio de ubicaciones
       // (Se suscribe a el evento 'newLocation' que es en donde se recibiran las ubicaciones)
-      return this.locationsService.addEvent('newLocation').pipe(map( nl => 
+      return this.locationsService.addEvent('newLocation')
+      .pipe(map( nl => 
         { 
-          
           const vehicleTrackingDto: VehicleTrackingDto = 
           {
             latitude: nl.latitude,
@@ -39,7 +39,7 @@ export class HomeService {
             statusId: nl.statusId
           };
           return vehicleTrackingDto;
-        } ));
+        }));
   }
 
   constructor(private locationsService: RealtimeService,
@@ -52,7 +52,7 @@ export class HomeService {
     const user = JSON.parse(userString);
 
     // Se conecta el servicio de ubicaciones al servicio de tiempo real
-    this.locationsService.connect(this.appConfigService.locationsRealTimeUrl, user.token);
+    this.locationsService.connect(this.appConfigService.realTimeUrl, user.token);
     
     
     // this.vehicleTrackingSource = new Subject<VehicleTrackingDto>();
@@ -61,9 +61,13 @@ export class HomeService {
 
     // Si el servicio no esta observando los cambios de posicion entonces se activan
     if (this.userGeoLocationService.isWatchingLocation() === false) {
-      this.userGeoLocationService.startWatching(this.USER_LOCATION_HIGH_ACCURACY, this.USER_LOCATION_MAX_AGE, this.USER_LOCATION_TIME_OUT);
+      // console.log('no watching');
+      const result = this.userGeoLocationService.startWatching(this.USER_LOCATION_HIGH_ACCURACY, this.USER_LOCATION_MAX_AGE, this.USER_LOCATION_TIME_OUT);
     }
-
+    else
+    {
+      // console.log('already watching');
+    }
   }
 
 

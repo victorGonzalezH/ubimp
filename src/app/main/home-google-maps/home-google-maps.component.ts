@@ -13,6 +13,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalMessageComponent } from '../shared/modals/modal-message/modal-message.component';
+import { GoogleMapComponent } from 'src/app/google-map/google-map.component';
 
 
 @Component({
@@ -66,6 +67,14 @@ export class HomeGoogleMapsComponent implements OnInit, OnDestroy, AfterViewInit
   public longitudeSub: BehaviorSubject<number>;
 
   /**
+   * Last latitude value, we use this in a null location
+   * value is received
+   */
+  private lastLatitude: number;
+
+  private lastLongitude: number;
+
+  /**
    * Indica el modo en el que funciona el sidebar de este componente
    */
   public sidebarMode: string;
@@ -76,7 +85,7 @@ export class HomeGoogleMapsComponent implements OnInit, OnDestroy, AfterViewInit
 
   private getVehicleTrackingSubscription: Subscription;
   private vehiclesTrackingSubscription: Subscription;
-
+  @ViewChild('mapComponent') mapComponent: GoogleMapComponent;
   constructor(private homeService: HomeService, private messengerService: MessengerService,
               private translateService: TranslateService, private storageService: StorageService,
               private appConfigService: AppConfigService, private matIconRegistry: MatIconRegistry,
@@ -88,19 +97,25 @@ export class HomeGoogleMapsComponent implements OnInit, OnDestroy, AfterViewInit
     this.homeInputs = { autoZoomEnabled: true, realTimeEnabled: true, showUserLocation: true };
     this.loading = false;
     this.sidebarMode = 'over';
+    this.markersSub = new BehaviorSubject<Marker[]>(null);
+    this.markersObs = this.markersSub.asObservable();
 
     this.latitude = this.homeService.userLocation.pipe(map( userLocation => {
+      
       if (this.homeInputs.showUserLocation === true && userLocation != null && userLocation != undefined) {
+        this.lastLatitude = userLocation.coords.latitude;
         return userLocation.coords.latitude;
       }
-      return null;
+      return this.lastLatitude;
     }));
     this.longitude = this.homeService.userLocation.pipe(map( userLocation => {
+      
       if (this.homeInputs.showUserLocation === true && userLocation != null && userLocation != undefined) {
+        this.lastLongitude = userLocation.coords.longitude;
         return userLocation.coords.longitude;
       }
 
-      return null;
+      return this.lastLongitude;
 
     }));
     
@@ -250,7 +265,10 @@ export class HomeGoogleMapsComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-
+    if(this.vehicles.length == 0)
+    {
+        
+    }
   }
 
 
@@ -259,12 +277,9 @@ export class HomeGoogleMapsComponent implements OnInit, OnDestroy, AfterViewInit
     await this.translateService.get('home.noVehicleFoundMessage').toPromise().then();
     await this.translateService.get('main.title').toPromise().then();
     this.globalSetSideNav();
-    console.log(this.translateService.getDefaultLang());
     const message = this.translateService.instant('home.noVehicleFoundMessage');
     const title = this.translateService.instant('main.title');
-    console.log(message); 
-    this.markersSub = new BehaviorSubject<Marker[]>(null);
-    this.markersObs = this.markersSub.asObservable();
+
     // this.longitudeSub = new BehaviorSubject<number>(0);
     // this.longitude = this.longitudeSub.asObservable();
 
