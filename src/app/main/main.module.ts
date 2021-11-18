@@ -14,6 +14,8 @@ import { ModalMessageComponent } from './shared/modals/modal-message/modal-messa
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 
+
+
 @NgModule({
   declarations: 
   [MainComponent,
@@ -28,7 +30,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatListModule,
     TranslateModule,
     MatDialogModule, //Modulo para los dialogos
-    MatTabsModule
+    MatTabsModule,
   ], 
   entryComponents: [
     ModalMessageComponent

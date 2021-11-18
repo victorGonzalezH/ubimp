@@ -5,7 +5,7 @@
       text-decoration: none;
       font-family: Roboto, Helvetica Neue, sans-serif; letter-spacing: normal;"
       href="login/signin">
-      {{ 'login.signin' | translate }}
+      {{ 'login.signin.title' | translate }}
     </a>
 <div class="loginContainerParent" >
     <form [formGroup]="loginFormControl" class="loginForm" (ngSubmit)="onSubmit()">
@@ -44,7 +44,7 @@
       <!-- Error desconocido -->
       <div *ngIf="this.loginFormControl.errors?.unknowError" style="display: block; font-size: 85%; text-align: left; font-weight: 400;line-height: 1.125; font-family: Roboto, Helvetica Neue, sans-serif; letter-spacing: normal;">
         <mat-error>
-        <strong>{{ 'login.unknowError' | translate }}</strong>
+          <strong>{{ 'login.unknowError' | translate }}</strong>
         </mat-error>
       </div>
 
@@ -69,10 +69,10 @@
       </button>
     </form>
 </div>
-<div class="overlay" *ngIf="loading === true" >
-<div class="progress-spinner-margin">
-  <mat-progress-spinner 
-    mode="indeterminate">
-  </mat-progress-spinner>
-</div>
+<div class="overlay" *ngIf="loading === true">
+  <div class="progress-spinner-margin">
+    <mat-progress-spinner 
+      mode="indeterminate">
+    </mat-progress-spinner>
+  </div>
 </div>

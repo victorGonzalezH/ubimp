@@ -34,3 +34,5 @@ html, body {
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+
+/* .mat-form-field-required-marker { color: red } */
