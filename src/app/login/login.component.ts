@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
     } else {
       this.defaultLanguage = this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session);
     }
-    console.log(navigator.language);
+    
     this.loading = false;
    }
 
@@ -95,7 +95,6 @@ ngOnInit(): void
     this.loginService.login(username, password, this.defaultLanguage)
     .subscribe( {
       next: value => {
-        console.log(value);
         this.loading = false;
         // Se guarda el lenguaje elegido por el usuario
         this.storageService.store(this.appConfigService.defaultLanguage, this.defaultLanguage, StorageType.Session);
