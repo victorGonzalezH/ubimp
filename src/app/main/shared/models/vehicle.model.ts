@@ -75,16 +75,30 @@ export interface VehicleGroupDto {
     name: string;
     order: number;
     visible: boolean;
+    editing ?: boolean;
     vehicles: VehicleDto[];
  }
+
 
 export interface VehicleDto {
 
     name: string;
 
-    description: string;
-
     imei: string;
+
+    objectTypeId: string;
+
+    vehicleGroupName: string;
+
+    brand: string;
+
+    model: string;
+
+    licensePlate: string;
+
+    year: string;
+
+    description: string;
 
     vehicleTypeId: VehicleTypes;
 
