@@ -13,6 +13,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import { ModalMessageComponent } from './shared/modals/modal-message/modal-message.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -31,6 +32,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     TranslateModule,
     MatDialogModule, //Modulo para los dialogos
     MatTabsModule,
+    MatTooltipModule,
   ], 
   entryComponents: [
     ModalMessageComponent
