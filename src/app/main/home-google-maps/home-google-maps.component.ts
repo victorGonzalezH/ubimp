@@ -121,12 +121,14 @@ export class HomeGoogleMapsComponent implements OnInit, OnDestroy, AfterViewInit
     
     if (this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session) == undefined) {
 
-      // Se establece espanol como idioma por default.
-      this.translateService.setDefaultLang('es');
+      // Se establece el lenguaje del navegador al no haber un lenguaje guardado en el storage
+      // esto se hace para que la traduccion se haga correctamente
+      this.translateService.setDefaultLang(navigator.language);
       
     } else {
 
       const defaultLanguage = this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session);
+      
       this.translateService.setDefaultLang(defaultLanguage);
     }
 
