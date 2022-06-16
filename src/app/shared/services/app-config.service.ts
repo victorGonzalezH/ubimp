@@ -81,6 +81,7 @@ export class AppConfigService {
     return this.authorizationKeyLocal;
   }
 
+  
   constructor(private dataService: DataService) {
     this.hostUrl = window.location.host;
     this.loginUrlLocal = 'localhost:3000';
