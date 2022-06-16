@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import {HttpClient, HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PortalModule} from '@angular/cdk/portal';
-import {UtilsModule, StorageService, MessengerService, GeolocationService, RealtimeService, DataService, ErrorInterceptor, JwtInterceptor} from 'utils';
+import {UtilsModule, StorageService, MessengerService, GeolocationService, RealtimeService, DataService, ErrorInterceptor, JwtInterceptor, UtilsService} from 'utils';
 import {AppConfigService} from './shared/services/app-config.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -25,7 +25,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 // import { AgmCoreModule } from '@agm/core';
 
 // Modulos para la internacionalizacion
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 
@@ -36,15 +36,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { SimpleMessageComponent } from './shared/modals/simple-message/simple-message.component';
+import { OkCancelDialogComponent } from './shared/modals/ok-cancel-dialog/ok-cancel-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { AuthenticationService } from './shared/services/authentication.service';
 
-
-
+import { appInitializer } from '../app/shared/helpers/app.initializer';
 
 @NgModule({
   exports: [],
   declarations: [
     AppComponent,
     SimpleMessageComponent,
+    OkCancelDialogComponent,
   ],
   imports:
   [
@@ -68,6 +71,7 @@ import { SimpleMessageComponent } from './shared/modals/simple-message/simple-me
     MatSelectModule,
     MatDialogModule, //Modulo para los dialogos
     HttpClientModule,
+    MatTooltipModule,
     TranslateModule.forRoot({
         loader: {
             provide: TranslateLoader,
@@ -77,8 +81,18 @@ import { SimpleMessageComponent } from './shared/modals/simple-message/simple-me
     })
 
   ],
-  providers: [StorageService, MessengerService, GeolocationService, RealtimeService, AppConfigService, DataService, Location, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
+  providers: [
+    TranslateService,
+    StorageService,
+    MessengerService,
+    GeolocationService,
+    RealtimeService,
+    AppConfigService,
+    DataService,
+    Location,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService,  UtilsService, AppConfigService] },],
   bootstrap: [AppComponent],
 })
 export class AppModule {
