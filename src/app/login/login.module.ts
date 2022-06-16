@@ -26,9 +26,10 @@ import { DataService } from 'utils';
 import { SigninComponent } from './signin/signin.component';
 
 import { SigninService } from './signin/signin.service';
+import { ActivateComponent } from './activate/activate.component';
 
 @NgModule({
-  declarations: [LoginComponent, SigninComponent],
+  declarations: [LoginComponent, SigninComponent, ActivateComponent],
   imports: [
     CommonModule,
     LoginRoutingModule,
