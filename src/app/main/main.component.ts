@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, OnInit, Component, OnDestroy, HostListener} from '@angular/core';
 import {BreakpointObserver, Breakpoints, MediaMatcher} from '@angular/cdk/layout';
 import {TranslateService} from '@ngx-translate/core';
-import {MessengerService, StorageService} from 'utils';
+import {MessengerService, StorageService, StorageType} from 'utils';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -38,10 +38,25 @@ export class MainComponent implements OnInit, OnDestroy
   currentWindowConfig: IWindowConfig;
 
   // media: MediaMatcher. Clase de Aagular material.
-   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private translateService: TranslateService, private messengerService: MessengerService, private router: Router, breakpointObserver: BreakpointObserver, private appConfigService: AppConfigService)  {
+   constructor(changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher, private translateService: TranslateService,
+    private messengerService: MessengerService, private router: Router,
+    breakpointObserver: BreakpointObserver,
+    private appConfigService: AppConfigService,
+    private storageService: StorageService)  {
      
-     // Se establece ingles como idioma por default.
-      this.translateService.setDefaultLang('en');
+    if (this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session) == undefined) {
+
+      // Se establece el lenguaje del navegador al no haber un lenguaje guardado en el storage
+      // esto se hace para que la traduccion se haga correctamente
+      this.translateService.setDefaultLang(navigator.language);
+      
+    } else {
+
+      const defaultLanguage = this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session);
+      this.translateService.setDefaultLang(defaultLanguage);
+    }
+
       
       this.mobileQuery = media.matchMedia('(max-width: 600px)');
       this.mobileQueryListener = () => {
