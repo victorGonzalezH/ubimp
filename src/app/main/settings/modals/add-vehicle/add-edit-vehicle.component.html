@@ -1,4 +1,9 @@
-<h2 mat-dialog-title>{{ 'settings.addVehicle.title' | translate }}</h2>
+<h2 *ngIf="isAddingVehicle === true" mat-dialog-title>
+  {{ 'settings.addVehicle.title' | translate }}
+</h2>
+<h2 *ngIf="isAddingVehicle === false" mat-dialog-title>
+  {{ 'settings.vehicle.update.title' | translate }}
+</h2>
 <mat-dialog-content>
     <form  [ngSwitch]="objectTypeAsNumber" #addVehicleForm="ngForm">
         <div>
@@ -7,10 +12,11 @@
           <br/>
           <div style=" text-align: center;">
         <mat-button-toggle-group 
-        #group="matButtonToggleGroup"
-        [(ngModel)]="addVehicle.objectType"
-        name="objectType"
-        >
+          #group="matButtonToggleGroup"
+          [(ngModel)]="addVehicle.objectTypeId"
+          name="objectTypeId"
+          required
+          >
           <mat-button-toggle value="1" aria-label="Text align left">
             <mat-icon fontSet="fa" fontIcon="fa-car"></mat-icon>
           </mat-button-toggle>
@@ -39,14 +45,17 @@
       </div>
       </div>
       <br/>
-      <mat-form-field class="addVehicleFormField">
+
+      <mat-form-field
+        *ngIf="isAddingVehicle === true"
+        class="addVehicleFormField">
         <mat-label>{{ 'settings.addVehicle.imei' | translate }}</mat-label>
         <mat-select 
         name="imei"
         #imeiControl="ngModel"
         [(ngModel)]="this.addVehicle.imei"
          required>
-          <mat-option *ngFor="let device of devices" [value]="device.id">
+          <mat-option *ngFor="let device of devices" [value]="device.imei">
             {{device.imei}}
           </mat-option>
         </mat-select>
@@ -54,6 +63,69 @@
           {{ 'settings.addVehicle.imeiRequired' | translate }}
         </mat-error>
       </mat-form-field>
+
+      <table style="width: 100%;">
+        <tr>
+          <td style="width: 95%;">
+            <mat-form-field class="addVehicleFormField">
+              <mat-label>{{ 'settings.addVehicle.vehicleGroup' | translate }}</mat-label>
+              <mat-select
+              name="vehicleGroup"
+              #vehicleGroupControl="ngModel"
+              [(ngModel)]="this.addVehicle.vehicleGroupName"
+              required >
+                <mat-option *ngFor="let vehiclesGroup of vehiclesGroups"
+                [value]="vehiclesGroup.name">
+                  {{vehiclesGroup.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="vehicleGroupControl.invalid && (vehicleGroupControl.dirty || vehicleGroupControl.touched)">
+                {{ 'settings.addVehicle.vehicleGroupRequired' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td>
+            <div class="add-group-btn"
+            style="text-align: center;"
+            (click)="addVehicleGroup()">
+            <mat-icon>add</mat-icon>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table style="width: 100%;" *ngIf="addingVehicleGroup === true">
+        <tr>
+          <td style="width: 90%;">
+            <div style="margin-left:2px; margin-right: 8px;">
+              <input style="width: 100%;"
+              name="newVehicleGroup"
+              placeholder="{{ 'settings.vehicle.add.addVehicleGroupHolder' | translate }}"
+              [(ngModel)]="newVehicleGroupName"
+              #newVehicleGroupControl="ngModel"
+              >
+            </div>
+          </td>
+          <td>
+            <div class="check-small-btn"
+            style="text-align: center;"
+            (click)="saveVehicleGroup()"
+            >
+              <mat-icon [inline]="true">check</mat-icon>
+            </div>
+          </td>
+          <td>
+            <div class="cancel-small-btn"
+              style="text-align: center;"
+              (click)="saveVehicleGroup()"
+              >
+              <mat-icon [inline]="true">close</mat-icon>
+            </div>
+          </td>
+        </tr>
+      </table>
+      
+      
+    
       <mat-form-field class="addVehicleFormField" *ngSwitchCase="[6, 7, 8] | switchMulticase:objectTypeAsNumber">
             <mat-label>{{ 'settings.addVehicle.vehicleName' | translate }}</mat-label>
             <input matInput 
@@ -66,24 +138,29 @@
               {{ 'settings.addVehicle.vehicleNameRequired' | translate }}
             </mat-error>
         </mat-form-field>
+
         <mat-form-field class="addVehicleFormField" class="addVehicleFormField" *ngSwitchCase="[1, 2, 3, 4, 5] | switchMulticase:objectTypeAsNumber">
           <mat-label>{{ 'settings.addVehicle.brand' | translate }}</mat-label>
           <mat-select
           name="brand"
+          #brandControl="ngModel"
+          [(ngModel)]="addVehicle.brand"
           (selectionChange)="onBrandChange($event)"
           required >
-            <mat-option *ngFor="let brand of brands" [value]="brand.id">
+            <mat-option *ngFor="let brand of brands" [value]="brand.name" >
               {{brand.name}}
             </mat-option>
           </mat-select>
         </mat-form-field>
+
         <mat-form-field class="addVehicleFormField" *ngSwitchCase="[1, 2, 3, 4, 5] | switchMulticase:objectTypeAsNumber">
           <mat-label>{{ 'settings.addVehicle.model' | translate }}</mat-label>
           <mat-select 
           name="model"
           #modelControl="ngModel"
-          [(ngModel)]="addVehicle.modelId" required >
-            <mat-option *ngFor="let model of models" [value]="model.id">
+          [(ngModel)]="addVehicle.model"
+          required >
+            <mat-option *ngFor="let model of models" [value]="model.name">
               {{model.name}}
             </mat-option>
           </mat-select>
@@ -91,6 +168,7 @@
             {{ 'settings.addVehicle.modelRequired' | translate }}
           </mat-error>
         </mat-form-field>
+
         <mat-form-field class="addVehicleFormField" *ngSwitchCase="[1, 2, 3, 4, 5] | switchMulticase:objectTypeAsNumber">
           <mat-label>{{ 'settings.addVehicle.year' | translate }}</mat-label>
           <input matInput
@@ -106,13 +184,21 @@
             {{ 'settings.addVehicle.yearRequired' | translate }}
           </mat-error>
       </mat-form-field>
-        <mat-form-field class="addVehicleFormField" *ngSwitchCase="[1, 2, 3, 4, 5] | switchMulticase:objectTypeAsNumber">
+
+      <mat-form-field class="addVehicleFormField" *ngSwitchCase="[1, 2, 3, 4, 5] | switchMulticase:objectTypeAsNumber">
           <mat-label>{{ 'settings.addVehicle.licensePlate' | translate }}</mat-label>
           <input matInput  name="licensePlate" #licensePlateControl="ngModel" [(ngModel)]="this.addVehicle.licensePlate" placeholder="{{ 'settings.addVehicle.licensePlateHolder' | translate }}" required >
           <mat-error *ngIf="licensePlateControl.invalid && (licensePlateControl.dirty || licensePlateControl.touched)">
             {{ 'settings.addVehicle.licensePlateRequired' | translate }}
           </mat-error>
       </mat-form-field>
+
+      <mat-form-field class="addVehicleFormField">
+        <mat-label>{{ 'settings.addVehicle.description' | translate }}</mat-label>
+        <input matInput  name="description" #descriptionControl="ngModel"
+        [(ngModel)]="this.addVehicle.description" placeholder="{{ 'settings.addVehicle.descriptionHolder' | translate }}" >
+    </mat-form-field>
+
     </form>
     
 </mat-dialog-content>

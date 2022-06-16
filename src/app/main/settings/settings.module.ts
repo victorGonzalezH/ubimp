@@ -7,21 +7,21 @@ import { MatListModule } from '@angular/material/list';
 import {TranslateModule} from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { AddVehicleComponent } from './modals/add-vehicle/add-vehicle.component';
+import { AddEditVehicleComponent } from './modals/add-vehicle/add-edit-vehicle.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { SwitchMulticasePipe } from '../../shared/pipes/switch-multicase.pipe';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
 
 @NgModule({
   declarations: [SettingsComponent,
-    AddVehicleComponent, SwitchMulticasePipe],
+    AddEditVehicleComponent, SwitchMulticasePipe],
   imports: [
     CommonModule,
     SettingsRoutingModule,
@@ -36,6 +36,7 @@ import { SwitchMulticasePipe } from '../../shared/pipes/switch-multicase.pipe';
     MatDialogModule,
     MatSelectModule,
     MatButtonToggleModule,
+    MatTooltipModule,
   ]
 })
 export class SettingsModule { }

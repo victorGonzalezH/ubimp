@@ -4,8 +4,7 @@
   }
 
   .settings-container {
-    padding: 15px;
-    background-color: #373740;
+
   }
 
 
@@ -26,4 +25,9 @@
     margin-top: 20px;
     margin-right: 13px;
     color: #ffffff;
+  }
+
+  .mat-list-vehicles-icon {
+    margin-left: 15px;
+    transform: scale(1.5);
   }

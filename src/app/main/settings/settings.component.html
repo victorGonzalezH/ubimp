@@ -1,38 +1,140 @@
-<div class="settings-container" >
+<div class="settings-container">
 <mat-tab-group mat-align-tabs="start" 
     (selectedTabChange)="onSelectedTabChange()"
     [(selectedIndex)]="selectedTab"
-    style="background-color: #373740; color: white;">
-    <mat-tab label="{{'settings.vehicles' | translate }}" > 
+    backgroundColor='primary'
+    >
+    <mat-tab 
+        label="{{'settings.vehicles' | translate }}" >
         <ng-template mat-tab-label>
             <div>
-                <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
-                <mat-icon class="settings-sidenav-tab-icon-svg" svgIcon="car"></mat-icon>
+                <table>
+                    <tr>
+                        <td>
+                            <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
+                            <mat-icon class="settings-sidenav-tab-icon-svg" svgIcon="car"></mat-icon>
+                        </td>
+                        <td>
+                            <h4 class="settings-sidenav-tab-label">{{ 'settings.vehicles' | translate }}</h4>
+                        </td>
+                    </tr>
+                </table>    
+                <div >
+                        
+                </div>
             </div>
-            <div class="settings-sidenav-tab-label" ><h4>{{ 'settings.vehicles' | translate }}</h4></div>
         </ng-template>
-        <div>
-            <mat-list>
+        <!-- (selectionChange)="selectionChange($event)" -->
+        <div style="background-color: white;">
+            <mat-selection-list [multiple]="false" 
+            #vehiclesList
+            >
                 <div *ngFor="let group of groups">
-                    <h3 matSubheader>{{group.name}}</h3>
-                    <mat-list-item *ngFor="let vehicle of group.vehicles">
-                        <mat-icon matListIcon>{{vehicle.icon}}</mat-icon>
-                        <h4 matLine>{{vehicle.name}}</h4>
-                        <p matLine class="demo-2"> {{vehicle.description}} </p>
-                     </mat-list-item>
+                    <div matSubheader style="font-size: x-large;" >
+                        <div style="width: 100%;" (click)="groupClick()">
+                            <p *ngIf="group.editing !== true" >{{group.name}}</p>
+                            <input
+                            *ngIf="group.editing === true"
+                            name="vehicleGroupName"
+                            placeholder="{{ 'settings.vehicleGroup.edit.vehicleGroupNameHolder' | translate }}"
+                            [(ngModel)]="group.name"
+                            #vehicleGroupNameControl="ngModel"
+                            style="width: 100%;"
+                            >
+                        </div>
+                        <button
+                        *ngIf="group.editing === true"
+                        mat-icon-button
+                        (click)="editVehicleGroup(group, false)"
+                        >
+                            <mat-icon>check</mat-icon>
+                        </button>
+                        <button
+                        *ngIf="group.editing !== true"
+                        mat-icon-button
+                        (click)="editVehicleGroup(group, true)"
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="deleteGroup(group.name)"
+                        *ngIf="group.vehicles.length === 0">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                    <!-- (focusout)="listUnfocus()" -->
+                    <mat-list-option
+                    *ngFor="let vehicle of group.vehicles"
+                    [ngSwitch]="vehicle.objectTypeId"
+                    (click)="itemClick(vehicle, group.name)"
+                    >
+                    <mat-icon mat-list-icon *ngSwitchCase="1" fontSet="fa" fontIcon="fa-car" class="mat-list-vehicles-icon"></mat-icon>
+                    <mat-icon mat-list-icon *ngSwitchCase="2" fontSet="fa" fontIcon="fa-taxi" class="mat-list-vehicles-icon"></mat-icon>
+                    <mat-icon mat-list-icon fontSet="fa"  *ngSwitchCase="3" fontIcon="fa-truck-pickup" class="mat-list-vehicles-icon"></mat-icon>
+                    <mat-icon mat-list-icon fontSet="fa"  *ngSwitchCase="4" fontIcon="fa-truck" class="mat-list-vehicles-icon"></mat-icon>
+                    <mat-icon mat-list-icon fontSet="fa"  *ngSwitchCase="5" fontIcon="fa-motorcycle" class="mat-list-vehicles-icon"></mat-icon>
+                    <mat-icon mat-list-icon fontSet="fa"  *ngSwitchCase="6" fontIcon="fa-bicycle" class="mat-list-vehicles-icon"></mat-icon>
+                    <mat-icon mat-list-icon fontSet="fa"  *ngSwitchCase="7" fontIcon="fa-male" class="mat-list-vehicles-icon"></mat-icon>
+                    <mat-icon mat-list-icon fontSet="fa"  *ngSwitchCase="8" fontIcon="fa-map-marker-alt" class="mat-list-vehicles-icon"></mat-icon>  
+                    <table>
+                        <tr>
+                            <td>
+                                <div>
+                                    <div mat-line> {{vehicle.name}} </div>
+                                    <div mat-line>{{vehicle.description}}</div>
+                                </div>
+                            </td>
+                            <td *ngIf="isSmallScreen === false" style="width: 10%; text-align: end;">
+                                <div>
+                                    <table style="width: 100%;text-align: center;">
+                                        <tr>
+                                            <td>
+                                                <button mat-mini-fab
+                                                (click)="addEditVehicle(false, $event, vehicle)"
+                                                >
+                                                    <mat-icon style="transform: scale(0.8);">edit</mat-icon>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button  mat-mini-fab color="warn" (click)="deleteVehicle(vehicle.name, group.name)">
+                                                    <mat-icon style="transform: scale(0.8);">delete</mat-icon>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <mat-divider></mat-divider>
+                     </mat-list-option>
+                     <mat-divider></mat-divider>
+                     <mat-divider></mat-divider>
+                     <mat-divider></mat-divider>
                      <mat-divider></mat-divider>
                 </div>
-             </mat-list>
+             </mat-selection-list>
         </div>
     </mat-tab>
     <mat-tab>
         <ng-template mat-tab-label>
-            <div>
-                <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
-                <!-- <mat-icon class="settings-sidenav-tab-icon-svg" svgIcon="car"></mat-icon> -->
-                <mat-icon fontSet="fa" class="settings-sidenav-tab-icon" fontIcon="fa-users"></mat-icon>
+            <div style="width: 100%; background-color: #373740;">
+                <table>
+                    <tr>
+                        <td>
+                            <!-- <mat-icon  class="home-sidenav-tab-icon">directions_car</mat-icon> -->
+                            <!-- <mat-icon class="settings-sidenav-tab-icon-svg" svgIcon="car"></mat-icon> -->
+                            <mat-icon fontSet="fa" class="settings-sidenav-tab-icon" fontIcon="fa-users"></mat-icon>
+                        </td>
+                        <td>
+                            <div class="settings-sidenav-tab-label" ><h4>{{ 'settings.users' | translate }}</h4></div>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <div class="settings-sidenav-tab-label" ><h4>{{ 'settings.users' | translate }}</h4></div>
         </ng-template>
     </mat-tab>
     <mat-tab>
@@ -49,15 +151,48 @@
         </div>
     </mat-tab>
   </mat-tab-group>
-  <button mat-fab 
-            *ngIf="showAddVehicleButton"
-             style="right: 20px;
-             bottom: 20px;
-             left: auto;
-             position: absolute;"
-             (click)="addVehicle()"
+</div>
+<table 
+*ngIf="showAddVehicleButton"
+style="
+z-index: 10;
+position:fixed;
+right:0;
+bottom:0;
+margin-right: 8px;
+margin-bottom: 8px;">
+    <tr [hidden]="!(isSmallScreen === true && isListItemSelected === true)" >
+        <td style="text-align: center;">
+            <button
+            mat-mini-fab
+            (click)="deleteVehicle()"
+            color="warn">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td 
+            [hidden]="(isSmallScreen === true && isListItemSelected === true)"
+            style="text-align: center;">
+            <button
+             mat-fab 
+             (click)="addEditVehicle(true, $event)"
              aria-label="Add button"
              >
-            <mat-icon style="font-weight: bold; color: #373740;">add</mat-icon>
-          </button>
-</div>
+            <mat-icon>add</mat-icon>
+            </button>
+        </td>
+        <td 
+            [hidden]="!(isSmallScreen === true && isListItemSelected === true)"
+            style="text-align: center;">
+            <button
+             mat-fab 
+             (click)="addEditVehicle(false, $event)"
+             aria-label="Edit button"
+             >
+            <mat-icon>edit</mat-icon>
+            </button>
+        </td>
+    </tr>
+</table>

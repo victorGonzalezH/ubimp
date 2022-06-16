@@ -7,6 +7,7 @@ import { VehicleGroupDto } from '../shared/models/vehicle.model';
 import { ObjectType } from './models/object-types.model';
 import { ApiResultBase } from 'utils';
 import { AddVehicle } from './models/add-vehicle.model';
+import { EditVehicle } from './models/edit-vehicle.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,20 +16,25 @@ export class SettingsService {
 
   constructor(private dataService: DataService, private appConfigService: AppConfigService) { }
 
-  getVehiclesGroup(): Observable<Array<VehicleGroupDto>> {
-    return this.dataService.get(this.appConfigService.apiUrl + '/vehicles/groups?userId=123', null, null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null)
+  /**
+   * 
+   * @param username 
+   * @returns 
+   */
+  getVehiclesGroups(username: string, lang: string): Observable<ApiResultBase> {
+    return this.dataService.get(this.appConfigService.apiUrl + '/vehicles/groups?username=' + username + '&lang=' + lang, null, null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null)
     .pipe(catchError(error => throwError(error) ));
   }
 
 
   /**
-   * Gets the assiged or no assigned devices
+   * Gets the assigned or no assigned devices
    * @param assigned 
    * @returns 
    */
-  getDevicesByAssigned(assigned: boolean): Observable<ApiResultBase> {
+  getDevicesByAssigned(assigned: boolean, username: string): Observable<ApiResultBase> {
 
-    return this.dataService.get(this.appConfigService.apiUrl + '/devices', [ { name: 'isAssigned', value: assigned } ], null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
+    return this.dataService.get(this.appConfigService.apiUrl + '/devices', [ { name: 'isAssigned', value: assigned }, { name: 'username', value: username } ], null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
   }
 
 
@@ -62,13 +68,45 @@ export class SettingsService {
   
   }
 
+
   /**
    * Save a vehicle
    * @param addVehicle 
    * @returns 
    */
-  saveVehicle(addVehicle: AddVehicle) {
+  saveVehicle(addVehicle: AddVehicle): Observable<ApiResultBase> {
     return this.dataService.post(this.appConfigService.apiUrl + '/vehicles', addVehicle, null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
+  }
+
+  /**
+   * 
+   * @param vehicleName name of the vehicle
+   * @returns 
+   */
+  deleteVehicle(vehicleName: string, groupName: string, lang: string): Observable<ApiResultBase> {
+
+    return this.dataService.delete(this.appConfigService.apiUrl + '/vehicles?vehiclename=' + vehicleName + '&groupname=' + groupName + '&lang=' + lang, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
+
+  }
+
+  /**
+   * Deletes a vehicle group
+   * @param groupName 
+   * @returns 
+   */
+  deleteGroup(groupName: string, lang: string) : Observable<ApiResultBase> {
+    return this.dataService.delete(this.appConfigService.apiUrl + '/vehicles/groups?groupname=' + groupName + '&lang=' + lang, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
+  }
+
+
+  /**
+   * Updates a vehicle
+   * @param vehicleName The vehicle name to be updated 
+   * @param editVehicle part to update
+   * @returns 
+   */
+  updateVehicle(vehicleName: string, editVehicle: EditVehicle) : Observable<ApiResultBase>  {
+    return this.dataService.put(this.appConfigService.apiUrl + '/vehicles/' + vehicleName, editVehicle, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
   }
 
 }

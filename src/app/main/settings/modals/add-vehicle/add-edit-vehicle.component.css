@@ -1,0 +1,154 @@
+.addVehicleContainer {
+    width: 100%;
+}
+.addVehicleFormField {
+    width: 100%;
+}
+
+.typeLabel {
+    color: #757575;
+    font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+}
+
+.add-group-btn {
+    position: relative;
+    display: block;
+    margin: 10px auto;
+    padding: 0;
+    overflow: hidden;
+    border-width: 0;
+    outline: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    background-color: #00FF00;
+    color: black;
+    transition: background-color .3s;
+}
+
+add-group-btn:hover, .add-group-btn:focus {
+    background-color: #00FF00;
+  }
+
+  .add-group-btn:before {
+    content: "";
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    display: block;
+    width: 0;
+    padding-top: 0;
+      
+    border-radius: 100%;
+    
+    background-color: rgba(236, 240, 241, .3);
+    
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  .add-group-btn:active:before {
+    width: 120%;
+    padding-top: 120%;
+    transition: width .2s ease-out, padding-top .2s ease-out;
+  }
+
+  .mat-button-toggle-group {
+    flex-wrap: wrap;
+  }
+
+  .check-small-btn {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-width: 0;
+    outline: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    background-color: #00FF00;
+    color: black;
+    transition: background-color .3s;
+  }
+
+  .check-small-btn:hover, .check-small-btn:focus {
+    background-color: #00FF00;
+  }
+
+  .check-small-btn:before {
+    content: "";
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    display: block;
+    width: 0;
+    padding-top: 0;
+      
+    border-radius: 100%;
+    
+    background-color: rgba(236, 240, 241, .3);
+    
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  .check-small-btn:active:before {
+    width: 120%;
+    padding-top: 120%;
+    transition: width .2s ease-out, padding-top .2s ease-out;
+  }
+
+
+
+  .cancel-small-btn {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-width: 0;
+    outline: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    background-color: red;
+    color: white;
+    transition: background-color .3s;
+  }
+
+  .cancel-small-btn:hover, .cancel-small-btn:focus {
+    background-color: red;
+  }
+
+  .cancel-small-btn:before {
+    content: "";
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    display: block;
+    width: 0;
+    padding-top: 0;
+      
+    border-radius: 100%;
+    
+    background-color: rgba(236, 240, 241, .3);
+    
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  .cancel-small-btn:active:before {
+    width: 120%;
+    padding-top: 120%;
+    transition: width .2s ease-out, padding-top .2s ease-out;
+  }
