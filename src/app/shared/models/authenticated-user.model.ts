@@ -4,5 +4,7 @@ export interface AuthenticatedUser {
 
     token: string;
 
+    refreshToken: string;
 
+    roles: string[];
 }
