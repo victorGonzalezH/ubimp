@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DataService, DataServiceProtocols } from 'utils';
-import { AppConfigService } from '../shared/services/app-config.service';
 import { AuthenticationService } from '../shared/services/authentication.service';
 
 import { catchError, map } from 'rxjs/operators';
