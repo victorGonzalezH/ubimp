@@ -54,22 +54,48 @@
             "number": "Number",
             "numberRequired": "Number required",
             "numberPlaceholder": "Ex. 123",
+            "postalCode": "Postal #",
+            "postalCodePlaceholder": "Postal code",
             "back": "Back",
             "error": "There was an error singin your account, please contact technical support",
             "passwordNotMatch": "Passwords dot not match"
 
+        }, 
+        "activate" : {
+            "title": "Activate",
+            "label": "Please slide to activate your ubimp account",
+            "error": "There was an error activating your account, please contact technical support"
         }
     },
     
     "home" :
     {
-        "noVehicleFoundMessage": "No vehicles found, please go to <a href=\"settings\">Settings</a> to add them" 
+        "noVehicleFoundMessage": "No vehicles found, please go to <a href=\"settings\">Settings</a> to add them" ,
+        "vehicles": "Vehicles",
+        "settings": "Settings",
+        "realTime": "Real time",
+        "autoZoom": "Auto adjust map",
+        "showUserLocation": "Show your location"
     },
     "settings": {
         "vehicles":"Vehicles",
         "groups": "Groups",
         "users": "Users",
         "others": "Others",
+        "vehicleGroup" : {
+            "edit": {
+                "vehicleGroupNameHolder": "Type the group name"
+            }
+        },
+        "vehicle": {
+            "add": {
+                "addVehicleGroupHolder": "Type the new vehicle group name"
+            },
+            "delete": {
+                "title": "Delete confirmation",
+                "message": "Are sure yo want to delete the {vehicle-name}?"
+            }
+        },
         "addVehicle": {
             "title": "Add vehicle or object",
             "vehicleName": "Name",
@@ -85,20 +111,24 @@
             "yearHolder": "for example 2015",
             "description": "Description",
             "imei": "IMEI",
+            "vehicleGroup": "Group",
+            "vehicleGroupRequired": "Group is required",
             "imeiRequired": "IMEI is required",
             "type": "Type of vehicle or object",
             "licensePlateHolder": "For example XYZ-1234",
+            "desription": "Description",
+            "descriptionHolder": "Description (optional)",
             "catalogs": {
-            "objectsTypes": {
-                "car": "Car",
-                "taxi": "Taxi",
-                "pickup": "Pickup",
-                "truck": "Truck",
-                "motorcycle": "Motorcycle",
-                "bicycle": "Bicycle",
-                "person": "Person",
-                "location": "Location"
-                }
+                "objectsTypes": {
+                    "car": "Car",
+                    "taxi": "Taxi",
+                    "pickup": "Pickup",
+                    "truck": "Truck",
+                    "motorcycle": "Motorcycle",
+                    "bicycle": "Bicycle",
+                    "person": "Person",
+                    "location": "Location"
+                    }
             }
         }
     }
