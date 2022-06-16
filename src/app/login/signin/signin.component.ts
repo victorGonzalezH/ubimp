@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { SignInCommand } from './signin.model';
 import {TranslateService} from '@ngx-translate/core';
-import { ApiResultBase } from 'utils';
+import { ApiResultBase, StorageService, StorageType } from 'utils';
 import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { SigninService } from './signin.service';
 import { MatSelectChange } from '@angular/material/select';
@@ -10,6 +10,8 @@ import { catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleMessageComponent } from 'src/app/shared/modals/simple-message/simple-message.component';
 import { NgForm } from '@angular/forms';
+
+const SIGNIN_SUCCESS_CODE = 20;
 
 @Component({
   selector: 'app-signin',
@@ -32,12 +34,25 @@ export class SigninComponent implements OnInit, AfterViewInit {
   
   constructor(private translateService: TranslateService,
     private signinService: SigninService,
-    private dialog: MatDialog) { 
+    private dialog: MatDialog,
+    private storageService: StorageService,
+    private appConfigService: AppConfigService) { 
   
-    // Se establece el lenguaje del navegador al no haber un lenguaje guardado en el storage
-    this.translateService.setDefaultLang(navigator.language);
+      if (this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session) == undefined) {
+      
+        // Se establece el lenguaje del navegador al no haber un lenguaje guardado en el storage
+        this.translateService.setDefaultLang(navigator.language);
+      
+        this.signIn.lang = navigator.language;
+      } else {
+      
+        this.signIn.lang = this.storageService.retrieve(this.appConfigService.defaultLanguage, StorageType.Session);
+      }
+    
     this.confirmPasswordCorrect = false;
     this.confirmPasswordRequired = false;
+
+
   }
 
   
@@ -67,6 +82,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     this.loading = true;
+    this.signIn.ownerId = null;
     this.signinService.signin(this.signIn)
     .subscribe({ 
       next: (response: ApiResultBase) => {
@@ -75,6 +91,13 @@ export class SigninComponent implements OnInit, AfterViewInit {
         const message = response.userMessage;
           const dialogRef = this.dialog.open(SimpleMessageComponent, {
             data: { title: this.messageTitle, message: message }
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            if(response.resultCode == SIGNIN_SUCCESS_CODE) {
+              //Se establece el lenguaje a utilizar
+              this.storageService.store(this.appConfigService.defaultLanguage, StorageType.Session);
+            }
           });
       },
       error: (error) => {
@@ -92,7 +115,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
 
   onLanguageChange(language: MatSelectChange) {
     this.translateService.setDefaultLang(language.value);
-    
+
   }
 
 
@@ -117,7 +140,6 @@ export class SigninComponent implements OnInit, AfterViewInit {
 
   onKeyPasswordConfirm(event: KeyboardEvent) {
     
-    console.log(this.signInForm.controls['confirmPasswordControl'].errors);
     if(this.confirmPassword === '' || this.confirmPassword === null) {
       this.confirmPasswordRequired = true;
     }

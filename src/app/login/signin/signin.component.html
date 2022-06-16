@@ -3,6 +3,7 @@
     {{ 'login.signin.back' | translate }}
   </a>
 <div class="signin-container">
+    <br/>
     <img src="../../../assets/images/svg/ubimpLogo.svg" alt="ubimp" class="signIn-ubimp-logo">
     <form (ngSubmit)="onSubmit()" #signInForm="ngForm" fxLayout="column" class="form-container">
         <div fxFlex fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
@@ -151,7 +152,7 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div fxFlex="10" class="item">
+            <div fxFlex="8" class="item">
                 <mat-form-field class="signin-form-field">
                     <mat-label class="signin-label">{{ 'login.signin.number' | translate }}</mat-label>
                     <input matInput 
@@ -163,6 +164,21 @@
                     >
                     <mat-error *ngIf="numberControl.invalid && (numberControl.dirty || numberControl.touched)">
                     {{ 'login.signin.numberRequired' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="8" class="item">
+                <mat-form-field class="signin-form-field">
+                    <mat-label class="signin-label">{{ 'login.signin.postalCode' | translate }}</mat-label>
+                    <input matInput 
+                    #postalCodeControl="ngModel"
+                    [(ngModel)]="this.signIn.postalCode"
+                    name="postalCodeControl"
+                    placeholder="{{ 'login.signin.postalCodePlaceholder' | translate }}"
+                    required
+                    >
+                    <mat-error *ngIf="postalCodeControl.invalid && (postalCodeControl.dirty || postalCodeControl.touched)">
+                    {{ 'login.signin.postalCodeRequired' | translate }}
                     </mat-error>
                 </mat-form-field>
             </div>

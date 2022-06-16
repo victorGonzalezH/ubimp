@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { ApiResultBase, DataService, DataServiceProtocols, ErrorType, ResponseTypes } from 'utils';
+import { SignInCommand } from './signin.model';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +66,7 @@ public getCountriesWithStates(): Observable<ApiResultBase> {
 
 
 
-public signin(signinCommand: any): Observable<ApiResultBase> {
+public signin(signinCommand: SignInCommand): Observable<ApiResultBase> {
   return this.dataService.post(this.appConfigService.apiUrl + '/auth/signin', signinCommand, null, DataServiceProtocols.HTTPS, ResponseTypes.JSON, null);
 }
 

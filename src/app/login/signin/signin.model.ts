@@ -18,7 +18,9 @@ export interface SignInCommand {
 
     number: string;
     
-    zipCode: string;
+    postalCode: string;
 
     lang: string;
+
+    ownerId: string;
 }
