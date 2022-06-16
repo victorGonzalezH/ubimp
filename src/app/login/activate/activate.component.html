@@ -1,0 +1,29 @@
+<div class="activate-container">
+    <br />
+    <img src="../../../assets/images/svg/ubimpLogo.svg" 
+    alt="ubimp" class="activate-ubimp-logo">
+    <div fxLayout="column" class="slide-container">
+        <div fxFlex fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
+            <div fxLayout="row" fxLayoutAlign="center center" fxFlex>
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <div><h1 class="activate-label">
+                    {{ 'login.activate.label' | translate }}
+                </h1></div>
+                <div>
+                    <mat-slide-toggle
+                    [(ngModel)]="isActivated"
+                    (change)="onChange($event)" >
+                    </mat-slide-toggle>  
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" *ngIf="loading === true" >
+    <div class="progress-spinner-margin">
+      <mat-progress-spinner 
+        mode="indeterminate">
+      </mat-progress-spinner>
+    </div>
+  </div>
